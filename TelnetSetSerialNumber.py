@@ -1,6 +1,3 @@
-import os
-import time
-import GetOS as gos
 import socket
 
 def write_serialnumber(host):
