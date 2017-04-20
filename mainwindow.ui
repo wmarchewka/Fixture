@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>768</width>
+    <height>494</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="pbPowerOn">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>130</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>POWER ON</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbPowerOff">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>130</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>POWER OFF</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cbTFP3ComPort">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>50</y>
+      <width>251</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblTFP3ComPort">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TFP3 Com Port</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblCycloneComPort">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>121</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cyclone Com Port</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cbCycloneComPort">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>80</y>
+      <width>251</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cbScannerComPort">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>110</y>
+      <width>251</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblScannerComPort">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Scanner Com Port</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblModbusComPort">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Modbus Com Port</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cbModbusComPort">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>20</y>
+      <width>251</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbProgTFP3">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>200</y>
+      <width>130</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PROG TFP3 </string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbProgCyclone">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>230</y>
+      <width>130</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PROG CYCLONE</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbReadScanner">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>200</y>
+      <width>130</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>READ SCANNER</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbSendTelnet">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>200</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TELNET</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbDoPing">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>230</y>
+      <width>130</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Do PING</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbGetADC">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>230</y>
+      <width>130</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>GET ADC</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbRescanSerialPorts">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>60</y>
+      <width>161</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Re-scan serial ports</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblStatus">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>320</y>
+      <width>351</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cbDemoJMComPort">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>140</y>
+      <width>251</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblDemoJM">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Demo JM</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="txtSerialData">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>10</y>
+      <width>111</width>
+      <height>411</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lnSerialTest">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>360</y>
+      <width>113</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbTelnetGetVoltages">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>260</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>GET VOLTAGES</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>768</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
+

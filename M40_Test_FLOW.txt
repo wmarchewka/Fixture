@@ -1,0 +1,15 @@
+This taken from interval m40 labview code:
+
+1.  scan barcode - parse string get board type.
+2.  modbus init - use telnet to send default values to UUT for modbus
+3.  modbus check - make sure we can communicate to modbus
+4.  check buttons via telnet push each one and read value.
+5.  check LED - now a manual check will make automatic in future.
+6.  CPM reset test - reset via telnet with reset command.
+7.  virgo read test - send $mdra,0,215,0,s
+8.  write LAN MAC
+9.  reboot
+10. set PCR register depending on board type
+11. reboot
+12. wifi test - configure MAC, reboot , set SSID, reboot, check connection
+13 .set serial number - get from scanned data
