@@ -7,8 +7,6 @@ def write_lan_mac(ip_add):
     try:
         host = "192.168.1.8"
         port = 23
-        TIMEOUT = 5
-        # HOST = '10.0.0.210'
         print('Starting button test on ' + host)
         sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         conn = host, port
