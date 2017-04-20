@@ -1,6 +1,3 @@
-import os
-import time
-import GetOS as gos
 import socket
 
 def write_lan_mac(ip_add):
@@ -9,6 +6,7 @@ def write_lan_mac(ip_add):
         port = 23
         print('Starting button test on ' + host)
         sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sc.settimeout(2)
         conn = host, port
         sc.connect(conn)
         data = sc.recv(100)
