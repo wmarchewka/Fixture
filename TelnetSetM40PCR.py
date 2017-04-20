@@ -4,6 +4,7 @@
 import socket
 
 
+
 def SetPCR(host):
     try:
         print("Setting PCR value on " + host)
@@ -29,6 +30,8 @@ def SetPCR(host):
             print('PCR successfully set')
             return True, 'PCR successfully set'
 
+
+
     except socket.timeout as err:
         print('socket timeout')
         return False, err
@@ -41,6 +44,8 @@ def SetPCR(host):
         sc.close
         print(err)
         return False, err
+
+
 
 def main():
     ip_addr = '192.168.1.8'
