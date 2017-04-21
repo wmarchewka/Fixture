@@ -43,7 +43,7 @@ def upload_file(host,fname,slot,path):
         my_req_head = "POST /upload_file.cgi HTTP/1.1\r\n"
         my_req_head = my_req_head +  "Accept-Language: en-us\r\n"
         #print(my_req_head)
-        my_req_head = my_req_head + "Host: 192.168.1.8\r\n"
+        my_req_head = my_req_head + "Host: 192.168.1.100\r\n"
         my_req_head = my_req_head + "Content-Type: multipart/form-data; boundary=---------------------------7dd3201c5104d4\r\n"
         my_req_head = my_req_head + "Content-Length: " + str(fsize) + "\r\n"
         my_req_head = my_req_head + "Connection: Keep-Alive\r\n"
