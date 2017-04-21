@@ -13,17 +13,25 @@ def file_size(fname):
 
 def upload_file(host,fname,slot,path):
     try:
-        f = open(path, "rb")
-        fn = f.read(123632)
-        url = 'http://' + host + '/upload_file.cgi'
-        files  = ',data="filename": ' + path + ', "name":' +  slot
-        print(url)
-        r = requests.post(url, files=files)
-        print(r)
+        headers = {
+            'authorization': "Basic ZmFjdG9yeTpmYWN0b3J5",
+            'cache-control': "no-cache",
+            'Accept - Language':'en-us',
+            'Host: 10.0.0.210',
+            'Content - Type: multipart/form-data',
+            'boundary = ---------------------------7dd3201c5104d4',
+            'Content - Length: 123632',
+            'Connection: Keep - Alive',
+            'Authorization':'Basic ZmFjdG9yeTpmYWN0b3J5',
+        }''''''''''''''''''''''''''
+        myfile = {"file": ("filexxx", open(path, "rb"))}
 
-    except OSError as err:
-        print(err)
-        return False, err
+        response = requests.request("POST", verify=False, url=host, data=myfile, headers=headers)
+
+        print(response.text)
+    except Exception as e:
+        print
+        "Exception:", e
 
 
 def main():
