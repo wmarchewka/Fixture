@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 #tcpclient.pl
 
+use warnings FATAL => 'all';
+use strict;
 use IO::Socket::INET;
 use File::Copy;
 use File::Glob qw(bsd_glob);
@@ -58,7 +60,7 @@ sub upload_unit
    # to encode a user supplied name and passowrd. 
    my $req_head = "POST /upload_file.cgi HTTP/1.1\r\n" .
    "Accept-Language: en-us\r\n".
-   "Host: 192.168.1.100\r\n".
+   "Host: 192.168.1.8\r\n".
    "Content-Type: multipart/form-data; boundary=---------------------------7dd3201c5104d4\r\n".
    "Content-Length: ". length($req_body) ."\r\n".
    "Connection: Keep-Alive\r\n".
@@ -72,7 +74,7 @@ sub upload_unit
    my $response = "";
    while ($data = <$socket>) {
       $response .= $data; 
-      #print $data;
+      print $data;
    }   
 
    # Done with the socket, so close it
