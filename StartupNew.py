@@ -19,21 +19,16 @@ import PingUUT as pn
 
 global ser
 
-
 class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
 
-    serialtrigger = pyqtSignal(str)
-
+    serialtrigger = pyqtSignal(bytes)
+    global ser
 
     def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
-
         self.serialtrigger.connect(self.parse_serial_data)
-
-
         serial_ports_list = gs.serial_ports()
-
         self.cbTFP3ComPort.addItems(serial_ports_list)
         self.cbScannerComPort.addItems(serial_ports_list)
         self.cbCycloneComPort.addItems(serial_ports_list)
@@ -53,30 +48,33 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
         self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
         self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
         self.lnSerialTest.textChanged.connect(self.SerialTest)
-
+        self.check_for_config()
         self.populate_defaults()
-
         print(self.tfp3relay_pin)
         self.check_serial_event()
 
     def check_serial_event(self):
+        global ser
         serial_thread = threading.Timer(1, self.check_serial_event)
-        try:
-            if ser.is_open == True:
-                serial_thread.start()
-                print('running serial thread')
+        if ser.isOpen() == True:
+            serial_thread.start()
+            print('running serial thread')
+            assert isinstance(ser, serial.Serial)
+            if ser.inWaiting():
                 while True:
-                    #TODO need timeout here so doesnt block
-                    #c = ser.read(1)
-                    time.sleep(5)           #
-                    c="P"
+                    c = ser.read(1)
+                    print('received ' + str(c))
                     if c:
                         self.serialtrigger.emit(c)
                         break
                     else:
                         break
-        except:
-            print('serial port not found')
+
+
+    def check_for_config(selfself):
+        ret = cf.config_read('CONFIG','file_ver')
+        print(ret)
+
     def power_up_relay(self):
         print('power up power relay')
         gp.output(self.powerrelay_pin, self.gpio_on) #PIN
@@ -126,10 +124,11 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
         self.lnSerialTest.clear()
         self.parse_serial_data(data)
 
-    def parse_serial_data(self,strData):
-
+    def parse_serial_data(self,bData):
+        strData = bData.decode('utf-8')
+        global ser
+        ser.write(bData + b'\r')
         self.txtSerialData.appendPlainText(strData)
-
         print('incoming data->' + strData)
         if (strData == 'S') or (strData == 's'):
             MainWindow.send_report()
@@ -141,12 +140,11 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
             try:
                 #Send ACK to LabVIEW
                 ser.write(b'K')
-                ser.write(b'\x0a')
-                ser.write(b'\x0d')
+                ser.write(b'\r')
             except:
                 print('no serial port')
 
-        if ((strData == 'P') or (strData == 'p')):
+        if (strData == 'P') or (strData == 'p'):
             MainWindow.power_up_relay(self)
         elif ((strData == 'C') or (strData == 'c')):
             MainWindow.power_cycle_relay(self)
@@ -194,7 +192,7 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
             pass
 
     def programCyclone(self):
-        self.lblStatus.setText("Progrraming cyclone !")
+        self.lblStatus.setText("Programming cyclone !")
         print("Programming cyclone !")
         ret = pc.Main.ProgramCyclone(cyclone_serial_port)
         print ('Returned value '+ str(ret[0]))
@@ -254,9 +252,18 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
     def DemoJMSerialPortChanged(self):
         global demojm_serial_port
         demojm_serial_port = self.cbDemoJMComPort.currentText()
-        cf.config_write('DemoJM', 'COM_PORT', demojm_serial_port)
+        cf.config_write('DEMOJM', 'COM_PORT', demojm_serial_port)
         print('DemoJM port changed to ' + demojm_serial_port)
-
+        global ser
+        try:
+            ser = serial.Serial(demojm_serial_port, baudrate=115200, timeout=10,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            bytesize=serial.EIGHTBITS
+                            )
+            print('Opened demojm serial port on port ' + demojm_serial_port)
+        except:
+            print('serial port error opening demojm')
 
     def populate_defaults(self):
         global tfp3_serial_port
@@ -264,6 +271,7 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
         global cyclone_serial_port
         global modbus_serial_port
         global demojm_serial_port
+        global ser
 
         tfp3_serial_port = cf.config_read('TFP3', 'COM_PORT')
         index = self.cbTFP3ComPort.findText(tfp3_serial_port)
@@ -295,6 +303,8 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
                             stopbits=serial.STOPBITS_ONE,
                             bytesize=serial.EIGHTBITS
                             )
+
+
         except:
             ser = None
             print('cannot find serial port')
