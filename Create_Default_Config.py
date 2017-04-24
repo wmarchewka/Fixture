@@ -5,6 +5,8 @@ config.read('master_configuration.cfg')
 print(config)
 
 def config_write_defaults():
+    config.add_section('CONFIG')
+    config.set('CONFIG', 'FILE_VER', '1')
     config.add_section('DEMOJM')
     config.set('DEMOJM', 'COM_PORT', 'COM1')
     config.add_section('SCANNER')
