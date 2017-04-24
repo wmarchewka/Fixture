@@ -1,0 +1,39 @@
+-----
+Demo JM Config:
+
+COM Port: COM22
+Baud Rate: 38400
+Data Bits: 8
+Parity: None
+Stop Bits: 10
+Flow Control: 0
+Timeout: 2000
+Mode: RTU
+Slave Address: 1
+-----
+Telnet:
+
+IP Address: 192.168.1.99
+-----
+Barcode Scanner:
+
+COM Port: COM5
+-----
+TFP3 Config:
+
+COM Port: COM30
+-----
+Folders:
+
+Base: C:\UEC\Functional Test\M50
+Test Reports: C:\UEC\Functional Test\M50\Test Reports\Power Supply
+Configuration: C:\UEC\Functional Test\M50\Configuration
+-----
+File Names:
+
+Master Test Report: C:\UEC\Functional Test\M50\Test Reports\Power Supply\UEC_M50_Power_Supply_Test_Report_2
+M50 Firmware: C:\UEC\Functional Test\M50\Configuration\firmware_v3.36.bin
+Wi-Fi Firmware: C:\UEC\Functional Test\M50\Configuration\wifi_v0x2124a503.bin
+Web Page Upload: C:\UEC\Functional Test\M50\Configuration\web_pages_UEC025_ENG.tfs
+Meter IC Firmware: C:\UEC\Functional Test\M50\Configuration\meter_v1.20.hex
+-----

@@ -1,0 +1,54 @@
+============================================
+Perl Script Instructions for CPM File Upload
+============================================
+
+1.) Install Perl on your computer.
+
+    Note, the scripts were tested with Active Perl and
+    Strawberry Perl.
+
+    http://www.activestate.com/activeperl
+    http://strawberryperl.com/
+
+2.) Copy the following files to your Downloads folder:
+
+      Cmd Pmt
+      mupload.pl
+      unit_upload.pl
+      upload_list.txt
+      firmware_v3.36.bin
+      web_pages_UEC025_ENG.tfs
+
+3.) Double click on the file "upload_list.txt" to open it.
+    This file specifies each meter to update by IP Address,
+    Username, and Password.  Replace the example list
+    with your list.  The last line of the list must
+    have a Carrage Return after it like all of the
+    preceeding lines; otherwise, the last line will
+    not be processed.
+
+4.) Double click on "Cmd Pmt" to open the
+    Command Prompt window.
+
+5.) Copy the following text:
+
+      perl mupload.pl upload_list.txt image firmware_v3.36.bin
+
+    Right Click on the Command Prompt window and select "Paste"
+    from the pop-up menu.  Then press "Enter" on the keyboard.
+
+    Wait for the script to process all of the IP Addresses in
+    the list.
+
+    Note, if you have a newer version of firmware, change the
+    version number before you copy the text.
+
+6.) Repeat the previous step for the other files you want
+    to update:
+
+      perl mupload.pl upload_list.txt web web_pages_UEC025_ENG.tfs
+      perl mupload.pl upload_list.txt meter meter_v1.20.hex
+      perl mupload.pl upload_list.txt certs certificates.tfs
+      perl mupload.pl upload_list.txt wifi wifi_v0x2124a503.bin
+
+

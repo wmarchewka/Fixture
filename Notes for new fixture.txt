@@ -1,0 +1,17 @@
+Combine into one fixture
+Power board and ehternet in one.
+Eliminate need for power board and wthernet board in fixture
+Button on fixture to start test and indicator light to show pass fail.
+More diagnostics from demo board
+More off the shelf components
+SSR relays
+Make loop for ethernet test to elimate RJ45/Modbus board
+Modbus can be tested with loop or 2 Uarts in demo.
+Use Raspberry PI.  Has ethernet, wireless, camera, etc.  Python programming.
+WHY?
+Get with Pual about calibration exactly how it works
+Why does the incoming signal have to be so precise?  Is it because we take a long time to sample?
+Can we send the incoming signals out through the trace line of the teridian?
+Can we just simulate a 60hz low amperage signal?
+Can we inject a ma signal?
+
