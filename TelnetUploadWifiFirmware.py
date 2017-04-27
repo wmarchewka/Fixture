@@ -31,7 +31,7 @@ def upload_file(host,fname,slot,path):
         myauthorization = base64.b64encode(b'factory:factory')
 
         my_req_body = "-----------------------------7dd3201c5104d4\r\n"
-        my_req_body = my_req_body  + 'Content-Disposition: form-data; name="' + str(slot) + '"; filename="' + str(path) + '"\r\n'
+        my_req_body = my_req_body  + 'Content-Disposition: form-data; name="' + str(slot) + '"; filename="' + str(fname) + '"\r\n'
         my_req_body = my_req_body  + 'Content-Type: application/octet-stream\r\n'
         my_req_body = my_req_body  + '\r\n'
 
@@ -70,7 +70,7 @@ def upload_file(host,fname,slot,path):
 def main():
 
     global osname
-    host = '192.168.1.8'
+    host = '192.168.1.5'
     #host = '10.0.0.210'
     slot = 'web'
     print(osname)
