@@ -12,42 +12,40 @@ def file_size(fname):
     pass
 
 def upload_file(host,fname,slot,path):
-    try:
-        headers = {
-            'authorization': "Basic ZmFjdG9yeTpmYWN0b3J5",
-            'cache-control': "no-cache",
-            'Accept - Language':'en-us',
-            'Host: 10.0.0.210',
-            'Content - Type: multipart/form-data',
-            'boundary = ---------------------------7dd3201c5104d4',
-            'Content - Length: 123632',
-            'Connection: Keep - Alive',
-            'Authorization':'Basic ZmFjdG9yeTpmYWN0b3J5',
-        }''''''''''''''''''''''''''
-        myfile = {"file": ("filexxx", open(path, "rb"))}
 
-        response = requests.request("POST", verify=False, url=host, data=myfile, headers=headers)
+        headers = {'Content-Disposition ' :'form-data; name="' + slot +'"; filename="' + path + '"' }
 
+        myfile = {"file": open(path, "rb")}
+
+        response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory','factory') )
+
+        print("response")
+        print (response.status_code)
+
+        print("response text")
         print(response.text)
-    except Exception as e:
-        print
-        "Exception:", e
+
+        print("response header")
+        print(response.headers)
+
+    #except Exception as e:
+    #    print("Exception:", e)
 
 
 def main():
 
     global osname
-    host = '192.168.1.8'
+    host = 'http://192.168.1.5'
     #host = '10.0.0.210'
     slot = 'web'
     print(osname)
 
     if osname == "Windows":
-        path = r"C:\UEC\Functional Test\M50\Configuration\web_pages_UEC025_ENG.tfs"
+        path = r"C:\UEC\Functional Test\M50\Configuration\web_pages_UEC_AC_025_SPN.tfs"
     elif osname == "OS X":
-        path = os.path.expanduser("~/web_pages_UEC025_ENG.tfs")
+        path = os.path.expanduser("~/web_pages_UEC_AC_025_SPN.tfs")
 
-    fname = 'web_pages_UEC025_ENG.tfs'
+    fname = 'web_pages_UEC_AC_025_SPN.tfs'
     ret = upload_file(host,fname,slot, path)
     print(ret)
 
