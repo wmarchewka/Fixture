@@ -70,8 +70,8 @@ def upload_file(host,fname,slot,path):
 def main():
 
     global osname
-    host = '192.168.1.5'
-    #host = '10.0.0.210'
+    #host = '192.168.1.5'
+    host = '10.0.0.148'
     slot = 'web'
     print(osname)
 

@@ -1,3 +1,4 @@
+import requests
 from requests import Request, Session
 import io
 import GetOS as gs
@@ -30,14 +31,15 @@ def pretty_print_POST(req):
 
 def upload_file(host, fname, slot, path):
     headers = {'Content-Disposition ': 'form-data; name="' + slot + '"; filename="' + path + '"'}
-    mydata = {'name': slot, 'filename': path}
+    #mydata = {'name': slot, 'filename': path}
 
-    myfile = {"file": open(path, "rb")}
+    myfile = {fname: open(path, "rb")}
 
-    # response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory','factory') )
-    response = Request("POST", url=host, files=myfile, data=mydata, auth=('factory', 'factory'))
+    #response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
+    response = Request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
+    #response = Request("POST", url=host, files=myfile, data=mydata, auth=('factory', 'factory'))
 
-    print(response)
+    #print(response)
 
     pretty_print_POST(response.prepare())
 
@@ -64,11 +66,11 @@ def main():
     print(osname)
 
     if osname == "Windows":
-        path = r"C:\UEC\Functional Test\M50\Configuration\web_pages_UEC_AC_025_WALT.tfs"
+        path = r"C:\UEC\Functional Test\M50\Configuration\web_pages_UEC_AC_025_SPN.tfs"
     elif osname == "OS X":
-        path = os.path.expanduser("~/web_pages_UEC_AC_025_WALT.tfs")
+        path = os.path.expanduser("~/web_pages_UEC_AC_025_SPN.tfs")
 
-    fname = 'web_pages_UEC_AC_025_WALT.tfs'
+    fname = 'web_pages_UEC_AC_025_SPN.tfs'
     ret = upload_file(host,fname,slot, path)
     print(ret)
 
