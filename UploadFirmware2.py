@@ -30,27 +30,23 @@ def pretty_print_POST(req):
 
 
 def upload_file(host, fname, slot, path):
-    headers = {'Content-Disposition ': 'form-data; name="' + slot + '"; filename="' + path + '"'}
+    headers = {'Accept-Language':'en-us', 'Host':'10.0.0.210',  'Content-Disposition':'form-data; name="' + slot + '"; filename="' + path + '"'}
     #mydata = {'name': slot, 'filename': path}
 
-    #myfile = {'file':(fname, open(path, 'rb'),'application/octet-stream',{'Expires': '0'}}
-    myfile = {'file': (fname, open(fname, 'rb'), 'application/octet-stream', {'Expires': '0'})}
+    myfile = {'web': (fname, open(fname, 'rb'), 'application/octet-stream')}
     #response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
     response = Request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
     #response = Request("POST", url=host, files=myfile, data=mydata, auth=('factory', 'factory'))
-
-    #print(response)
-
     pretty_print_POST(response.prepare())
 
-    print("response")
-    print(response.status_code)
+    #print("response")
+    #print(response.status_code)
 
-    print("response text")
-    print(response.text)
+    #print("response text")
+    #print(response.text)
 
-    print("response header")
-    print(response.headers)
+    #print("response header")
+    #print(response.headers)
 
 
 # except Exception as e:
