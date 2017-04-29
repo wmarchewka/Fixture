@@ -1,0 +1,164 @@
+/usr/local/Cellar/python3/3.6.1/bin/python3.6 /Users/waltermarchewka/PycharmProjects/Fixture/UploadFirmware2.py
+OS X
+response
+200
+response text
+ï»¿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html><head><title>CPM Home</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <style>
+body { padding: 0px; margin: 0px; background-color: #ddd; font-family: Calibri, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: normal; color: #666666; }
+#wrap { width: 90%; max-width: 980px; margin: auto; background-color:#FFFFFF; padding: 0px; }
+#container th {text-align: right; color: #333333; font-weight:normal; }
+#container thead th { text-align: center; color: #666; }
+#container td { color: #000; font-weight: bold; }
+#deviceInfo th { text-align: left; color: #000; }
+#deviceInfo td { color: #fff; }
+h1, h2, h3, h4 { color: #0067a0; margin: 0; padding: 0 0 5px; }
+#header { background-color: #fff; background-image:url(HeaderBackground.png); background-repeat:repeat-x; height:81px; }
+#footer { background-color: #fff; background-image:url(FooterBackground.png); background-repeat:repeat-x; height:34px; color:#FFFFFF; text-align:right; font-size:10pt; vertical-align:middle; }
+.footerContent { padding-top:8px; padding-right:10px; }
+#firmwareVersion  { background-color: #4c4c4c; font-size:10pt; color:#FFFFFF; padding:2px; text-align:center; }
+#logo { height: 100px; width: 450px; }
+#logo-graphic { padding: 20px 20px 0px 20px; height: 41px; width: 450px; }
+#nav { padding: 0px 0px 0px 0px; float: left; width:auto; line-height: 100%; }
+#subNav { float:left; margin-left:40px; min-width:500px; width:auto; padding-top:9px; font-size:11pt; color:#000000; }
+#subNav a, #subNav a:active, #subNav a:visited { color:#000000; }
+#subNav a:hover { color:#FF0000; }
+#nav ul { margin: 0; padding: 0; }
+#shellmenu { line-height: 0; height: 0; }
+#shellmenu li { list-style-type: none; display: inline; }
+#shellmenu-text { display: none; }
+#mainmenu { display: inline; }
+#navContainer { width:auto; height:60px; background-color:#e4e4e4; border:2px solid #FFFFFF; border-bottom:0px; padding-bottom:2px; background-image:url(navBacking.png); background-repeat:repeat-x; }
+#currentLocation { background-color:#005f98; color:#FFFFFF; font-size:18pt; font-weight:bold; width:150px; height:60px; text-align: center; vertical-align: middle; line-height: 55px; float:left; }
+#nav a { color: #FFF; text-decoration: none; font-size: 1em; font-weight: bold; padding: 10px 0px; display: block; position: relative; width:122px; }
+.lastmenuitem a { padding: 0px 40px 22px 10px !important; }
+#nav a:hover { color: #0067A0; background-color: #e4e4e4; }
+#nav .current a { color: #000000; background-color: #e4e4e4; }
+#nav a img { border: 0; }
+.menuicon { width: 30px; }
+#deviceInfo { clear: both; margin: auto; padding: 10px 20px 50px; background-color: #0067a0; }
+.mainmenu-listitem { float: left; list-style-type: none; text-align: center; }
+#container { clear: both; padding: 20px; margin: 10px; background-color: #fff; }
+.error { color: red; }
+.menutext { padding: 0 5px; }
+.outfeedRight th { white-space: nowrap; }
+.outfeedRight td { white-space: nowrap; }
+.button { line-height: 1; }
+
+/* rules for full width devices, like desktops */
+@media only screen and (min-width: 1000px) { }
+
+/* rules for iPads and small devices, held portrait */
+@media only screen and (max-width: 999px) {
+  .menutext { }
+  .menubreak { display: none; }
+  #currentLocation { background-color:#005f98; color:#FFFFFF; font-size:18pt; font-weight:bold; width:100px; height:60px; text-align: center; vertical-align: middle; line-height: 55px; }
+  #navContainer { width:auto; height:60px; border:2px solid #FFFFFF; border-bottom:0px; padding-bottom:2px; }
+  #nav a { width:98px; }
+  #subNav { float:left; margin-left:30px; min-width:500px; width:auto; }
+  .lastmenuitem a { padding: 35px 40px 35px 10px !important; }
+}
+
+/* rules for tablets, held portrait */
+@media only screen and (max-width: 768px) {
+  #logo { height: 80px; }
+  #logo-graphic { padding: 15px 20px 0; }
+  #currentLocation { background-color:#005f98; color:#FFFFFF; font-size:16pt; font-weight:bold; width:100px; height:50px; text-align: center; vertical-align: middle; line-height: 50px; }
+  #navContainer { height:50px; }
+  #nav { clear: none; float: left; padding: 0; width: auto; }
+  #nav a { font-size:10.5pt; padding: 11px 10px; width:42px; color:#FFFFFF; }
+  #subNav { float:left; margin-left:15px; min-width:350px; width:auto; padding-top:3px; }
+  .lastmenuitem a { padding: 15px 10px !important; }
+  #nav a:hover { color: #0067A0; }
+  #deviceInfo { padding: 10px; }
+  #wrap { width:100%; }
+}
+
+/* rules for smart phones, held portrait */
+@media only screen and (max-width : 480px) {
+  #body { background: none; }
+  #logo { width: 350px; height: 68px; }
+  #logo-graphic { height: 32px; width: 350px; }
+  /* reveal the hidden Menu */
+  #shellmenu { line-height: 1.6px; height: 1.6px; }
+  #currentLocation { display:none; }
+  .menuicon { height: 15px; width: 15px; padding: 0 10px 0 0; }
+  .menutext { display: inline; font-size: 90%; padding: 0; margin: 0; }
+  .mainmenu-listitem { text-align: left; }
+  #nav { width: auto; clear: none; float: left; padding: 0px 0 0 0px; background-color: #fff; font-weight: bold; }
+  #subNav { font-size:10pt; padding-top:25px; }
+  #shellmenu-text { display: block; padding: 0px 0px 0px 0px; color: #fff; background-color: #0067a0; }
+  #header th, #header td { font-size: 80%; }
+  /* these are the new rules for the js powered dropdown menu */
+  #nav { padding: 0; margin: 0; }
+  #shellmenu { padding: 0px; background-color: #333; color: #fff; text-align: center; }
+  #shellmenu-text { padding: 10 0 30px; background: #fff; }
+  #shellmenu ul { display: none; list-style: none; margin-left: 0; padding-left: 0; margin-bottom: 0; }
+  #shellmenu ul.expanded { display: block; }
+  #shellmenu li a { display: block; position: relative; padding: 5px; border-top: 1px solid #ffffff; font-size: 90%; color: #ccc; text-decoration: none; width: 120px; }
+  .lastmenuitem a { padding: 5px !important; }
+  #navContainer { height:22px; }
+  #nav a { font-size:12pt; background: #666; color: #fff; width:110px; }
+  #nav a:hover { background: #0067a0; color: #fff; }
+ .mainmenu-listitem { float: none; }
+ .menu_button { display: block; text-align: left; color: #fff; background-color: #0067a0; text-decoration: none; width: 110px; }
+ .menu_button:hover { color: #fff; background: #0067a0; text-decoration: none; }
+  /* other rules */
+  #container { padding: 5px; margin: 5px; padding-top:50px; }
+  #container th { font-size: 75%; }
+  #container td { font-size: 75%; }
+  #deviceInfo th, #deviceInfo td { font-size: 90%; }
+}
+
+@media only screen and (max-width : 360px) {
+    #logo { width: 200px; height: 68px; }
+    #logo-graphic { height: 18px; width: 200px; }
+    #logoRight { display:none; }
+    #logo-graphic-right { display:none; }
+}
+</style>
+ <script type="text/javascript">
+var http_request = false;
+function makeRequest(url, fn) {
+url = window.location.protocol +" //" + document.domain + "/" + url + "?sid=" + Math.random();
+data_received = 1;
+if (window.XMLHttpRequest) { http_request = new XMLHttpRequest(); if (http_request.overrideMimeType) { http_request.overrideMimeType('text/xml'); } }
+else if (window.ActiveXObject) { try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { } } }
+if (!http_request) { alert('Giving up :( Cannot create an XMLHTTP instance'); return false; }
+http_request.onreadystatechange = function() { fn(http_request); };
+http_request.open('GET', url, true); http_request.send(null);
+}
+function alertContents(e){ if ((http_request.readyState == 4) && (http_request.status == 200)) { parse_vars(http_request.responseText); } data_received = 0; }
+</script>
+ <script>
+var oNavClass; var data_received = 0;
+function parse_vars(e) { var n = e.split("\n"); PARAM_FeedLineCurrentRatingPercentOf_1.innerHTML = n[0]; PARAM_FeedLineCurrentRatingPercentOf_2.innerHTML = n[1]; PARAM_FeedLineCurrentRatingPercentOf_3.innerHTML = n[2]; PARAM_FeedLineCurrentRatingPercentOf_4.innerHTML = n[3]; PARAM_lineToNeutVoltAverage.innerHTML = n[4]; PARAM_FeedPowerFactorAverage.innerHTML = n[5]; PARAM_frequency.innerHTML = n[6]; PARAM_FeedTotalApparentPower.innerHTML = n[7]; PARAM_FeedTotalActivePower.innerHTML = n[8]; PARAM_FeedPeakTotalActivePower.innerHTML = n[9]; PARAM_FeedTotalReactivePower.innerHTML = n[10]; PARAM_FeedTotalEnergy.innerHTML = n[11]; PARAM_FeedLineCurrentRatingPercentOf_5.innerHTML = n[12]; DATESTAMP.innerHTML = n[13]; }
+function loop() { if (!data_received) { makeRequest("data_home.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
+function onWindowLoad() { setCurrentTab("home", "Home"); var n = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var o = "Summary" + n + "<a href='devinfo.html'>Device Info</a>" + n + "<a href='devCommInfo.html'>Comm. Info</a>";setSubNav(o);loop(); }
+window.onload = onWindowLoad;
+function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
+</script> </head> <body><div id="wrap"><div id="banner">ï»¿<script language="javascript" type="text/javascript">
+    function setCurrentTab(e,n) {document.getElementById("li"+e).className += " current"; document.getElementById("currentLocation").innerHTML=n; }
+    function setSubNav(e){document.getElementById("subNav").innerHTML=e;}
+    function addCssClass(s){var a;a=document.getElementById(s);a.className=a.className+" "+myClassName;}
+    function removeCssClass(e,s){var a; var c=" "+s;a=document.getElementById(e);a.className=a.className.replace(c,"")}
+    function checkAlarms() { var INFALM = 0; var OUTALM = 0; document.getElementById("alarmNotice").style.display=0!=INFALM||0!=OUTALM?"block":"none"; }
+</script>
+<div id="header"><div id="logo"><img src="StarLineLogo.png" alt="Logo" title="Universal Electric Corp" id="logo-graphic" /></div></div>
+<div id="firmwareVersion"><div id="alarmNotice" style="background-color:#FF0000; border:1px solid #000000; padding:2px; font-size:11.5pt; display:none;">
+<span style="font-weight:bold; color:#FFFFFF;">ALARM</span>: <a href="alarms.html" style="color:#FFFFFF;" title="Click to inspect alarm">Inspect alarm condition</a></div>Firmware Version: M22276-116 v3.36</div>
+<div id="navContainer"><div id="currentLocation"></div><div id="nav"><nav id="shellmenu">
+<span id="shellmenu-text"><a class="menu_button" href="#footer_nav" onclick="toggleNav(); return false;">&#9776; MENU</a></span>
+<ul id="mainmenu">
+<li id="lihome" class="mainmenu-listitem"><a href="home.html"><span class="menubreak"><br></span><span class="menutext">Home</span></a></li>
+<li id="liinfeeds" class="mainmenu-listitem"><a href="infeeds.html"><span class="menubreak"><br></span><span class="menutext">Feed</span></a></li>
+<li id="lioutlets" class="mainmenu-listitem"><a href="outlet.html"><span class="menubreak"><br></span><span class="menutext">Outlet</span></a></li>
+<li id="lialarms" class="mainmenu-listitem"><a href="alarms.html"><span class="menubreak"><br></span><span class="menutext">Alarm</span></a></li>
+<li id="liconfig" class="mainmenu-listitem"><a href="devconfig.html"><span class="menubreak"><br></span><span class="menutext">Config</span></a></li>
+</ul></div><div id="subNav"></div></div>
+</div><div id="container"> <table><tr><th>Feed L1 Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_1"></span></td></tr> <tr><th>Feed L2 Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_2"></span></td></tr> <tr><th>Feed L3 Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_3"></span></td></tr> <tr><th>Calculated Neutral Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_4"></span></td></tr> <tr><th>Measured Neutral Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_5"></span></td></tr><tr><th style="height: 15px;"></th><td></td></tr> <tr><th>Voltage Average L-N: </th><td><span id="PARAM_lineToNeutVoltAverage"></span></td></tr> <tr><th>Total Power Factor: </th><td><span id="PARAM_FeedPowerFactorAverage"></span></td></tr> <tr><th>Frequency: </th><td><span id="PARAM_frequency"></span></td></tr> <tr><th>Feed Total Apparent Power: </th><td><span id="PARAM_FeedTotalApparentPower"></span></td></tr><tr><th style="height: 15px;"></th><td></td></tr> <tr><th>Feed Total Active Power: </th><td><span id="PARAM_FeedTotalActivePower"></span></td></tr> <tr><th>Feed Peak Total Active Power: </th><td><span id="PARAM_FeedPeakTotalActivePower"></span></td></tr> <tr><th>Feed Total Reactive Power: </th><td><span id="PARAM_FeedTotalReactivePower"></span></td></tr> <tr><th>Feed Total Metered Energy: </th><td><span id="PARAM_FeedTotalEnergy"></span></td></tr><tr><th style="height: 15px;"></th><td></td></tr> <tr><th>Timestamp: </th><td><span id="DATESTAMP"></span></td></tr></table> </div>ï»¿<div id="footer"><div class="footerContent">&copy; Universal Electric Corp. 2015</div></div>
+</div></body></html>
+response header
+{'Server': 'MQX HTTP - Freescale Embedded Web Server', 'Connection': 'close', 'Content-Type': 'text/html'}
+None
+
+Process finished with exit code 0
