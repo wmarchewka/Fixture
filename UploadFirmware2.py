@@ -1,4 +1,4 @@
-import requests
+from requests import Request, Session
 import io
 import GetOS as gs
 import os
@@ -11,41 +11,64 @@ osname = gs.get_platform()
 def file_size(fname):
     pass
 
-def upload_file(host,fname,slot,path):
+def pretty_print_POST(req):
+    """
+    At this point it is completely built and ready
+    to be fired; it is "prepared".
 
-        headers = {'Content-Disposition ' :'form-data; name="' + slot +'"; filename="' + path + '"' }
+    However pay attention at the formatting used in 
+    this function because it is programmed to be pretty 
+    printed and may differ from the actual request.
+    """
+    print('{}\n{}\n{}\n\n{}'.format(
+        '-----------START-----------',
+        req.method + ' ' + req.url,
+        '\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
+        req.body,
+    ))
 
-        myfile = {"file": open(path, "rb")}
 
-        response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory','factory') )
+def upload_file(host, fname, slot, path):
+    headers = {'Content-Disposition ': 'form-data; name="' + slot + '"; filename="' + path + '"'}
+    mydata = {'name': slot, 'filename': path}
 
-        print("response")
-        print (response.status_code)
+    myfile = {"file": open(path, "rb")}
 
-        print("response text")
-        print(response.text)
+    # response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory','factory') )
+    response = Request("POST", url=host, files=myfile, data=mydata, auth=('factory', 'factory'))
 
-        print("response header")
-        print(response.headers)
+    print(response)
 
-    #except Exception as e:
-    #    print("Exception:", e)
+    pretty_print_POST(response.prepare())
+
+    print("response")
+    print(response.status_code)
+
+    print("response text")
+    print(response.text)
+
+    print("response header")
+    print(response.headers)
+
+
+# except Exception as e:
+#    print("Exception:", e)
 
 
 def main():
 
     global osname
-    host = 'http://192.168.1.5'
-    #host = '10.0.0.210'
+    #host = 'http://192.168.1.5'
+    host = 'http://10.0.0.148/upload_file.cgi'
     slot = 'web'
     print(osname)
 
     if osname == "Windows":
-        path = r"C:\UEC\Functional Test\M50\Configuration\web_pages_UEC_AC_025_SPN.tfs"
+        path = r"C:\UEC\Functional Test\M50\Configuration\web_pages_UEC_AC_025_WALT.tfs"
     elif osname == "OS X":
-        path = os.path.expanduser("~/web_pages_UEC_AC_025_SPN.tfs")
+        path = os.path.expanduser("~/web_pages_UEC_AC_025_WALT.tfs")
 
-    fname = 'web_pages_UEC_AC_025_SPN.tfs'
+    fname = 'web_pages_UEC_AC_025_WALT.tfs'
     ret = upload_file(host,fname,slot, path)
     print(ret)
 

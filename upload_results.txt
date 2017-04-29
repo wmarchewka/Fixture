@@ -1,756 +1,0 @@
-POST /upload_file.cgi HTTP/1.1
-Accept-Language: en-us
-Host: 10.0.0.210
-Content-Type: multipart/form-data; boundary=---------------------------7dd3201c5104d4
-Content-Length: 123632
-Connection: Keep-Alive
-Authorization: Basic ZmFjdG9yeTpmYWN0b3J5
-
-
------------------------------7dd3201c5104d4
-Content-Disposition: form-data; name="web"; filename="C:\Users\wmarchewka\PycharmProjects\PerlUpload\web_pages_UEC025_ENG.tfs"
-Content-Type: application/octet-stream
-
-  + �    ���?  3 �    ��\  5 �    4��`  0 �    ���f                  /alarm_edit.html /alarms.html /alarmsOutlet.html /banner.html /devCommInfo.html /devconfig.html /devconfigbacnet.html /devconfigemail.html /devConfigEthernet.html /devconfigmodbus.html /devconfigsnmp.html /devconfigwifi.html /devinfo.html /email.txt /feedCurrent.html /feedPowerEnergy.html /footer.html /FooterBackground.png /HeaderBackground.png /home.html /infeeds.html /mkreq.js /nav.js /navBacking.png /outlet.html /outlet1.html /outlet2.html /outlet3.html /outlet4.html /param_update_fail.html /StarLineLogo.png /style.css /upload.html ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Alarm Edit</title> <meta name="viewport" content="width=device-width"> <meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-    var oNavClass;
-    function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-</script> </head> <body> <div id="wrap"> <div id="banner"> <%INCLUDE:banner.html%> </div> <div id="container"> <form name="alarm_edit" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="alarms.html"/> <table><thead><tr><th></th><th>Current Min.</th><th>Current Max.</th></tr></thead> <tr><th>Line L1</th><td><input type="text" name="INFLCMNA_1" id="INFLCMNA_1" value="<%BPARAM:INFLCMNA,1%>" maxlength="12" size="12" /></td><td><input type="text" name="INFLCMXA_1" id="INFLCMXA_1" value="<%BPARAM:INFLCMXA,1%>" maxlength="12" size="12" /></td></tr> <tr><th>Line L2</th><td><input type="text" name="INFLCMNA_2" id="INFLCMNA_2" value="<%BPARAM:INFLCMNA,2%>" maxlength="12" size="12" /></td><td><input type="text" name="INFLCMXA_2" id="INFLCMXA_2" value="<%BPARAM:INFLCMXA,2%>" maxlength="12" size="12" /></td></tr> <tr><th>Line L3</th><td><input type="text" name="INFLCMNA_3" id="INFLCMNA_3" value="<%BPARAM:INFLCMNA,3%>" maxlength="12" size="12" /></td><td><input type="text" name="INFLCMXA_3" id="INFLCMXA_3" value="<%BPARAM:INFLCMXA,3%>" maxlength="12" size="12" /></td></tr> <tr><th>Neutral</th><td><input type="text" name="INFLCMNA_4" id="INFLCMNA_4" value="<%BPARAM:INFLCMNA,4%>" maxlength="12" size="12" /></td><td><input type="text" name="INFLCMXA_4" id="INFLCMXA_4" value="<%BPARAM:INFLCMXA,4%>" maxlength="12" size="12" /></td></tr> </table> <p></p> <input type="submit" value="Save Current Settings"> </form> <form name="cpm_rc" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="alarms.html"/> <p></p> <table> <tr><th>Rated Current</th><td><input type="text" name="INFLCR" id="INFLCR" value="<%BPARAM:INFLCR%>" maxlength="12" /></td></tr> </table> <p></p> <input type="submit" value="Save Rated Current"> </form> </div> <%INCLUDE:footer.html%> </div> </body> </html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Alarms</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var oNavClass;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-function onWindowLoad() { setCurrentTab("alarms", "Alarms"); var n = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", s = "Feed" + n + "<a href='alarmsOutlet.html'>Outlet</a>"; setSubNav(s), checkAlarms() }
-window.onload = onWindowLoad;
-</script> </head> <body> <div id="wrap"> <div id="banner"> <%INCLUDE:banner.html%> </div> <div id="container"> <form name="alarm_edit" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="alarms.html"/> <span style="font-size:12pt; font-weight:bold;">Feed</span><br/> <table> <thead> <tr> <th></th> <th>Current Min.</th> <th>Current Max.</th> <th style="width:20px;"></th> <th></th> <th>Voltage Min.</th> <th>Voltage Max.</th> </tr> </thead> <tr> <td>Line L1</td> <td><input type="text" name="INFLCMNA_1" id="INFLCMNA_1" value="<%BPARAM:INFLCMNA,1%>" maxlength="12" size="6" /></td> <td><input type="text" name="INFLCMXA_1" id="INFLCMXA_1" value="<%BPARAM:INFLCMXA,1%>" maxlength="12" size="6" /></td> <td></td> <td>Phase L1-L2</td> <td><input type="text" name="LLVMNA_1" id="LLVMNA_1" value="<%BPARAM:LLVMNA,1%>" maxlength="12" size="6" /></td> <td><input type="text" name="LLVMXA_1" id="LLVMXA_1" value="<%BPARAM:LLVMXA,1%>" maxlength="12" size="6" /></td> </tr> <tr> <td>Line L2</td> <td><input type="text" name="INFLCMNA_2" id="INFLCMNA_2" value="<%BPARAM:INFLCMNA,2%>" maxlength="12" size="6" /></td> <td><input type="text" name="INFLCMXA_2" id="INFLCMXA_2" value="<%BPARAM:INFLCMXA,2%>" maxlength="12" size="6" /></td> <td></td> <td>Phase L2-L3</td> <td><input type="text" name="LLVMNA_2" id="LLVMNA_2" value="<%BPARAM:LLVMNA,2%>" maxlength="12" size="6" /></td> <td><input type="text" name="LLVMXA_2" id="LLVMXA_2" value="<%BPARAM:LLVMXA,2%>" maxlength="12" size="6" /></td> </tr> <tr> <td>Line L3</td> <td><input type="text" name="INFLCMNA_3" id="INFLCMNA_3" value="<%BPARAM:INFLCMNA,3%>" maxlength="12" size="6" /></td> <td><input type="text" name="INFLCMXA_3" id="INFLCMXA_3" value="<%BPARAM:INFLCMXA,3%>" maxlength="12" size="6" /></td> <td></td> <td>Phase L3-L1</td> <td><input type="text" name="LLVMNA_3" id="LLVMNA_3" value="<%BPARAM:LLVMNA,3%>" maxlength="12" size="6" /></td> <td><input type="text" name="LLVMXA_3" id="LLVMXA_3" value="<%BPARAM:LLVMXA,3%>" maxlength="12" size="6" /></td> </tr> <tr> <td>Calculated Neutral</td> <td><input type="text" name="INFLCMNA_4" id="INFLCMNA_4" value="<%BPARAM:INFLCMNA,4%>" maxlength="12" size="6" /></td> <td><input type="text" name="INFLCMXA_4" id="INFLCMXA_4" value="<%BPARAM:INFLCMXA,4%>" maxlength="12" size="6" /></td> <td></td><td></td><td></td><td></td> </tr> <tr> <td>Measured Neutral</td> <td><input type="text" name="INFLCMNA_5" id="INFLCMNA_5" value="<%BPARAM:INFLCMNA,5%>" maxlength="12" size="6" /></td> <td><input type="text" name="INFLCMXA_5" id="INFLCMXA_5" value="<%BPARAM:INFLCMXA,5%>" maxlength="12" size="6" /></td> <td></td><td></td><td></td><td></td> </tr> <tr> <td colspan="4"><input type="submit" value="Save Current Settings"/></td> <td colspan="3"><input type="submit" value="Save Voltage Settings"/></td> </tr> </table> <p></p> </form> <form name="cpm_rc" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="alarms.html"/> <p> </p> <table> <tr> <th>Rated Current</th> <td><input type="text" name="INFLCR" id="INFLCR" value="<%BPARAM:INFLCR%>" maxlength="12" size="6" /></td> </tr> </table> <p> </p> <input type="submit" value="Save Rated Current"/> </form> </div> <%INCLUDE:footer.html%> </div> </body> </html>﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Alarms</title> <meta name="viewport" content="width=device-width"/> <meta name="format-detection" content="telephone=no"/> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var oNavClass;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-function onWindowLoad() { setCurrentTab('alarms', 'Alarms'); var separator = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var subHtml = "<a href='alarms.html'>Feed</a>" + separator + "Outlet"; setSubNav(subHtml); checkAlarms(); }
-window.onload = onWindowLoad;
-</script> </head> <body> <div id="wrap"> <div id="banner"><%INCLUDE:banner.html%></div> <div id="container"> <form name="alarm_edit" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="alarmsOutlet.html"/> <table style="width: 100%;"><tr><td style="width: 50%;"> <table><tr><td colspan="2"><h3>Outlet 1</h3></td></tr> <tr><td>Current Min:</td><td><input type="text" name="OTLCMNA_1" id="OTLCMNA_1" value="<%BPARAM:OTLCMNA,1%>" maxlength="12" size="12" /></td></tr> <tr><td>Current Max:</td><td><input type="text" name="OTLCMXA_1" id="Text1" value="<%BPARAM:OTLCMXA,1%>" maxlength="12" size="12" /></td></tr> </table> </td> <td style="width: 50%;"> <table><tr><td colspan="2"><h3>Outlet 2</h3></td></tr> <tr><td>Current Min:</td><td><input type="text" name="OTLCMNA_2" id="OTLCMNA_2" value="<%BPARAM:OTLCMNA,2%>" maxlength="12" size="12" /></td></tr> <tr><td>Current Max:</td><td><input type="text" name="OTLCMXA_2" id="OTLCMXA_2" value="<%BPARAM:OTLCMXA,2%>" maxlength="12" size="12" /></td></tr> </table> </td> </tr> <tr><td style="width: 50%; height: 5px;">&nbsp;</td><td style="width: 50%; height: 5px;">&nbsp;</td></tr> <tr><td style="width: 50%;"> <table><tr><td colspan="2"><h3>Outlet 3</h3></td></tr> <tr><td>Current Min:</td><td><input type="text" name="OTLCMNA_3" id="OTLCMNA_3" value="<%BPARAM:OTLCMNA,3%>" maxlength="12" size="12" /></td></tr> <tr><td>Current Max:</td><td><input type="text" name="OTLCMXA_3" id="OTLCMXA_3" value="<%BPARAM:OTLCMXA,3%>" maxlength="12" size="12" /></td></tr> </table></td> <td style="width: 50%;"> <table><tr><td colspan="2"><h3>Outlet 4</h3></td></tr> <tr><td>Current Min:</td><td><input type="text" name="OTLCMNA_4" id="OTLCMNA_4" value="<%BPARAM:OTLCMNA,4%>" maxlength="12" size="12" /></td></tr> <tr><td>Current Max:</td><td><input type="text" name="OTLCMXA_4" id="OTLCMXA_4" value="<%BPARAM:OTLCMXA,4%>" maxlength="12" size="12" /></td></tr> </table> </td> </tr> </table> <input type="submit" value="Save Current Settings"/> </form> </div> <%INCLUDE:footer.html%> </div> </body> </html>﻿<script language="javascript" type="text/javascript">
-    function setCurrentTab(e,n) {document.getElementById("li"+e).className += " current"; document.getElementById("currentLocation").innerHTML=n; }
-    function setSubNav(e){document.getElementById("subNav").innerHTML=e;}
-    function addCssClass(s){var a;a=document.getElementById(s);a.className=a.className+" "+myClassName;}
-    function removeCssClass(e,s){var a; var c=" "+s;a=document.getElementById(e);a.className=a.className.replace(c,"")}
-    function checkAlarms() { var INFALM = <%BPARAM:INFALM%>; var OUTALM = <%BPARAM:OUTALM%>; document.getElementById("alarmNotice").style.display=0!=INFALM||0!=OUTALM?"block":"none"; }
-</script>
-<div id="header"><div id="logo"><img src="StarLineLogo.png" alt="Logo" title="Universal Electric Corp" id="logo-graphic" /></div></div>
-<div id="firmwareVersion"><div id="alarmNotice" style="background-color:#FF0000; border:1px solid #000000; padding:2px; font-size:11.5pt; display:none;">
-<span style="font-weight:bold; color:#FFFFFF;">ALARM</span>: <a href="alarms.html" style="color:#FFFFFF;" title="Click to inspect alarm">Inspect alarm condition</a></div>Firmware Version: <%PARAM:FV%></div>
-<div id="navContainer"><div id="currentLocation"></div><div id="nav"><nav id="shellmenu">
-<span id="shellmenu-text"><a class="menu_button" href="#footer_nav" onclick="toggleNav(); return false;">&#9776; MENU</a></span>
-<ul id="mainmenu">
-<li id="lihome" class="mainmenu-listitem"><a href="home.html"><span class="menubreak"><br></span><span class="menutext">Home</span></a></li>
-<li id="liinfeeds" class="mainmenu-listitem"><a href="infeeds.html"><span class="menubreak"><br></span><span class="menutext">Feed</span></a></li>
-<li id="lioutlets" class="mainmenu-listitem"><a href="outlet.html"><span class="menubreak"><br></span><span class="menutext">Outlet</span></a></li>
-<li id="lialarms" class="mainmenu-listitem"><a href="alarms.html"><span class="menubreak"><br></span><span class="menutext">Alarm</span></a></li>
-<li id="liconfig" class="mainmenu-listitem"><a href="devconfig.html"><span class="menubreak"><br></span><span class="menutext">Config</span></a></li>
-</ul></div><div id="subNav"></div></div>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Information</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var oNavClass; var data_received = 0;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-function onWindowLoad() { setCurrentTab("home", "Comm. Info"); var a = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", n = "<a href='home.html'>Summary</a>" + a + "<a href='devinfo.html'>Device Info</a>" + a + "Comm. Info"; setSubNav(n); checkAlarms(); }
-window.onload = onWindowLoad;
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <table><tbody><tr><th colspan="2">LAN </th></tr> <tr><th>Use Ethernet DHCP?</th><td><%PARAM:LANDHCP%> </td></tr> <tr><th>Ethernet Static IP Address:</th><td><%PARAM:LANSIP%> </td></tr> <tr><th>Ethernet Static Netmask:</th><td><%PARAM:LANSMK%> </td></tr> <tr><th>Ethernet Static Gateway:</th><td><%PARAM:LANSGW%> </td></tr> <tr><th>Ethernet MAC:</th><td><%PARAM:LANMAC%> </td></tr><tr><th colspan="2">&nbsp;</th></tr> <tr><th colspan="2">WLAN</th></tr> <tr><th>Use Wi-Fi DHCP?</th><td><%PARAM:WLANDHCP%> </td></tr> <tr><th>Wi-Fi IP Address:</th><td><%PARAM:WLANSIP%> </td></tr> <tr><th>Wi-Fi Static Netmask:</th><td><%PARAM:WLANSMK%> </td></tr> <tr><th>Wi-Fi Static Gateway:</th><td><%PARAM:WLANSGW%> </td></tr> <tr><th>Wi-Fi MAC:</th><td><%PARAM:WLANMAC%> </td></tr> <tr><th>Wi-Fi SSID:</th><td><%PARAM:WLANSSID%> </td></tr> <tr><th>Wi-Fi Encryption Type:</th><td><%PARAM:WLANENC%> </td></tr></tbody></table></div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Administration</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"><%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-                var initialUCRVal, updatedUCRVal, initialDCRVal, updatedDCRVal;
-
-                function set_hidden_parameters() {
-                    document.getElementById("LANSIP").disabled = document.getElementById("LANDHCP_true").checked;
-                    document.getElementById("LANSMK").disabled = document.getElementById("LANDHCP_true").checked;
-                    document.getElementById("LANSGW").disabled = document.getElementById("LANDHCP_true").checked;
-                    document.getElementById("WLANSIP").disabled = document.getElementById("WLANDHCP_true").checked;
-                    document.getElementById("WLANSMK").disabled = document.getElementById("WLANDHCP_true").checked;
-                    document.getElementById("WLANSGW").disabled = document.getElementById("WLANDHCP_true").checked;
-                }
-
-                function set_radio_selection() {
-                    if (<%BPARAM:LANDHCP%>) {
-                        document.getElementById("LANDHCP_true").checked = !0;
-                        document.getElementById("LANDHCP_false").checked = !1;
-                    } else {
-                        document.getElementById("LANDHCP_true").checked = !1;
-                        document.getElementById("LANDHCP_false").checked = !0;
-                    }
-                    if (<%BPARAM:WLANDHCP%>) {
-                        document.getElementById("WLANDHCP_true").checked = !0;
-                        document.getElementById("WLANDHCP_false").checked = !1;
-                    } else {
-                        document.getElementById("WLANDHCP_true").checked = !1;
-                        document.getElementById("WLANDHCP_false").checked = !0;
-                    }
-                    if (<%BPARAM:MODBD%> == 19200) {
-                        document.getElementById("MODBD_19200").checked = !0;
-                        document.getElementById("MODBD_9600").checked = !1;
-                    } else {
-                        document.getElementById("MODBD_19200").checked = !1;
-                        document.getElementById("MODBD_9600").checked = !0;
-                    }
-                    if (<%BPARAM:MODST%> == 1) {
-                        document.getElementById("MODST_1").checked = !0;
-                        document.getElementById("MODST_2").checked = !1;
-                    } else {
-                        document.getElementById("MODST_1").checked = !1;
-                        document.getElementById("MODST_2").checked = !0;
-                    }
-                    set_hidden_parameters();
-                }
-
-                function setOpModeRadio() {
-                    if (!isBitSet(initialUCRVal, 29)) {
-                        document.getElementById("UCR_HTTP").checked = true;
-                        document.getElementById("UCR_HTTPS").checked = false;
-                    } else {
-                        document.getElementById("UCR_HTTPS").checked = true;
-                        document.getElementById("UCR_HTTP").checked = false;
-                    }
-                }
-
-                function set_operationmode(val) {
-                    if (val == "UCR_HTTP") {
-                        document.getElementById("UCR_HTTP").checked = true;
-                        document.getElementById("UCR_HTTPS").checked = false;
-                        updatedUCRVal = setBit(updatedUCRVal, 29, '0');
-                    } else {
-                        document.getElementById("UCR_HTTP").checked = false;
-                        document.getElementById("UCR_HTTPS").checked = true;
-                        updatedUCRVal = setBit(updatedUCRVal, 29, '1');
-                    }
-                    setUcrVariable(updatedUCRVal);
-                }
-
-                function setPowerSourceRadio() {
-                    if (!isBitSet(initialUCRVal, 4)) {
-                        document.getElementById("UCR_DELTA").checked = true;
-                        document.getElementById("UCR_WYE").checked = false;
-                    } else {
-                        document.getElementById("UCR_WYE").checked = true;
-                        document.getElementById("UCR_DELTA").checked = false;
-                    }
-                }
-
-                function set_powersource(val) {
-                    if (val == "UCR_DELTA") {
-                        document.getElementById("UCR_DELTA").checked = true;
-                        document.getElementById("UCR_WYE").checked = false;
-                        updatedUCRVal = setBit(updatedUCRVal, 4, '0');
-                    } else {
-                        document.getElementById("UCR_DELTA").checked = false;
-                        document.getElementById("UCR_WYE").checked = true;
-                        updatedUCRVal = setBit(updatedUCRVal, 4, '1');
-                    }
-                    setUcrVariable(updatedUCRVal);
-                }
-
-                function setLineNeutVoltagesRadio() {
-                    if (isBitSet(initialDCRVal, 0)) {
-                        document.getElementById("DCR_LNVolt_Display").checked = true;
-                        document.getElementById("DCR_LNVolt_NoDisplay").checked = false;
-                    } else {
-                        document.getElementById("DCR_LNVolt_NoDisplay").checked = true;
-                        document.getElementById("DCR_LNVolt_Display").checked = false;
-                    }
-                }
-
-                function set_line_neutral_mode(val) {
-                    if (val == "DCR_LNVolt_Display") {
-                        document.getElementById("DCR_LNVolt_Display").checked = true;
-                        document.getElementById("DCR_LNVolt_NoDisplay").checked = false;
-                        updatedDCRVal = setBit(updatedDCRVal, 0, '1');
-                    } else {
-                        document.getElementById("DCR_LNVolt_Display").checked = false;
-                        document.getElementById("DCR_LNVolt_NoDisplay").checked = true;
-                        updatedDCRVal = setBit(updatedDCRVal, 0, '0');
-                    }
-                    setDcrVariable(updatedDCRVal);
-                }
-
-                function setLineLineVoltagesRadio() {
-                    if (isBitSet(initialDCRVal, 4)) {
-                        document.getElementById("DCR_LineLineVolt_Display").checked = true;
-                        document.getElementById("DCR_LineLineVolt_NoDisplay").checked = false;
-                    } else {
-                        document.getElementById("DCR_LineLineVolt_NoDisplay").checked = true;
-                        document.getElementById("DCR_LineLineVolt_Display").checked = false;
-                    }
-                }
-
-                function set_line_line_volt_mode(val) {
-                    if (val == "DCR_LineLineVolt_Display") {
-                        document.getElementById("DCR_LineLineVolt_Display").checked = true;
-                        document.getElementById("DCR_LineLineVolt_NoDisplay").checked = false;
-                        updatedDCRVal = setBit(updatedDCRVal, 4, '1');
-                    } else {
-                        document.getElementById("DCR_LineLineVolt_Display").checked = false;
-                        document.getElementById("DCR_LineLineVolt_NoDisplay").checked = true;
-                        updatedDCRVal = setBit(updatedDCRVal, 4, '0');
-                    }
-                    setDcrVariable(updatedDCRVal);
-                }
-
-                function setInfeedLineCurrentRadio() {
-                    if (isBitSet(initialDCRVal, 8)) {
-                        document.getElementById("DCR_InLineCurrent_Display").checked = true;
-                        document.getElementById("DCR_InLineCurrent_NoDisplay").checked = false;
-                    } else {
-                        document.getElementById("DCR_InLineCurrent_NoDisplay").checked = true;
-                        document.getElementById("DCR_InLineCurrent_Display").checked = false;
-                    }
-                }
-
-                function set_inline_current_mode(val) {
-                    if (val == "DCR_InLineCurrent_Display") {
-                        document.getElementById("DCR_InLineCurrent_Display").checked = true;
-                        document.getElementById("DCR_InLineCurrent_NoDisplay").checked = false;
-                        updatedDCRVal = setBit(updatedDCRVal, 8, '1');
-                    } else {
-                        document.getElementById("DCR_InLineCurrent_Display").checked = false;
-                        document.getElementById("DCR_InLineCurrent_NoDisplay").checked = true;
-                        updatedDCRVal = setBit(updatedDCRVal, 8, '0');
-                    }
-                    setDcrVariable(updatedDCRVal);
-                }
-
-                function setInfeedNeutCurrentRadio() {
-                    if (isBitSet(initialDCRVal, 9)) {
-                        document.getElementById("DCR_InNeutralCurrent_Display").checked = true;
-                        document.getElementById("DCR_InNeutralCurrent_NoDisplay").checked = false;
-                    } else {
-                        document.getElementById("DCR_InNeutralCurrent_NoDisplay").checked = true;
-                        document.getElementById("DCR_InNeutralCurrent_Display").checked = false;
-                    }
-                }
-
-                function set_in_neutral_current_mode(val) {
-                    if (val == "DCR_InNeutralCurrent_Display") {
-                        document.getElementById("DCR_InNeutralCurrent_Display").checked = true;
-                        document.getElementById("DCR_InNeutralCurrent_NoDisplay").checked = false;
-                        updatedDCRVal = setBit(updatedDCRVal, 9, '1');
-                    } else {
-                        document.getElementById("DCR_InNeutralCurrent_Display").checked = false;
-                        document.getElementById("DCR_InNeutralCurrent_NoDisplay").checked = true;
-                        updatedDCRVal = setBit(updatedDCRVal, 9, '0');
-                    }
-                    setDcrVariable(updatedDCRVal);
-                }
-
-                function setInfeedPowerFactorRadio() {
-                    if (isBitSet(initialDCRVal, 12)) {
-                        document.getElementById("DCR_InLinePowerF_Display").checked = true;
-                        document.getElementById("DCR_InLinePowerF_NoDisplay").checked = false;
-                    } else {
-                        document.getElementById("DCR_InLinePowerF_NoDisplay").checked = true;
-                        document.getElementById("DCR_InLinePowerF_Display").checked = false;
-                    }
-                }
-
-                function set_in_power_factor_mode(val) {
-                    if (val == "DCR_InLinePowerF_Display") {
-                        document.getElementById("DCR_InLinePowerF_Display").checked = true;
-                        document.getElementById("DCR_InLinePowerF_NoDisplay").checked = false;
-                        updatedDCRVal = setBit(updatedDCRVal, 12, '1');
-                    } else {
-                        document.getElementById("DCR_InLinePowerF_Display").checked = false;
-                        document.getElementById("DCR_InLinePowerF_NoDisplay").checked = true;
-                        updatedDCRVal = setBit(updatedDCRVal, 12, '0');
-                    }
-                    setDcrVariable(updatedDCRVal);
-                }
-
-                function setUcrVariable(val) {
-                    updatedUCRVal = val;
-                    document.getElementById("UCRValue").value = val.toString(16);
-                }
-
-                function setDcrVariable(val) {
-                    updatedDCRVal = val;
-                    document.getElementById("DCRValue").value = val.toString(16);
-                }
-
-                function checkBin(n) {
-                    return /^[01]{1,64}$/.test(n)
-                }
-
-                function checkHex(n) {
-                    return /^[0-9A-Fa-f]{1,64}$/.test(n)
-                }
-
-                function Hex2Bin(n) {
-                    if (!checkHex(n)) return 0;
-                    return parseInt(n, 16).toString(2)
-                }
-
-                function Bin2Hex(n) {
-                    if (!checkBin(n)) return 0;
-                    return parseInt(n, 2).toString(16)
-                }
-
-                function reverse(s) {
-                    return s.split('').reverse().join('');
-                }
-
-                function pad(s, z) {
-                    s = "" + s;
-                    return s.length < z ? pad("0" + s, z) : s
-                }
-
-                function isBitSet(hex, bit) {
-                    var padded = reverse(pad(Hex2Bin(hex), 32)).split('');
-                    return (padded[bit] == '1') ? true : false;
-                }
-
-                function flipBit(hex, bit) {
-                    var reversePadded = reverse(pad(Hex2Bin(hex), 32)).split('');
-                    reversePadded[bit] = (reversePadded[bit] == '1') ? '0' : '1';
-                    return Bin2Hex(reverse(reversePadded.join('')));
-                }
-
-                function setBit(hex, bit, val) {
-                    var reversePadded = reverse(pad(Hex2Bin(hex), 32)).split('');
-                    reversePadded[bit] = val;
-                    return Bin2Hex(reverse(reversePadded.join('')));
-                }
-
-                var originalNavClasses;
-
-                function toggleNav() {
-                    var elem = document.getElementById('mainmenu');
-                    var classes = elem.className;
-                    if (originalNavClasses === undefined) {
-                        originalNavClasses = classes;
-                    }
-                    elem.className = /expanded/.test(classes) ? originalNavClasses : originalNavClasses + ' expanded';
-                }
-
-                function onWindowLoad() {
-                    setCurrentTab("config", "Administration");
-                    var separator = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                    var subHtml = "Administration" + separator + "<a href='devconfigEthernet.html'>Ethernet</a>" + separator + "<a href='devconfigwifi.html'>Wi-Fi</a>" + separator + "<a href='devconfigsnmp.html'>SNMP</a>" + separator + "<a href='devconfigmodbus.html'>Modbus</a>" + separator + "<a href='devconfigemail.html'>Email</a>" + separator + "<a href='devconfigbacnet.html'>BACnet</a>" + separator + "<a href='upload.html'>Uploads</a>";
-                    setSubNav(subHtml);
-                    initialUCRVal = '<%PARAM:UCR%>';
-                    updatedUCRVal = initialUCRVal;
-                    setUcrVariable(initialUCRVal);
-                    setOpModeRadio();
-                    setPowerSourceRadio();
-                    initialDCRVal = '<%PARAM:DCR%>';
-                    updatedDCRVal = initialDCRVal;
-                    setDcrVariable(initialDCRVal);
-                    setLineNeutVoltagesRadio();
-                    setLineLineVoltagesRadio();
-                    setInfeedLineCurrentRadio();
-                    setInfeedNeutCurrentRadio();
-                    setInfeedPowerFactorRadio();
-                    checkAlarms();
-                }
-                window.onload = onWindowLoad;
-    </script> <style>
-        #currentLocation
-        {
-            font-size: 14pt;
-        }
-    </style> </head> <body> <div id="wrap"> <div id="banner"> <%INCLUDE:banner.html%> </div> <div id="container"> <form name="devconfig_edit" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="devconfig.html"/> <table style="width: 100%;"> <tr> <td style="width: 50%;"> Device Settings </td> <td style="width: 50%; padding-left: 15px;"> Display Settings </td> </tr> <tr> <td style="vertical-align: top; border: 2px solid #CCCCCC;"> <table cellpadding="4"> <tr> <th> Device Name </th> <td> <input type="text" name="NAME" id="NAME" value="<%PARAM:NAME%>" maxlength="31" /> </td> </tr> <tr> <th> Device ID </th> <td> <input type="text" name="ID" id="ID" value="<%PARAM:ID%>" maxlength="31" /> </td> </tr> <tr> <th> Device Location </th> <td> <input type="text" name="DEVLO" id="DEVLO" value="<%PARAM:DEVLO%>" maxlength="31" /> </td> </tr> <tr> <th> Admin Password </th> <td> <input name="PWA" id="PWA" value="<%PARAM:PWA%>" maxlength="15" /> </td> </tr> <tr> <th> User Password </th> <td> <input name="PWU" id="PWU" value="<%PARAM:PWU%>" maxlength="15" /> </td> </tr> <tr> <th> Operation Mode </th> <td> <input type="radio" onclick="set_operationmode('UCR_HTTP');" id="UCR_HTTP" value=""/>HTTP&nbsp;<input type="radio" onclick="set_operationmode('UCR_HTTPS');" id="UCR_HTTPS" value=""/>HTTPS </td> </tr> <tr> <th> Power Source </th> <td> <input type="radio" onclick="set_powersource('UCR_DELTA');" id="UCR_DELTA" value=""/>Delta&nbsp;<input type="radio" onclick="set_powersource('UCR_WYE');" id="UCR_WYE" value=""/>Wye </td> </tr> </table> <br/><input type="submit" value="Save Changes"> </td> <td style="vertical-align: top; padding-left: 15px; border: 2px solid #CCCCCC;"> <div style="padding: 5px; font-weight: bold; font-style: italic;"> Note:These display settings are only available for M50 meters equipped with an LED display.</div> <br/> <table cellpadding="4"> <tr> <th> Line-Neutral Voltages </th> <td> <input type="radio" onclick="set_line_neutral_mode('DCR_LNVolt_Display');" id="DCR_LNVolt_Display" value=""/>Display&nbsp;<input type="radio" onclick="set_line_neutral_mode('DCR_LNVolt_NoDisplay');" id="DCR_LNVolt_NoDisplay" value=""/>Do Not Display </td> </tr> <tr> <th> Line-Line Voltages </th> <td> <input type="radio" onclick="set_line_line_volt_mode('DCR_LineLineVolt_Display');" id="DCR_LineLineVolt_Display" value=""/>Display&nbsp;<input type="radio" onclick="set_line_line_volt_mode('DCR_LineLineVolt_NoDisplay');" id="DCR_LineLineVolt_NoDisplay" value=""/>Do Not Display </td> </tr> <tr> <th> Infeed Line Currents </th> <td> <input type="radio" onclick="set_inline_current_mode('DCR_InLineCurrent_Display');" id="DCR_InLineCurrent_Display" value=""/>Display&nbsp;<input type="radio" onclick="set_inline_current_mode('DCR_InLineCurrent_NoDisplay');" id="DCR_InLineCurrent_NoDisplay" value=""/>Do Not Display </td> </tr> <tr> <th> Infeed Neutral Current </th> <td> <input type="radio" onclick="set_in_neutral_current_mode('DCR_InNeutralCurrent_Display');" id="DCR_InNeutralCurrent_Display" value=""/>Display&nbsp;<input type="radio" onclick="set_in_neutral_current_mode('DCR_InNeutralCurrent_NoDisplay');" id="DCR_InNeutralCurrent_NoDisplay" value=""/>Do Not Display </td> </tr> <tr> <th> Infeed Power Factor </th> <td> <input type="radio" onclick="set_in_power_factor_mode('DCR_InLinePowerF_Display');" id="DCR_InLinePowerF_Display" value=""/>Display&nbsp;<input type="radio" onclick="set_in_power_factor_mode('DCR_InLinePowerF_NoDisplay');" id="DCR_InLinePowerF_NoDisplay" value=""/>Do Not Display </td> </tr> <tr> <th> <input type="submit" value="Save Display Values"> </th> <td> </td> </tr> </table> <br/><br/> <table cellpadding="4"> <tr> <th> Display Rotation Speed </th> <td> <input type="number" name="LCDSS" id="LCDSS" value="<%PARAM:LCDSS%>" min="1" max="30" />Seconds </td> </tr> <tr> <th> <input type="submit" value="Save Display Speed"> </th> <td> </td> </tr> </table> </td> </tr> </table> <input type="hidden" id="UCRValue" name="UCR" value=""/><input type="hidden" id="DCRValue" name="DCR" value=""/></form> <br/>(Meter must be rebooted after Administration<br/>changes are saved, for changes to take effect.)<br/> <form method="POST" action="reboot.cgi" name="reboot" id="reboot"> <input type="submit" value="Reboot" class="button"></form> </div> <%INCLUDE:footer.html%> </div> </body> </html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Configuration</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var oNavClass;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-function onWindowLoad(){setCurrentTab("config","BACnet"); var e="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var a="<a href='devconfig.html'>Administration</a>"+e+"<a href='devconfigEthernet.html'>Ethernet</a>"+e+"<a href='devconfigwifi.html'>Wi-Fi</a>"+e+"<a href='devconfigsnmp.html'>SNMP</a>"+e+"<a href='devconfigmodbus.html'>Modbus</a>"+e+"<a href='devconfigemail.html'>Email</a>"+e+"BACnet"+e+"<a href='upload.html'>Uploads</a>";setSubNav(a); setSelectedIndex(document.getElementById("BIPORT")); checkAlarms(); }
-function setSelectedIndex(s) {for (i = 0; i< s.options.length; i++) { if (s.options[i].value == <%PARAM:BIPORT%>) { s.options[i].selected = true; break; } } return; }
-window.onload = onWindowLoad;
-</script> </head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <form name="devconfig_edit" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="devconfigbacnet.html"/> <strong>** Note **</strong><br/>To disable Foreign Device Registration set the BBMD IP Address to 0.0.0.0<br/><br/><table><tr><th style="vertical-align: top;">BACnet UDP Port: </th><td><select id="BIPORT" name="BIPORT" size="1"> <option value="47808">BAC0 (47808)</option> <option value="47809">BAC1 (47809)</option> <option value="47810">BAC2 (47810)</option> <option value="47811">BAC3 (47811)</option> <option value="47812">BAC4 (47812)</option> <option value="47813">BAC5 (47813)</option> <option value="47814">BAC6 (47814)</option> <option value="47815">BAC7 (47815)</option> <option value="47816">BAC8 (47816)</option> <option value="47817">BAC9 (47817)</option> </select></td></tr> <tr><th style="vertical-align: top;">BACnet Device Instance:</th><td><input type="text" name="BDI" id="BDI" value="<%PARAM:BDI%>" /></td></tr> <tr><th style="vertical-align: top;">BBMD IP Address:</th><td><input type="text" name="BBMDIP" id="BBMDIP" value="<%PARAM:BBMDIP%>" /> </td></tr> <tr><th style="vertical-align: top;">BBMD Registration Time-To-Live (Seconds):</th><td><input type="text" name="BBMDTTL" id="BBMDTTL" value="<%PARAM:BBMDTTL%>" /> </td></tr> </table><input type="submit" value="Save Changes"/></form><br/> (Meter must be rebooted after BACnet <br/>changes are saved, for changes to take effect.) <br/> <form method="POST" action="reboot.cgi" name="reboot" id="reboot"><input type="submit" value="Reboot" class="button"></form> </div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Configuration</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var originalNavClasses;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-function onWindowLoad() { setCurrentTab("config", "Email"); var a = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var n = "<a href='devconfig.html'>Administration</a>" + a + "<a href='devconfigEthernet.html'>Ethernet</a>" + a + "<a href='devconfigwifi.html'>Wi-Fi</a>" + a + "<a href='devconfigsnmp.html'>SNMP</a>" + a + "<a href='devconfigmodbus.html'>Modbus</a>" + a + "Email" + a + "<a href='devconfigbacnet.html'>BACnet</a>" + a + "<a href='upload.html'>Uploads</a>"; setSubNav(n); checkAlarms() }
-window.onload = onWindowLoad;
-</script> </head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <form name="devconfig_edit" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="devconfigemail.html"/> <table><tr><th>Email From address: </th><td><input type="text" name="EMFM" id="EMFM" value="<%PARAM:EMFM%>" /> </td></tr> <tr><th>Email To address:</th><td><input type="text" name="EMTO" id="EMTO" value="<%PARAM:EMTO%>" /></td></tr> <tr><th>SMTP Server address:</th><td><input type="text" name="EMSVR" id="EMSVR" value="<%PARAM:EMSVR%>" /></td></tr> <tr><th>SMTP Port number:</th><td><input type="text" name="EMPT" id="EMPT" value="<%PARAM:EMPT%>" /></td></tr> <tr><th>SMTP Authentication required?</th><td><input type="text" name="EMATH" id="EMATH" value="false" disabled="disabled"/></td></tr> </table><input type="submit" value="Save Changes"/></form> <br/>(Meter must be rebooted after Email <br/>changes are saved, for changes to take effect.) <br/> <form method="POST" action="reboot.cgi" name="reboot" id="reboot"><input type="submit" value="Reboot" class="button"></form> </div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Configuration</title> <meta name="viewport" content="width=device-width"/> <meta name="format-detection" content="telephone=no"/> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-function set_hidden_parameters() { document.getElementById("LANSIP").disabled = document.getElementById("LANDHCP_true").checked; document.getElementById("LANSMK").disabled = document.getElementById("LANDHCP_true").checked; document.getElementById("LANSGW").disabled = document.getElementById("LANDHCP_true").checked; document.getElementById("WLANSIP").disabled = document.getElementById("WLANDHCP_true").checked; document.getElementById("WLANSMK").disabled = document.getElementById("WLANDHCP_true").checked; document.getElementById("WLANSGW").disabled = document.getElementById("WLANDHCP_true").checked; }
-function set_radio_selection() { if (<%BPARAM:LANDHCP%>) { document.getElementById("LANDHCP_true").checked=!0; document.getElementById("LANDHCP_false").checked=!1; } else { document.getElementById("LANDHCP_true").checked=!1; document.getElementById("LANDHCP_false").checked=!0; } if (<%BPARAM:WLANDHCP%>) { document.getElementById("WLANDHCP_true").checked=!0;document.getElementById("WLANDHCP_false").checked=!1; } else { document.getElementById("WLANDHCP_true").checked=!1;document.getElementById("WLANDHCP_false").checked=!0; } if (<%BPARAM:MODBD%>==19200) { document.getElementById("MODBD_19200").checked=!0;document.getElementById("MODBD_9600").checked=!1; } else { document.getElementById("MODBD_19200").checked=!1;document.getElementById("MODBD_9600").checked=!0; } if (<%BPARAM:MODST%>==1) { document.getElementById("MODST_1").checked=!0;document.getElementById("MODST_2").checked=!1; } else { document.getElementById("MODST_1").checked=!1;document.getElementById("MODST_2").checked=!0; } set_hidden_parameters(); }
-function onWindowLoad() { setCurrentTab("config","Ethernet");var separator="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var subHtml="<a href='devconfig.html'>Administration</a>"+separator+"Ethernet"+separator+"<a href='devconfigwifi.html'>Wi-Fi</a>"+separator+"<a href='devconfigsnmp.html'>SNMP</a>"+separator+"<a href='devconfigmodbus.html'>Modbus</a>"+separator+"<a href='devconfigemail.html'>Email</a>"+separator+"<a href='devconfigbacnet.html'>BACnet</a>"+separator+"<a href='upload.html'>Uploads</a>";setSubNav(subHtml); if (<%BPARAM:LANDHCP%>) { document.getElementById("LANDHCP_true").checked=!0;document.getElementById("LANDHCP_false").checked=!1; } else { document.getElementById("LANDHCP_true").checked=!1;document.getElementById("LANDHCP_false").checked=!0; } checkAlarms(); }
-window.onload = onWindowLoad;
-var oNavClass;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-</script> </head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <form name="devconfig_edit" action="param_edit.cgi" method="POST"><input type="hidden" name="redirect" id="redirect" value="devconfigethernet.html"/><table> <tr><th>Ethernet Configuration</th><td><input type="radio" onclick="set_hidden_parameters();" name="LANDHCP" id="LANDHCP_true" value="1"/>DHCP&nbsp;<input type="radio" onclick="set_hidden_parameters();" name="LANDHCP" id="LANDHCP_false" value="0"/>Static</td></tr> <tr><th>Ethernet IP Address</th><td><input type="text" name="LANSIP" id="LANSIP" value="<%PARAM:LANSIP%>" maxlength="16" /></td></tr> <tr><th>Ethernet Netmask</th><td><input type="text" name="LANSMK" id="LANSMK" value="<%PARAM:LANSMK%>" maxlength="16" /></td></tr> <tr><th>Ethernet Gateway</th><td><input type="text" name="LANSGW" id="LANSGW" value="<%PARAM:LANSGW%>" maxlength="16" /></td></tr> <tr><th>&nbsp;</th></tr></table><input type="submit" value="Save Changes"/></form> <br/>(Meter must be rebooted after Ethernet <br/>changes are saved, for changes to take effect.) <br/> <form method="POST" action="reboot.cgi" name="reboot" id="reboot"><input type="submit" value="Reboot" class="button"/></form></div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Configuration</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var initialUCRVal,initialUCR_Dec,updatedUCRVal,updatedUCRVal_Dec;
-function set_hidden_parameters(){document.getElementById("LANSIP").disabled=document.getElementById("LANDHCP_true").checked,document.getElementById("LANSMK").disabled=document.getElementById("LANDHCP_true").checked,document.getElementById("LANSGW").disabled=document.getElementById("LANDHCP_true").checked,document.getElementById("WLANSIP").disabled=document.getElementById("WLANDHCP_true").checked,document.getElementById("WLANSMK").disabled=document.getElementById("WLANDHCP_true").checked,document.getElementById("WLANSGW").disabled=document.getElementById("WLANDHCP_true").checked}
-function set_radio_selection() {
-if (<%BPARAM:LANDHCP%>) { document.getElementById("LANDHCP_true").checked=!0,document.getElementById("LANDHCP_false").checked=!1; }
-else { document.getElementById("LANDHCP_true").checked=!1,document.getElementById("LANDHCP_false").checked=!0; }
-if (<%BPARAM:WLANDHCP%>) { document.getElementById("WLANDHCP_true").checked=!0,document.getElementById("WLANDHCP_false").checked=!1; }
-else { document.getElementById("WLANDHCP_true").checked=!1,document.getElementById("WLANDHCP_false").checked=!0; }
-if (<%BPARAM:MODBD%>==19200) { document.getElementById("MODBD_19200").checked=!0,document.getElementById("MODBD_9600").checked=!1; }
-else { document.getElementById("MODBD_19200").checked=!1,document.getElementById("MODBD_9600").checked=!0; }
-if (<%BPARAM:MODST%>==1) { document.getElementById("MODST_1").checked=!0,document.getElementById("MODST_2").checked=!1; }
-else { document.getElementById("MODST_1").checked=!1,document.getElementById("MODST_2").checked=!0; }
-set_hidden_parameters();
-}
-var originalNavClasses;
-function toggleNav(){var e=document.getElementById("mainmenu"),a=e.className;void 0===originalNavClasses&&(originalNavClasses=a),e.className=/expanded/.test(a)?originalNavClasses:originalNavClasses+" expanded"}function setMODBUSDataTypeModeRadio(){isBitSet(initialUCR_Dec,17)?(document.getElementById("MOD_DATA_FLOAT").checked=!0,document.getElementById("MOD_DATA_DOUBLE").checked=!1):(document.getElementById("MOD_DATA_DOUBLE").checked=!0,document.getElementById("MOD_DATA_FLOAT").checked=!1)}
-/*Bit 17 of UCR*/
-function set_modbustype(e){"double"==e?(document.getElementById("MOD_DATA_DOUBLE").checked=!0,document.getElementById("MOD_DATA_FLOAT").checked=!1,isBitSet(updatedUCRVal,17)&&(updatedUCRVal=flipBit(updatedUCRVal))):(document.getElementById("MOD_DATA_DOUBLE").checked=!1,document.getElementById("MOD_DATA_FLOAT").checked=!0,isBitSet(updatedUCRVal,17)||(updatedUCRVal=flipBit(updatedUCRVal))),setUcrVariable(updatedUCRVal)}
-function set_modbusbaseaddress(){isBitSet(initialUCR_Dec,17)?(document.getElementById("MOD_DATA_FLOAT").checked=!0,document.getElementById("MOD_DATA_DOUBLE").checked=!1):(document.getElementById("MOD_DATA_DOUBLE").checked=!0,document.getElementById("MOD_DATA_FLOAT").checked=!1)}
-function setUcrVariable(e){updatedUCRVal=e,document.getElementById("UCRValue").value=e.toString(16)}
-/*Function to determine if bit is set*/
-function isBitSet(t,i){return(t>>i)%2!=0}
-/*Flips bit 17 */
-function flipBit(n){return n^parseInt("00020000",16)}
-function onWindowLoad() {
-setCurrentTab("config","ModBus");var separator="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",subHtml="<a href='devconfig.html'>Administration</a>"+separator+"<a href='devconfigEthernet.html'>Ethernet</a>"+separator+"<a href='devconfigwifi.html'>Wi-Fi</a>"+separator+"<a href='devconfigsnmp.html'>SNMP</a>"+separator+"Modbus"+separator+"<a href='devconfigemail.html'>Email</a>"+separator+"<a href='devconfigbacnet.html'>BACnet</a>"+separator+"<a href='upload.html'>Uploads</a>";setSubNav(subHtml);
-if (<%BPARAM:MODBD%>==19200) { document.getElementById("MODBD_19200").checked=true; document.getElementById("MODBD_9600").checked=false; } else { document.getElementById("MODBD_19200").checked=false; document.getElementById("MODBD_9600").checked=true; }
-if (<%BPARAM:MODST%>==1) { document.getElementById("MODST_1").checked=true; document.getElementById("MODST_2").checked=false; } else { document.getElementById("MODST_1").checked=false; document.getElementById("MODST_2").checked=true; }
-if (<%BPARAM:MODM20BA%>==1) { document.getElementById("MOD_BASE_ADD_0").checked=false; document.getElementById("MOD_BASE_ADD_1").checked=true; } else { document.getElementById("MOD_BASE_ADD_1").checked=false; document.getElementById("MOD_BASE_ADD_0").checked=true; }
-var tempModP = <%BPARAM:MODP%>;
-if (tempModP == "0") { document.getElementById("MODP_0").checked=true; document.getElementById("MODP_1").checked=false; document.getElementById("MODP_2").checked=false; } else if (tempModP == "1") { document.getElementById("MODP_0").checked=false; document.getElementById("MODP_1").checked=true; document.getElementById("MODP_2").checked=false; } else if (tempModP == "2") { document.getElementById("MODP_0").checked=false; document.getElementById("MODP_1").checked=false; document.getElementById("MODP_2").checked=true; }
-initialUCRVal = <%PARAM:UCR%>; initialUCR_Dec = parseInt(initialUCRVal, 16); updatedUCRVal = initialUCRVal; updatedUCRVal_Dec = initialUCR_Dec; setUcrVariable(initialUCR_Dec); setMODBUSDataTypeModeRadio(); checkAlarms();
-}
-window.onload = onWindowLoad;
-</script> </head> <body> <div id="wrap"> <div id="banner"><%INCLUDE:banner.html%></div> <div id="container"> <form name="devconfig_edit" action="param_edit.cgi" method="POST"><input type="hidden" name="redirect" id="redirect" value="devconfigmodbus.html"/> <table><tr><th>Modbus Serial Address</th><td><input type="text" name="MODSA" id="MODSA" value="<%PARAM:MODSA%>" maxlength="12" /> </td></tr> <tr><th>Modbus Baud Rate</th><td><input type="radio" onclick="set_hidden_parameters();" name="MODBD" id="MODBD_19200" value="19200"/>19,200&nbsp; <input type="radio" onclick="set_hidden_parameters();" name="MODBD" id="MODBD_9600" value="9600"/>9600 </td></tr> <tr><th>Modbus Stop Bits</th><td><input type="radio" onclick="set_hidden_parameters();" name="MODST" id="MODST_1" value="1"/>1&nbsp; <input type="radio" onclick="set_hidden_parameters();" name="MODST" id="MODST_2" value="2"/>2 </td></tr> <tr><th>Modbus Parity</th><td><input type="radio" name="MODP" id="MODP_0" value="0"/>Even&nbsp; <input type="radio" name="MODP" id="MODP_1" value="1"/>Odd&nbsp; <input type="radio" name="MODP" id="MODP_2" value="2"/>None </td></tr> <tr><th>Modbus Data Type</th><td><input type="radio" onclick="set_modbustype('double');" id="MOD_DATA_DOUBLE" value=""/>double&nbsp; <input type="radio" onclick="set_modbustype('float');" id="MOD_DATA_FLOAT" value=""/>float </td></tr> <tr><th>Registers 0-40 Base Address</th><td><input type="radio" id="MOD_BASE_ADD_0" name="MODM20BA" value="0"/>0&nbsp; <input type="radio" id="MOD_BASE_ADD_1" name="MODM20BA" value="1"/>1 </td></tr> </table> <input type="hidden" id="UCRValue" name="UCR" value=""/> <input type="submit" value="Save Changes"> </form> <br/>(Meter must be rebooted after Modbus <br/>"changes are saved, for changes to take effect.") <br/> <form method="POST" action="reboot.cgi" name="reboot" id="reboot"><input type="submit" value="Reboot" class="button"></form> </div><%INCLUDE:footer.html%></div> </body> </html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Configuration</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var initialUCRVal,initialUCR_Dec,updatedUCRVal,updatedUCRVal_Dec;
-function setSNMPAppendModeRadio() { if (!isBitSet(initialUCR_Dec, 16)) { document.getElementById("SNMP_APPEND_NO").checked=true; document.getElementById("SNMP_APPEND_YES").checked=false; } else { document.getElementById("SNMP_APPEND_YES").checked=true; document.getElementById("SNMP_APPEND_NO").checked=false; } }
-/*Bit 16 of UCR*/
-function set_snmpmode(val) { if (val == "No") { document.getElementById("SNMP_APPEND_NO").checked = true; document.getElementById("SNMP_APPEND_YES").checked = false;  if (isBitSet(updatedUCRVal, 16)) { updatedUCRVal = flipBit(updatedUCRVal); } } else { document.getElementById("SNMP_APPEND_NO").checked = false; document.getElementById("SNMP_APPEND_YES").checked = true; if (!isBitSet(updatedUCRVal, 16)) { updatedUCRVal = flipBit(updatedUCRVal); } } setUcrVariable(updatedUCRVal); }
-function setUcrVariable(val) { updatedUCRVal = val; document.getElementById("UCRValue").value = val.toString(16); }
-/*Function to determine if bit is set*/
-function isBitSet(num, bit) { return ((num >> bit) % 2 != 0); }
-/*Flips bit 16*/
-function flipBit(num) { return num ^ parseInt("00010000", 16); }
-var originalNavClasses;
-function toggleNav(){var a=document.getElementById("mainmenu"),e=a.className;void 0===originalNavClasses&&(originalNavClasses=e),a.className=/expanded/.test(e)?originalNavClasses:originalNavClasses+" expanded"}
-function onWindowLoad() {
-setCurrentTab("config","SNMP");var separator="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var subHtml="<a href='devconfig.html'>Administration</a>"+separator+"<a href='devconfigEthernet.html'>Ethernet</a>"+separator+"<a href='devconfigwifi.html'>Wi-Fi</a>"+separator+"SNMP"+separator+"<a href='devconfigmodbus.html'>Modbus</a>"+separator+"<a href='devconfigemail.html'>Email</a>"+separator+"<a href='devconfigbacnet.html'>BACnet</a>"+separator+"<a href='upload.html'>Uploads</a>"; setSubNav(subHtml);
-initialUCRVal = <%PARAM:UCR%>;
-initialUCR_Dec=parseInt(initialUCRVal,16);updatedUCRVal=initialUCRVal;updatedUCRVal_Dec=initialUCR_Dec;setUcrVariable(initialUCR_Dec);setSNMPAppendModeRadio();checkAlarms();
-}
-window.onload = onWindowLoad;
-</script> </head> <body> <div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <form name="devconfig_edit" action="param_edit.cgi" method="POST"><input type="hidden" name="redirect" id="redirect" value="devconfigsnmp.html"/> <table><tr><th>Trap Destination Address 1</th><td><input type="text" name="SNMPTD1" id="SNMPTD1" value="<%PARAM:SNMPTD1%>" maxlength="16" /> </td></tr> <tr><th>Trap Destination Address 2</th><td><input type="text" name="SNMPTD2" id="SNMPTD2" value="<%PARAM:SNMPTD2%>" maxlength="16" /></td></tr><tr><th>&nbsp;</th></tr> <tr><th>Append Units to SNMP Values</th><td><input type="radio" onclick="set_snmpmode('No');" id="SNMP_APPEND_NO" value=""/>No&nbsp;<input type="radio" onclick="set_snmpmode('Yes');" id="SNMP_APPEND_YES" value=""/>Yes </td></tr><tr><th>&nbsp;</th></tr> <tr><th>Read Community Name</th><td><input type="text" name="SNMPRCN" id="SNMPRCN" value="<%PARAM:SNMPRCN%>" maxlength="16" /></td></tr> <tr><th>Write Community Name</th><td><input type="text" name="SNMPWCN" id="SNMPWCN" value="<%PARAM:SNMPWCN%>" maxlength="16" /></td></tr> <tr><th>Trap Community Name</th><td><input type="text" name="SNMPTCN" id="SNMPTCN" value="<%PARAM:SNMPTCN%>" maxlength="16" /></td></tr> <tr><th>Trap Alarm Backoff Time (seconds)</th><td><input type="text" name="ALMBACK" id="ALMBACK" value="<%PARAM:ALMBACK%>" maxlength="16" /></td></tr> </table><br/><input type="hidden" id="UCRValue" name="UCR" value=""/> <input type="submit" value="Save Changes"></form> <br/>(Meter must be rebooted after SNMP <br/>"changes are saved, for changes to take effect.") <br/> <form method="POST" action="reboot.cgi" name="reboot" id="reboot"><input type="submit" value="Reboot" class="button"></form> </div><%INCLUDE:footer.html%></div> </body> </html>﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Configuration</title> <meta name="viewport" content="width=device-width"/> <meta name="format-detection" content="telephone=no"/> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-function set_hidden_parameters(){document.getElementById("WLANSIP").disabled=document.getElementById("WLANDHCP_true").checked;document.getElementById("WLANSMK").disabled=document.getElementById("WLANDHCP_true").checked;document.getElementById("WLANSGW").disabled=document.getElementById("WLANDHCP_true").checked}
-function set_radio_selection() { if (<%BPARAM:WLANDHCP%>) { document.getElementById("WLANDHCP_true").checked=!0;document.getElementById("WLANDHCP_false").checked=!1; } else {document.getElementById("WLANDHCP_true").checked=!1;document.getElementById("WLANDHCP_false").checked=!0;} if (<%BPARAM:MODBD%>==19200) { document.getElementById("MODBD_19200").checked=!0;document.getElementById("MODBD_9600").checked=!1; } else {document.getElementById("MODBD_19200").checked=!1;document.getElementById("MODBD_9600").checked=!0;} if (<%BPARAM:MODST%>==1) {document.getElementById("MODST_1").checked=!0;document.getElementById("MODST_2").checked=!1;} else {document.getElementById("MODST_1").checked=!1;document.getElementById("MODST_2").checked=!0;} set_hidden_parameters(); }
-var oNavClass;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-function onWindowLoad() {
-setCurrentTab("config","WiFi");
-var separator="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-var subHtml="<a href='devconfig.html'>Administration</a>"+separator+"<a href='devconfigEthernet.html'>Ethernet</a>"+separator+"Wi-Fi"+separator+"<a href='devconfigsnmp.html'>SNMP</a>"+separator+"<a href='devconfigmodbus.html'>Modbus</a>"+separator+"<a href='devconfigemail.html'>Email</a>"+separator+"<a href='devconfigbacnet.html'>BACnet</a>"+separator+"<a href='upload.html'>Uploads</a>";
-setSubNav(subHtml);
-if (<%BPARAM:WLANDHCP%>) { document.getElementById("WLANDHCP_true").checked=true; document.getElementById("WLANDHCP_false").checked=false; } else { document.getElementById("WLANDHCP_true").checked=false; document.getElementById("WLANDHCP_false").checked=true; }
-setSelectedIndex(document.getElementById("WLANENC")); checkAlarms();
-}
-function setSelectedIndex(s) { for (i = 0; i< s.options.length; i++) { if (s.options[i].value == <%PARAM:WLANENC%>) { s.options[i].selected = true; break; } } return; }
-window.onload = onWindowLoad;
-</script> </head> <body> <div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <form name="devconfig_edit" action="param_edit.cgi" method="POST"> <input type="hidden" name="redirect" id="redirect" value="devconfigwifi.html"/> <table><tr><th>Wi-Fi Configuration</th><td><input type="radio" onclick="set_hidden_parameters();" name="WLANDHCP" id="WLANDHCP_true" value="1"/>DHCP&nbsp;<input type="radio" onclick="set_hidden_parameters();" name="WLANDHCP" id="WLANDHCP_false" value="0"/>Static</td></tr> <tr><th>Wi-Fi IP Address</th><td><input type="text" name="WLANSIP" id="WLANSIP" value="<%PARAM:WLANSIP%>" maxlength="16" /></td></tr> <tr><th>Wi-Fi Netmask</th><td><input type="text" name="WLANSMK" id="WLANSMK" value="<%PARAM:WLANSMK%>" maxlength="16" /></td></tr> <tr><th>Wi-Fi Gateway</th><td><input type="text" name="WLANSGW" id="WLANSGW" value="<%PARAM:WLANSGW%>" maxlength="16" /></td></tr> <tr><th>Wi-Fi SSID</th><td><input type="text" name="WLANSSID" id="WLANSSID" value="<%PARAM:WLANSSID%>" maxlength="32" /></td></tr> <tr><th>Wi-Fi Password</th><td><input type="text" name="WLANPWD" id="WLANPWD" value="<%PARAM:WLANPWD%>" maxlength="64" /></td></tr> <tr><th>Wi-Fi Encryption Type</th><td><select id="WLANENC" name="WLANENC"><option value="<%PARAM:WLANENC%>"><%PARAM:WLANENC%></option><option value="wpa">wpa</option><option value="wpa2">wpa2</option></select></td></tr> <tr><th>&nbsp;</th></tr></table><input type="submit" value="Save Changes"/></form> <br/>(Meter must be rebooted after Wi-Fi <br/>"changes are saved, for changes to take effect.") <br/> <form method="POST" action="reboot.cgi" name="reboot" id="reboot"><input type="submit" value="Reboot" class="button"/></form> </div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Information</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"><%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-        var oNavClass;
-        var data_received = 0;
-
-        function toggleNav()
-        {
-            var e = document.getElementById( 'mainmenu' );
-            var c = e.className;
-            if ( oNavClass === undefined )
-            {
-                oNavClass = c;
-            }
-            e.className = /expanded/.test( c ) ? oNavClass : oNavClass + ' expanded';
-        }
-
-        function onWindowLoad()
-        {
-            setCurrentTab( 'home', 'Dev. Info' );
-            var separator = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-            var subHtml = "<a href='home.html'>Summary</a>" + separator + "Device Info" + separator + "<a href='devCommInfo.html'>Comm. Info</a>";
-            setSubNav( subHtml );
-            checkAlarms();
-        }
-        window.onload = onWindowLoad;
-    </script> </head> <body> <div id="wrap"> <div id="banner"> <%INCLUDE:banner.html%> </div> <div id="container"> <table> <tbody> <tr> <th> Device Name: </th> <td> <%PARAM:NAME%> </td> </tr> <tr> <th> Device ID: </th> <td> <%PARAM:ID%> </td> </tr> <tr> <th> Device Location: </th> <td> <%PARAM:DEVLO%> </td> </tr> <tr> <th> Catalog Number: </th> <td> <%PARAM:TYPE%> </td> </tr> <tr> <th> Product Serial Number: </th> <td> <%PARAM:PSERIAL%> </td> </tr> <tr> <th> Meter Serial Number: </th> <td> <%PARAM:SERIAL%> </td> </tr> <tr> <th> Ethernet IP Address: </th> <td> <%PARAM:LANIP%> </td> </tr> <tr> <th> Wi-Fi IP Address: </th> <td> <%PARAM:WLANIP%> </td> </tr> <tr> <th> Modbus Address: </th> <td> <%PARAM:MODSA%> </td> </tr> <tr> <th> BACnet Device Instance: </th> <td> <%PARAM:BDI%> </td> </tr> <tr> <th> Web Page Version: </th> <td> UEC025_ENG </td> </tr> <tr> <th> Firmware Version: </th> <td> <%PARAM:FV%> </td> </tr> <tr> <th> Meter Version: </th> <td> <%PARAM:MV%> </td> </tr> <tr> <th> WiFi Version: </th> <td> <%PARAM:WV%> </td> </tr> <tr> <th> Hardware Version: </th> <td> <%PARAM:HV%> </td> </tr> <tr> <th> Calibration Date: </th> <td> <%PARAM:CALD%> </td> </tr> </tbody> </table> </div> <%INCLUDE:footer.html%> </div> </body> </html>From: "Starline CPM" <<%EMFM%>>
-To:  "End User" <<%EMTO%>>
-Subject: Alert from CPM Meter: <%NAME%> (<%LANIP%>/<%WLANIP%>)
-
-This is an alarm message from CPM Meter:
-   Name:  <%NAME%>
-   ID:  <%ID%>
-   Location:  <%DEVLO%>
-
-Alarm Status:
-   Infeed:  <%INFALM%>
-   Outlet:  <%OUTALM%>
-
-Voltage:
-   L1-L2:  <%LLV,1%>
-   L2-L3:  <%LLV,2%>
-   L3-L1:  <%LLV,3%>
-
-Infeed Current:
-   Line 1:  <%INFLC,1%>
-   Line 2:  <%INFLC,2%>
-   Line 3:  <%INFLC,3%>
-   Calculated Neutral:  <%INFLC,4%>
-   Measured Neutral:  <%INFMNC%>
-
-Outlet Current:
-   <%OTLPID,1,1%>:  <%OTLLC,1,1%>
-   <%OTLPID,1,2%>:  <%OTLLC,1,2%>
-   <%OTLPID,1,3%>:  <%OTLLC,1,3%>
-   <%OTLPID,1,4%>:  <%OTLLC,1,4%>
-   <%OTLPID,2,1%>:  <%OTLLC,2,1%>
-   <%OTLPID,2,2%>:  <%OTLLC,2,2%>
-   <%OTLPID,2,3%>:  <%OTLLC,2,3%>
-   <%OTLPID,2,4%>:  <%OTLLC,2,4%>
-   <%OTLPID,3,1%>:  <%OTLLC,3,1%>
-   <%OTLPID,3,2%>:  <%OTLLC,3,2%>
-   <%OTLPID,3,3%>:  <%OTLLC,3,3%>
-   <%OTLPID,3,4%>:  <%OTLLC,3,4%>
-   <%OTLPID,4,1%>:  <%OTLLC,4,1%>
-   <%OTLPID,4,2%>:  <%OTLLC,4,2%>
-   <%OTLPID,4,3%>:  <%OTLLC,4,3%>
-   <%OTLPID,4,4%>:  <%OTLLC,4,4%>
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Feeds: Current</title><meta name="viewport" content="width=device-width"/><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-var originalNavClasses; var data_received = 0;
-function parse_vars(n) { var e = n.split("\n"); var i = e[3]; PARAM_infeedLineCurrentRating_1.innerHTML = i; PARAM_infeedLineCurrentRating_2.innerHTML = i; PARAM_infeedLineCurrentRating_3.innerHTML = i; PARAM_infeedLineCurrentRating_4.innerHTML = i; PARAM_infeedLineCurrentRating_5.innerHTML = i; PARAM_infeedLineCurrent_1.innerHTML = e[0]; PARAM_infeedLineCurrentMax_1.innerHTML = e[2]; PARAM_infeedLineCurrent_2.innerHTML = e[12]; PARAM_infeedLineCurrentMax_2.innerHTML = e[14]; PARAM_infeedLineCurrent_3.innerHTML = e[24]; PARAM_infeedLineCurrentMax_3.innerHTML = e[26]; PARAM_infeedLineCurrent_4.innerHTML = e[36]; PARAM_infeedLineCurrentMax_4.innerHTML = e[38]; PARAM_infeedMeasuredNeutralCurrent.innerHTML = e[39]; PARAM_infeedLineCurrentRatingPercentOf_1.innerHTML = e[48]; PARAM_infeedLineCurrentRatingPercentOf_2.innerHTML = e[49]; PARAM_infeedLineCurrentRatingPercentOf_3.innerHTML = e[50]; PARAM_infeedLineCurrentRatingPercentOf_4.innerHTML = e[51]; PARAM_infeedLineCurrentMax_5.innerHTML = e[56]; PARAM_infeedLineCurrentRatingPercentOf_5.innerHTML = e[57]; PARAM_TIMESTAMP.innerHTML = e[58] }
-function loop() { if (!data_received) { makeRequest("data_feed.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("infeeds", "Current"); var n = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var R = "<a href='infeeds.html'>Voltage</a>" + n + "Current" + n + "<a href='feedPowerEnergy.html'>Power</a>"; setSubNav(R), loop(); }
-window.onload = onWindowLoad;
-function toggleNav() { var a = document.getElementById("mainmenu"), e = a.className; void 0 === originalNavClasses && (originalNavClasses = e), a.className = /expanded/.test(e) ? originalNavClasses : originalNavClasses + " expanded" }
-</script> </head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"><div style="width: 80%; min-width: 200px; margin-left: auto; margin-right: auto;"> <table style="width: 100%; border: 1px solid #CCCCCC;"><tr><td style="width: 20%;"></td><td style="width: 20%;">Value</td> <td style="width: 20%;">Max </td><td style="width: 20%;">Rated </td><td style="width: 20%;">% of Rated </td></tr> <tr><td>L1: </td><td><span id="PARAM_infeedLineCurrent_1"></span></td><td><span id="PARAM_infeedLineCurrentMax_1"></span></td><td><span id="PARAM_infeedLineCurrentRating_1"></span></td><td><span id="PARAM_infeedLineCurrentRatingPercentOf_1"></span></td></tr> <tr><td>L2: </td><td><span id="PARAM_infeedLineCurrent_2"></span></td><td><span id="PARAM_infeedLineCurrentMax_2"></span></td><td><span id="PARAM_infeedLineCurrentRating_2"></span></td><td><span id="PARAM_infeedLineCurrentRatingPercentOf_2"></span></td></tr> <tr><td>L3: </td><td><span id="PARAM_infeedLineCurrent_3"></span></td><td><span id="PARAM_infeedLineCurrentMax_3"></span></td><td><span id="PARAM_infeedLineCurrentRating_3"></span></td><td><span id="PARAM_infeedLineCurrentRatingPercentOf_3"></span></td></tr> <tr><td>Calculated Neutral: </td><td><span id="PARAM_infeedLineCurrent_4"></span></td><td><span id="PARAM_infeedLineCurrentMax_4"></span></td><td><span id="PARAM_infeedLineCurrentRating_4"></span></td><td><span id="PARAM_infeedLineCurrentRatingPercentOf_4"></span></td></tr> <tr><td>Measured Neutral: </td><td><span id="PARAM_infeedMeasuredNeutralCurrent"></span></td><td><span id="PARAM_infeedLineCurrentMax_5"></span></td><td><span id="PARAM_infeedLineCurrentRating_5"></span></td><td><span id="PARAM_infeedLineCurrentRatingPercentOf_5"></span></td></tr> <tr><td colspan="100%">&nbsp; </td></tr><tr><td>Timestamp </td><td colspan="3"><span id="PARAM_TIMESTAMP"></span></td></tr></table> </div></div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html><head><title>Feeds: Energy/Power</title><meta name="viewport" content="width=device-width"/><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-var oNavClass; var data_received = 0;
-function parse_vars(e) { var n = e.split("\n"); PARAM_infeedPhasePowerFactor_1.innerHTML = n[8]; PARAM_infeedPhaseApparentPower_1.innerHTML = n[9]; PARAM_infeedPhaseActivePower_1.innerHTML = n[10]; PARAM_infeedPhaseReactivePower_1.innerHTML = n[11]; PARAM_infeedPhasePowerFactor_2.innerHTML = n[20]; PARAM_infeedPhaseApparentPower_2.innerHTML = n[21]; PARAM_infeedPhaseActivePower_2.innerHTML = n[22]; PARAM_infeedPhaseReactivePower_2.innerHTML = n[23]; PARAM_infeedPhasePowerFactor_3.innerHTML = n[32]; PARAM_infeedPhaseApparentPower_3.innerHTML = n[33]; PARAM_infeedPhaseActivePower_3.innerHTML = n[34]; PARAM_infeedPhaseReactivePower_3.innerHTML = n[35]; PARAM_infeedPhasePeakActivePower_1.innerHTML = n[52]; PARAM_infeedPhasePeakActivePower_2.innerHTML = n[53]; PARAM_infeedPhasePeakActivePower_3.innerHTML = n[54]; PARAM_TIMESTAMP.innerHTML = n[58] }
-function loop() { if (!data_received) { makeRequest("data_feed.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("infeeds", "Power"); var n = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var R = "<a href='infeeds.html'>Voltage</a>" + n + "<a href='feedCurrent.html'>Current</a>" + n + "Power"; setSubNav(R); loop(); }
-window.onload = onWindowLoad;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"><div style="width: 80%; min-width: 200px; margin-left: auto; margin-right: auto;"> <table style="width: 100%; border: 1px solid #CCCCCC;"><tr><td style="width: 80px;"></td><td style="width: 33%;" colspan="2">Active Power </td><td style="width: 20%;">Reactive Power </td><td style="width: 20%;">Apparent Power</td><td style="width: 14%;">Power Factor </td></tr><tr><td></td><td style="width: 14%;">Value </td><td style="width: 19%;">Max</td><td style="width: 20%;">&nbsp;</td><td style="width: 20%;">&nbsp;</td><td></td></tr> <tr><td>A: </td><td><span id="PARAM_infeedPhaseActivePower_1"></span></td><td><span id="PARAM_infeedPhasePeakActivePower_1"></span></td><td><span id="PARAM_infeedPhaseReactivePower_1"></span></td><td><span id="PARAM_infeedPhaseApparentPower_1"></span></td><td><span id="PARAM_infeedPhasePowerFactor_1"></span></td></tr> <tr><td>B: </td><td><span id="PARAM_infeedPhaseActivePower_2"></span></td><td><span id="PARAM_infeedPhasePeakActivePower_2"></span></td><td><span id="PARAM_infeedPhaseReactivePower_2"></span></td><td><span id="PARAM_infeedPhaseApparentPower_2"></span></td><td><span id="PARAM_infeedPhasePowerFactor_2"></span></td></tr> <tr><td>C: </td><td><span id="PARAM_infeedPhaseActivePower_3"></span></td><td><span id="PARAM_infeedPhasePeakActivePower_3"></span></td><td><span id="PARAM_infeedPhaseReactivePower_3"></span></td><td><span id="PARAM_infeedPhaseApparentPower_3"></span></td><td><span id="PARAM_infeedPhasePowerFactor_3"></span></td></tr> <tr><td colspan="100%">&nbsp; </td></tr><tr><td>Timestamp </td><td colspan="7"><span id="PARAM_TIMESTAMP"></span></td></tr></table> </div></div><%INCLUDE:footer.html%></div></body></html>﻿<div id="footer"><div class="footerContent">&copy; Universal Electric Corp. 2015</div></div>�PNG
-
-IHDR      "   u   	pHYs     ��
-OiCCPPhotoshop ICC profile  xڝSgTS�=���BK���KoR RB���&*!	J�!��Q�EEȠ�����Q,�
-��!���������{�kּ������>�����H3Q5��B�������.@�
-$p �d!s�# �~<<+"�� x� �M��0���B�\���t�8K� @z�B� @F���&S � `�cb� P- `'�� ����{ [�!��  e�D h; ��V�E X0 fK�9 �- 0IWfH �� ���  0Q��) { `�##x �� F�W<�+��*  x��<�$9E�[-qWW.(�I+6aa�@.�y�2�4���  ������x����6��_-��"bb���ϫp@  �t~��,/��;�m��%�h^�u��f�@� ���W�p�~<<E���������J�B[a�W}�g�_�W�l�~<�����$�2]�G�����L�ϒ	�b��G�����"�Ib�X*�Qq�D���2�"�B�)�%��d��,�>�5 �j>{�-�]c�K'Xt���  �o��(�h���w��?�G�% �fI�q  ^D$.Tʳ?�  D��*�A��,�����`6�B$��BB
-d�r`)��B(�Ͱ*`/�@4�Qh��p.�U�=p�a��(��	A�a!ڈb�X#����!�H�$ ɈQ"K�5H1R�T UH�=r9�\F��;� 2����G1���Q=��C��7�F��dt1�����r�=�6��Ыhڏ>C�0��3�l0.��B�8,	�c˱"����V����cϱw�E�	6wB aAHXLXN�H� $4�	7	�Q�'"��K�&���b21�XH,#��/{�C�7$�C2'��I��T��F�nR#�,��4H#���dk�9�, +ȅ����3��!�[
-��ǈg(�gw��L�Ӌ�T071���oUX*�*|��
-��u�5�&���|v*�����=���9C3J3W�R�f?�q��tN	�(���~���)�)�4L�1e\k����X�H�Q�G�6����E�Y��A�J'\'Gg����S�Sݧ
-���Z~s�r:V:ޚΜ�?}����/gX���3��)�i�S��Ggg�s�󈋉K��.�>.���Ƚ�Jt�q]�z��������ۯ�6�i�ܟ�4�)�Y3s���C�Q��?��0k߬~OCO�g��#/c/�W�װ��w��a�>�>r��>�<7�2�Y_�7��ȷ�O�o�_��C#�d�z�� ��%g��A�[��z|!��?:�e����A���AA�������!h�쐭!��Α�i�P~���a�a��~'���W�?�p�X�1�5w��Cs�D�D�Dޛg1O9�-J5*>�.j<�7�4�?�.fY��X�XIlK9.*�6nl��������{�/�]py�����.,:�@L�N8��A*��%�w%�
-Lݛ:��v m2=:�1����qB�!M��g�g�fvˬe����n��/��k���Y-
-�B��TZ(�*�geWf�͉�9���+��̳�ې7�����ᒶ��KW-X潬j9�<qy�
-�+�V�<���*m�O��W��~�&zMk�^�ʂ��k�U
-��8>99�?r����C�d�&����ˮ/~�����јѡ�򗓿m|������������x31^�V���w�w��O�| (�h���SЧ��������c3-�    cHRM  z%  ��  ��  ��  u0  �`  :�  o�_�F   ?IDATx�bdH[򟁁����������M
-�ȿj�RqK�E�!��@,��%�0�< .�C'l�r|    IEND�B`��PNG
-
-IHDR      Q   pl   	pHYs     ��
-OiCCPPhotoshop ICC profile  xڝSgTS�=���BK���KoR RB���&*!	J�!��Q�EEȠ�����Q,�
-��!���������{�kּ������>�����H3Q5��B�������.@�
-$p �d!s�# �~<<+"�� x� �M��0���B�\���t�8K� @z�B� @F���&S � `�cb� P- `'�� ����{ [�!��  e�D h; ��V�E X0 fK�9 �- 0IWfH �� ���  0Q��) { `�##x �� F�W<�+��*  x��<�$9E�[-qWW.(�I+6aa�@.�y�2�4���  ������x����6��_-��"bb���ϫp@  �t~��,/��;�m��%�h^�u��f�@� ���W�p�~<<E���������J�B[a�W}�g�_�W�l�~<�����$�2]�G�����L�ϒ	�b��G�����"�Ib�X*�Qq�D���2�"�B�)�%��d��,�>�5 �j>{�-�]c�K'Xt���  �o��(�h���w��?�G�% �fI�q  ^D$.Tʳ?�  D��*�A��,�����`6�B$��BB
-d�r`)��B(�Ͱ*`/�@4�Qh��p.�U�=p�a��(��	A�a!ڈb�X#����!�H�$ ɈQ"K�5H1R�T UH�=r9�\F��;� 2����G1���Q=��C��7�F��dt1�����r�=�6��Ыhڏ>C�0��3�l0.��B�8,	�c˱"����V����cϱw�E�	6wB aAHXLXN�H� $4�	7	�Q�'"��K�&���b21�XH,#��/{�C�7$�C2'��I��T��F�nR#�,��4H#���dk�9�, +ȅ����3��!�[
-��ǈg(�gw��L�Ӌ�T071���oUX*�*|��
-��u�5�&���|v*�����=���9C3J3W�R�f?�q��tN	�(���~���)�)�4L�1e\k����X�H�Q�G�6����E�Y��A�J'\'Gg����S�Sݧ
-���Z~s�r:V:ޚΜ�?}����/gX���3��)�i�S��Ggg�s�󈋉K��.�>.���Ƚ�Jt�q]�z��������ۯ�6�i�ܟ�4�)�Y3s���C�Q��?��0k߬~OCO�g��#/c/�W�װ��w��a�>�>r��>�<7�2�Y_�7��ȷ�O�o�_��C#�d�z�� ��%g��A�[��z|!��?:�e����A���AA�������!h�쐭!��Α�i�P~���a�a��~'���W�?�p�X�1�5w��Cs�D�D�Dޛg1O9�-J5*>�.j<�7�4�?�.fY��X�XIlK9.*�6nl��������{�/�]py�����.,:�@L�N8��A*��%�w%�
-Lݛ:��v m2=:�1����qB�!M��g�g�fvˬe����n��/��k���Y-
-�B��TZ(�*�geWf�͉�9���+��̳�ې7�����ᒶ��KW-X潬j9�<qy�
-�+�V�<���*m�O��W��~�&zMk�^�ʂ��k�U
-��8>99�?r����C�d�&����ˮ/~�����јѡ�򗓿m|������������x31^�V���w�w��O�| (�h���SЧ��������c3-�    cHRM  z%  ��  ��  ��  u0  �`  :�  o�_�F   |IDATx��T1�@�M\���|���Ы�`�elZ�(�Y!���	�
-\�E��r!� h&���ɕ7B�{�f��>#���5O�N%�PH�邥m�/o���izԠ����}��4��y���� ��t���X    IEND�B`�﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html><head><title>CPM Home</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var oNavClass; var data_received = 0;
-function parse_vars(e) { var n = e.split("\n"); PARAM_FeedLineCurrentRatingPercentOf_1.innerHTML = n[0]; PARAM_FeedLineCurrentRatingPercentOf_2.innerHTML = n[1]; PARAM_FeedLineCurrentRatingPercentOf_3.innerHTML = n[2]; PARAM_FeedLineCurrentRatingPercentOf_4.innerHTML = n[3]; PARAM_lineToNeutVoltAverage.innerHTML = n[4]; PARAM_FeedPowerFactorAverage.innerHTML = n[5]; PARAM_frequency.innerHTML = n[6]; PARAM_FeedTotalApparentPower.innerHTML = n[7]; PARAM_FeedTotalActivePower.innerHTML = n[8]; PARAM_FeedPeakTotalActivePower.innerHTML = n[9]; PARAM_FeedTotalReactivePower.innerHTML = n[10]; PARAM_FeedTotalEnergy.innerHTML = n[11]; PARAM_FeedLineCurrentRatingPercentOf_5.innerHTML = n[12]; DATESTAMP.innerHTML = n[13]; }
-function loop() { if (!data_received) { makeRequest("data_home.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("home", "Home"); var n = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var o = "Summary" + n + "<a href='devinfo.html'>Device Info</a>" + n + "<a href='devCommInfo.html'>Comm. Info</a>";setSubNav(o);loop(); }
-window.onload = onWindowLoad;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-</script> </head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <table><tr><th>Feed L1 Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_1"></span></td></tr> <tr><th>Feed L2 Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_2"></span></td></tr> <tr><th>Feed L3 Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_3"></span></td></tr> <tr><th>Calculated Neutral Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_4"></span></td></tr> <tr><th>Measured Neutral Current % of Rated: </th><td><span id="PARAM_FeedLineCurrentRatingPercentOf_5"></span></td></tr><tr><th style="height: 15px;"></th><td></td></tr> <tr><th>Voltage Average L-N: </th><td><span id="PARAM_lineToNeutVoltAverage"></span></td></tr> <tr><th>Total Power Factor: </th><td><span id="PARAM_FeedPowerFactorAverage"></span></td></tr> <tr><th>Frequency: </th><td><span id="PARAM_frequency"></span></td></tr> <tr><th>Feed Total Apparent Power: </th><td><span id="PARAM_FeedTotalApparentPower"></span></td></tr><tr><th style="height: 15px;"></th><td></td></tr> <tr><th>Feed Total Active Power: </th><td><span id="PARAM_FeedTotalActivePower"></span></td></tr> <tr><th>Feed Peak Total Active Power: </th><td><span id="PARAM_FeedPeakTotalActivePower"></span></td></tr> <tr><th>Feed Total Reactive Power: </th><td><span id="PARAM_FeedTotalReactivePower"></span></td></tr> <tr><th>Feed Total Metered Energy: </th><td><span id="PARAM_FeedTotalEnergy"></span></td></tr><tr><th style="height: 15px;"></th><td></td></tr> <tr><th>Timestamp: </th><td><span id="DATESTAMP"></span></td></tr></table> </div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html><head><title>Feeds</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-var oNavClass; var data_received = 0;
-function parse_vars(e) { var n = e.split("\n"); PARAM_lineToNeutVoltage_1.innerHTML = n[6], PARAM_lineToLineVoltage_1.innerHTML = n[7], PARAM_lineToNeutVoltage_2.innerHTML = n[18], PARAM_lineToLineVoltage_2.innerHTML = n[19], PARAM_lineToNeutVoltage_3.innerHTML = n[30], PARAM_lineToLineVoltage_3.innerHTML = n[31], PARAM_frequency.innerHTML = n[41], PARAM_lineToLineVoltageMin_1.innerHTML = n[42], PARAM_lineToLineVoltageMin_2.innerHTML = n[43], PARAM_lineToLineVoltageMin_3.innerHTML = n[44], PARAM_lineToLineVoltageMax_1.innerHTML = n[45], PARAM_lineToLineVoltageMax_2.innerHTML = n[46], PARAM_lineToLineVoltageMax_3.innerHTML = n[47], PARAM_TIMESTAMP.innerHTML = n[58] }
-function loop() { if (!data_received) { makeRequest("data_feed.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("infeeds", "Voltage"); var n = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var e = "Voltage" + n + "<a href='feedCurrent.html'>Current</a>" + n + "<a href='feedPowerEnergy.html'>Power</a>"; setSubNav(e); loop(); }
-window.onload = onWindowLoad;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"><div style="width: 70%; min-width: 200px; margin-left: auto; margin-right: auto;"> <table style="width: 100%; border: 1px solid #CCCCCC;"><tr style="border-bottom: 2px solid #CCCCCC;"><td style="width: 25%;"></td><td style="text-align: left; width: 25%;">Value </td><td style="width: 25%;">Min</td><td style="width: 25%;">Max </td></tr> <tr><td>L1-N: </td><td><span id="PARAM_lineToNeutVoltage_1"></span></td><td style="background-color: #E7E7E7;">&nbsp;</td><td style="background-color: #E7E7E7;">&nbsp;</td></tr> <tr><td>L2-N: </td><td><span id="PARAM_lineToNeutVoltage_2"></span></td><td style="background-color: #E7E7E7;">&nbsp;</td><td style="background-color: #E7E7E7;">&nbsp;</td></tr> <tr><td>L3-N: </td><td><span id="PARAM_lineToNeutVoltage_3"></td><td style="background-color: #E7E7E7;">&nbsp;</td><td style="background-color: #E7E7E7;">&nbsp;</td></tr> <tr><td>L1-L2: </td><td><span id="PARAM_lineToLineVoltage_1"></span></td><td><span id="PARAM_lineToLineVoltageMin_1"></span></td><td><span id="PARAM_lineToLineVoltageMax_1"></span></td></tr> <tr><td>L2-L3: </td><td><span id="PARAM_lineToLineVoltage_2"></span></td><td><span id="PARAM_lineToLineVoltageMin_2"></span></td><td><span id="PARAM_lineToLineVoltageMax_2"></span></td></tr> <tr><td>L3-L1: </td><td><span id="PARAM_lineToLineVoltage_3"></span></td><td><span id="PARAM_lineToLineVoltageMin_3"></span></td><td><span id="PARAM_lineToLineVoltageMax_3"></span></td></tr> <tr><td>Frequency: </td><td><span id="PARAM_frequency"></span></td><td style="background-color: #E7E7E7;">&nbsp;</td><td style="background-color: #E7E7E7;">&nbsp;</td></tr> <tr><td colspan="100%">&nbsp; </td></tr><tr><td>Timestamp </td><td colspan="3"><span id="PARAM_TIMESTAMP"></span></td></tr></table> </div></div><%INCLUDE:footer.html%></div></body></html><script type="text/javascript">
-var http_request = false;
-function makeRequest(url, fn) {
-url = window.location.protocol +" //" + document.domain + "/" + url + "?sid=" + Math.random();
-data_received = 1;
-if (window.XMLHttpRequest) { http_request = new XMLHttpRequest(); if (http_request.overrideMimeType) { http_request.overrideMimeType('text/xml'); } }
-else if (window.ActiveXObject) { try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { } } }
-if (!http_request) { alert('Giving up :( Cannot create an XMLHTTP instance'); return false; }
-http_request.onreadystatechange = function() { fn(http_request); };
-http_request.open('GET', url, true); http_request.send(null);
-}
-function alertContents(e){ if ((http_request.readyState == 4) && (http_request.status == 200)) { parse_vars(http_request.responseText); } data_received = 0; }
-</script><script type="text/javascript">
-var oNavCls;
-function toggleNav() { var elem = document.getElementById('mainmenu'); var classes = elem.className; if (oNavCls === undefined) { oNavCls = classes; } elem.className = /expanded/.test(classes) ? oNavCls : oNavCls + ' expanded';	}
-</script>�PNG
-
-IHDR         vsR   	pHYs     ��
-OiCCPPhotoshop ICC profile  xڝSgTS�=���BK���KoR RB���&*!	J�!��Q�EEȠ�����Q,�
-��!���������{�kּ������>�����H3Q5��B�������.@�
-$p �d!s�# �~<<+"�� x� �M��0���B�\���t�8K� @z�B� @F���&S � `�cb� P- `'�� ����{ [�!��  e�D h; ��V�E X0 fK�9 �- 0IWfH �� ���  0Q��) { `�##x �� F�W<�+��*  x��<�$9E�[-qWW.(�I+6aa�@.�y�2�4���  ������x����6��_-��"bb���ϫp@  �t~��,/��;�m��%�h^�u��f�@� ���W�p�~<<E���������J�B[a�W}�g�_�W�l�~<�����$�2]�G�����L�ϒ	�b��G�����"�Ib�X*�Qq�D���2�"�B�)�%��d��,�>�5 �j>{�-�]c�K'Xt���  �o��(�h���w��?�G�% �fI�q  ^D$.Tʳ?�  D��*�A��,�����`6�B$��BB
-d�r`)��B(�Ͱ*`/�@4�Qh��p.�U�=p�a��(��	A�a!ڈb�X#����!�H�$ ɈQ"K�5H1R�T UH�=r9�\F��;� 2����G1���Q=��C��7�F��dt1�����r�=�6��Ыhڏ>C�0��3�l0.��B�8,	�c˱"����V����cϱw�E�	6wB aAHXLXN�H� $4�	7	�Q�'"��K�&���b21�XH,#��/{�C�7$�C2'��I��T��F�nR#�,��4H#���dk�9�, +ȅ����3��!�[
-��ǈg(�gw��L�Ӌ�T071���oUX*�*|��
-��u�5�&���|v*�����=���9C3J3W�R�f?�q��tN	�(���~���)�)�4L�1e\k����X�H�Q�G�6����E�Y��A�J'\'Gg����S�Sݧ
-���Z~s�r:V:ޚΜ�?}����/gX���3��)�i�S��Ggg�s�󈋉K��.�>.���Ƚ�Jt�q]�z��������ۯ�6�i�ܟ�4�)�Y3s���C�Q��?��0k߬~OCO�g��#/c/�W�װ��w��a�>�>r��>�<7�2�Y_�7��ȷ�O�o�_��C#�d�z�� ��%g��A�[��z|!��?:�e����A���AA�������!h�쐭!��Α�i�P~���a�a��~'���W�?�p�X�1�5w��Cs�D�D�Dޛg1O9�-J5*>�.j<�7�4�?�.fY��X�XIlK9.*�6nl��������{�/�]py�����.,:�@L�N8��A*��%�w%�
-Lݛ:��v m2=:�1����qB�!M��g�g�fvˬe����n��/��k���Y-
-�B��TZ(�*�geWf�͉�9���+��̳�ې7�����ᒶ��KW-X潬j9�<qy�
-�+�V�<���*m�O��W��~�&zMk�^�ʂ��k�U
-��8>99�?r����C�d�&����ˮ/~�����јѡ�򗓿m|������������x31^�V���w�w��O�| (�h���SЧ��������c3-�    cHRM  z%  ��  ��  ��  u0  �`  :�  o�_�F   0IDATx�bdH[X��G������.�M�/����HTOm�$���� �R1%+��    IEND�B`�﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html><head><title>Outlet</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-var originalNavClasses; var data_received = 0;
-function parse_vars(e) { var t = e.split("\n"); PARAM_outletLineCurrent_1_1.innerHTML = t[1], PARAM_outletLineCurrent_1_2.innerHTML = t[2], PARAM_outletLineCurrent_1_3.innerHTML = t[3], PARAM_outletLineCurrent_1_4.innerHTML = t[4], PARAM_outletTotalActivePower_1.innerHTML = t[7], PARAM_outletTotalApparentPower_1.innerHTML = t[9], PARAM_outletLineCurrent_2_1.innerHTML = t[13], PARAM_outletLineCurrent_2_2.innerHTML = t[14], PARAM_outletLineCurrent_2_3.innerHTML = t[15], PARAM_outletLineCurrent_2_4.innerHTML = t[16], PARAM_outletTotalActivePower_2.innerHTML = t[19], PARAM_outletTotalApparentPower_2.innerHTML = t[21], PARAM_outletLineCurrent_3_1.innerHTML = t[25], PARAM_outletLineCurrent_3_2.innerHTML = t[26], PARAM_outletLineCurrent_3_3.innerHTML = t[27], PARAM_outletLineCurrent_3_4.innerHTML = t[28], PARAM_outletTotalActivePower_3.innerHTML = t[31], PARAM_outletTotalApparentPower_3.innerHTML = t[33], PARAM_outletLineCurrent_4_1.innerHTML = t[37], PARAM_outletLineCurrent_4_2.innerHTML = t[38], PARAM_outletLineCurrent_4_3.innerHTML = t[39], PARAM_outletLineCurrent_4_4.innerHTML = t[40], PARAM_outletTotalActivePower_4.innerHTML = t[43], PARAM_outletTotalApparentPower_4.innerHTML = t[45] }
-function loop() { if (!data_received) { makeRequest("data_load.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("outlets", "Summary"); var e = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var t = "Summary" + e + "<a href='outlet1.html'>Outlet 1</a>" + e + "<a href='outlet2.html'>Outlet 2</a>" + e + "<a href='outlet3.html'>Outlet 3</a>" + e + "<a href='outlet4.html'>Outlet 4</a>"; setSubNav(t); loop(); }
-window.onload = onWindowLoad;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <table style="width: 100%;"><tr><td style="width: 50%;"><table><tr><td colspan="2"><h3>Outlet 1</h3></td></tr> <tr><td>L1 Current:</td><td><span id="PARAM_outletLineCurrent_1_1"></span></td></tr><tr><td>L2 Current:</td><td><span id="PARAM_outletLineCurrent_1_2"></span></td></tr> <tr><td>L3 Current:</td><td><span id="PARAM_outletLineCurrent_1_3"></span></td></tr><tr><td>Neutral Current:</td><td><span id="PARAM_outletLineCurrent_1_4"></span></td></tr> <tr><td>Active Power:</td><td><span id="PARAM_outletTotalActivePower_1"></span></td></tr><tr><td>Apparent Power:</td><td><span id="PARAM_outletTotalApparentPower_1"></span></td></tr> </table></td><td style="width: 50%;"><table><tr><td colspan="2"><h3>Outlet 2</h3></td></tr><tr><td>L1 Current:</td><td><span id="PARAM_outletLineCurrent_2_1"></span></td></tr> <tr><td>L2 Current:</td><td><span id="PARAM_outletLineCurrent_2_2"></span></td></tr><tr><td>L3 Current:</td><td><span id="PARAM_outletLineCurrent_2_3"></span></td></tr> <tr><td>Neutral Current:</td><td><span id="PARAM_outletLineCurrent_2_4"></span></td></tr><tr><td>Active Power:</td><td><span id="PARAM_outletTotalActivePower_2"></span></td></tr> <tr><td>Apparent Power:</td><td><span id="PARAM_outletTotalApparentPower_2"></span></td></tr></table></td></tr> <tr><td style="width: 50%; height: 5px;">&nbsp;</td><td style="width: 50%; height: 5px;">&nbsp;</td></tr> <tr><td style="width: 50%;"><table><tr><td colspan="2"><h3>Outlet 3</h3></td></tr><tr><td>L1 Current:</td><td><span id="PARAM_outletLineCurrent_3_1"></span></td></tr> <tr><td>L2 Current:</td><td><span id="PARAM_outletLineCurrent_3_2"></span></td></tr><tr><td>L3 Current:</td><td><span id="PARAM_outletLineCurrent_3_3"></span></td></tr> <tr><td>Neutral Current:</td><td><span id="PARAM_outletLineCurrent_3_4"></span></td></tr><tr><td>Active Power:</td><td><span id="PARAM_outletTotalActivePower_3"></span></td></tr> <tr><td>Apparent Power:</td><td><span id="PARAM_outletTotalApparentPower_3"></span></td></tr> </table></td><td style="width: 50%;"><table><tr><td colspan="2"><h3>Outlet 4</h3></td></tr><tr><td>L1 Current:</td><td><span id="PARAM_outletLineCurrent_4_1"></span></td></tr> <tr><td>L2 Current:</td><td><span id="PARAM_outletLineCurrent_4_2"></span></td></tr><tr><td>L3 Current:</td><td><span id="PARAM_outletLineCurrent_4_3"></span></td></tr> <tr><td>Neutral Current:</td><td><span id="PARAM_outletLineCurrent_4_4"></span></td></tr><tr><td>Active Power:</td><td><span id="PARAM_outletTotalActivePower_4"></span></td></tr> <tr><td>Apparent Power:</td><td><span id="PARAM_outletTotalApparentPower_4"></span></td></tr></table></td></tr></table></div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <head><title>Outlet</title><meta name="viewport" content="width=device-width"/><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-var oNavClass; var data_received = 0;
-function parse_vars(e) { var n = e.split("\n"); PARAM_outletId_1.innerHTML = n[0]; PARAM_outletLineCurrent_1_1.innerHTML = n[1]; PARAM_outletLineCurrent_1_2.innerHTML = n[2]; PARAM_outletLineCurrent_1_3.innerHTML = n[3]; PARAM_outletLineCurrent_1_4.innerHTML = n[4]; PARAM_outletTotalLineCurrentDemand_1.innerHTML = n[5]; PARAM_outletPeakTotalLineCurrentDemand_1.innerHTML = n[6]; PARAM_outletTotalActivePower_1.innerHTML = n[7]; PARAM_outletTotalReactivePower_1.innerHTML = n[8]; PARAM_outletTotalApparentPower_1.innerHTML = n[9]; PARAM_outletPowerFactorAverage_1.innerHTML = n[10]; PARAM_outletTotalEnergy_1.innerHTML = n[11]; PARAM_TIMESTAMP.innerHTML = n[48] }
-function loop() { if (!data_received) { makeRequest("data_load.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("outlets", "Outlet 1"); var e = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var n = "<a href='outlet.html'>Summary</a>" + e + "Outlet 1" + e + "<a href='outlet2.html'>Outlet 2</a>" + e + "<a href='outlet3.html'>Outlet 3</a>" + e + "<a href='outlet4.html'>Outlet 4</a>"; setSubNav(n); loop(); }
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-window.onload = onWindowLoad;
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"><div style="width:70%; min-width:200px; margin-left:auto; margin-right:auto;"> <table style="width:100%; border:1px solid #CCCCCC; text-align:left;"><tr><td colspan="2"><h3>Outlet 1</h3></td></tr> <tr><td>Outlet ID:</td><td><span id="PARAM_outletId_1"></span></td></tr><tr><td>Current Demand:</td><td><span id="PARAM_outletTotalLineCurrentDemand_1"></span></td></tr> <tr><td>Current Demand Peak:</td><td><span id="PARAM_outletPeakTotalLineCurrentDemand_1"></span></td></tr><tr><td>Power Factor:</td><td><span id="PARAM_outletPowerFactorAverage_1"></span></td></tr> <tr><td>Active Power:</td><td><span id="PARAM_outletTotalActivePower_1"></span></td></tr><tr><td>Apparent Power:</td><td><span id="PARAM_outletTotalApparentPower_1"></span></td></tr> <tr><td>Reactive Power:</td><td><span id="PARAM_outletTotalReactivePower_1"></span></td></tr><tr><td>Metered Energy:</td><td><span id="PARAM_outletTotalEnergy_1"></span></td></tr> <tr><td>L1 Current:</td><td><span id="PARAM_outletLineCurrent_1_1"></span></td></tr><tr><td>L2 Current:</td><td><span id="PARAM_outletLineCurrent_1_2"></span></td></tr> <tr><td>L3 Current:</td><td><span id="PARAM_outletLineCurrent_1_3"></span></td></tr><tr><td>Neutral Current:</td><td><span id="PARAM_outletLineCurrent_1_4"></span></td></tr> <tr><td>&nbsp;</td></tr><tr><td>Timestamp:</td><td><span id="PARAM_TIMESTAMP"></span></td></tr></table></div></div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"><head><title>Outlet</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-var oNavClass; var data_received = 0;
-function parse_vars(e) { var n = e.split("\n"); PARAM_outletId_2.innerHTML = n[12]; PARAM_outletLineCurrent_2_1.innerHTML = n[13]; PARAM_outletLineCurrent_2_2.innerHTML = n[14]; PARAM_outletLineCurrent_2_3.innerHTML = n[15]; PARAM_outletLineCurrent_2_4.innerHTML = n[16]; PARAM_outletTotalLineCurrentDemand_2.innerHTML = n[17]; PARAM_outletPeakTotalLineCurrentDemand_2.innerHTML = n[18]; PARAM_outletTotalActivePower_2.innerHTML = n[19]; PARAM_outletTotalReactivePower_2.innerHTML = n[20]; PARAM_outletTotalApparentPower_2.innerHTML = n[21]; PARAM_outletPowerFactorAverage_2.innerHTML = n[22]; PARAM_outletTotalEnergy_2.innerHTML = n[23]; PARAM_TIMESTAMP.innerHTML = n[48] }
-function loop() { if (!data_received) { makeRequest("data_load.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("outlets", "Outlet 2"); var e = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var n = "<a href='outlet.html'>Summary</a>" + e + "<a href='outlet1.html'>Outlet 1</a>" + e + "Outlet 2" + e + "<a href='outlet3.html'>Outlet 3</a>" + e + "<a href='outlet4.html'>Outlet 4</a>"; setSubNav(n); loop(); }
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-window.onload = onWindowLoad;
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"><div style="width:70%; min-width:200px; margin-left:auto; margin-right:auto;"> <table style="width:100%; border:1px solid #CCCCCC; text-align:left;"><tr><td colspan="2"><h3>Outlet 2</h3></td></tr> <tr><td>Outlet ID:</td><td><span id="PARAM_outletId_2"></span></td></tr><tr><td>Current Demand:</td><td><span id="PARAM_outletTotalLineCurrentDemand_2"></span></td></tr> <tr><td>Current Demand Peak:</td><td><span id="PARAM_outletPeakTotalLineCurrentDemand_2"></span></td></tr><tr><td>Power Factor:</td><td><span id="PARAM_outletPowerFactorAverage_2"></span></td></tr> <tr><td>Active Power:</td><td><span id="PARAM_outletTotalActivePower_2"></span></td></tr><tr><td>Apparent Power:</td><td><span id="PARAM_outletTotalApparentPower_2"></span></td></tr> <tr><td>Reactive Power:</td><td><span id="PARAM_outletTotalReactivePower_2"></span></td></tr><tr><td>Metered Energy:</td><td><span id="PARAM_outletTotalEnergy_2"></span></td></tr> <tr><td>L1 Current:</td><td><span id="PARAM_outletLineCurrent_2_1"></span></td></tr><tr><td>L2 Current:</td><td><span id="PARAM_outletLineCurrent_2_2"></span></td></tr> <tr><td>L3 Current:</td><td><span id="PARAM_outletLineCurrent_2_3"></span></td></tr><tr><td>Neutral Current:</td><td><span id="PARAM_outletLineCurrent_2_4"></span></td></tr> <tr><td>&nbsp;</td></tr><tr><td>Timestamp:</td><td><span id="PARAM_TIMESTAMP"></span></td></tr></table></div></div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"><head><title>Outlet</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-var oNavClass; var data_received = 0;
-function parse_vars(e) { var t = e.split("\n"); PARAM_outletId_3.innerHTML = t[24]; PARAM_outletLineCurrent_3_1.innerHTML = t[25]; PARAM_outletLineCurrent_3_2.innerHTML = t[26]; PARAM_outletLineCurrent_3_3.innerHTML = t[27]; PARAM_outletLineCurrent_3_4.innerHTML = t[28]; PARAM_outletTotalLineCurrentDemand_3.innerHTML = t[29]; PARAM_outletPeakTotalLineCurrentDemand_3.innerHTML = t[30]; PARAM_outletTotalActivePower_3.innerHTML = t[31]; PARAM_outletTotalReactivePower_3.innerHTML = t[32]; PARAM_outletTotalApparentPower_3.innerHTML = t[33]; PARAM_outletPowerFactorAverage_3.innerHTML = t[34]; PARAM_outletTotalEnergy_3.innerHTML = t[35]; PARAM_TIMESTAMP.innerHTML = t[48] }
-function loop() { if (!data_received) { makeRequest("data_load.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("outlets", "Outlet 3"); var a = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var n = "<a href='outlet.html'>Summary</a>" + a + "<a href='outlet1.html'>Outlet 1</a>" + a + "<a href='outlet2.html'>Outlet 2</a>" + a + "Outlet 3" + a + "<a href='outlet4.html'>Outlet 4</a>"; setSubNav(n); loop(); }
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-window.onload = onWindowLoad;
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"><div style="width:70%; min-width:200px; margin-left:auto; margin-right:auto;"> <table style="width:100%; border:1px solid #CCCCCC; text-align:left;"><tr><td colspan="2"><h3>Outlet 3</h3></td></tr> <tr><td>Outlet ID:</td><td><span id="PARAM_outletId_3"></span></td></tr><tr><td>Current Demand:</td><td><span id="PARAM_outletTotalLineCurrentDemand_3"></span></td></tr> <tr><td>Current Demand Peak:</td><td><span id="PARAM_outletPeakTotalLineCurrentDemand_3"></span></td></tr><tr><td>Power Factor:</td><td><span id="PARAM_outletPowerFactorAverage_3"></span></td></tr> <tr><td>Active Power:</td><td><span id="PARAM_outletTotalActivePower_3"></span></td></tr><tr><td>Apparent Power:</td><td><span id="PARAM_outletTotalApparentPower_3"></span></td></tr> <tr><td>Reactive Power:</td><td><span id="PARAM_outletTotalReactivePower_3"></span></td></tr><tr><td>Metered Energy:</td><td><span id="PARAM_outletTotalEnergy_3"></span></td></tr> <tr><td>L1 Current:</td><td><span id="PARAM_outletLineCurrent_3_1"></span></td></tr><tr><td>L2 Current:</td><td><span id="PARAM_outletLineCurrent_3_2"></span></td></tr> <tr><td>L3 Current:</td><td><span id="PARAM_outletLineCurrent_3_3"></span></td></tr><tr><td>Neutral Current:</td><td><span id="PARAM_outletLineCurrent_3_4"></span></td></tr> <tr><td>&nbsp;</td></tr><tr><td>Timestamp:</td><td><span id="PARAM_TIMESTAMP"></span></td></tr></table></div></div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"><head><title>Outlet</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script type="text/javascript">
-var oNavClass; var data_received = 0;
-function parse_vars(e) { var t = e.split("\n"); PARAM_outletId_4.innerHTML = t[36]; PARAM_outletLineCurrent_4_1.innerHTML = t[37]; PARAM_outletLineCurrent_4_2.innerHTML = t[38]; PARAM_outletLineCurrent_4_3.innerHTML = t[39]; PARAM_outletLineCurrent_4_4.innerHTML = t[40]; PARAM_outletTotalLineCurrentDemand_4.innerHTML = t[41]; PARAM_outletPeakTotalLineCurrentDemand_4.innerHTML = t[42]; PARAM_outletTotalActivePower_4.innerHTML = t[43]; PARAM_outletTotalReactivePower_4.innerHTML = t[44]; PARAM_outletTotalApparentPower_4.innerHTML = t[45]; PARAM_outletPowerFactorAverage_4.innerHTML = t[46]; PARAM_outletTotalEnergy_4.innerHTML = t[47]; PARAM_TIMESTAMP.innerHTML = t[48] }
-function loop() { if (!data_received) { makeRequest("data_load.cgi", alertContents); } setTimeout("loop()", 1000); checkAlarms(); }
-function onWindowLoad() { setCurrentTab("outlets", "Outlet 4"); var e = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var t = "<a href='outlet.html'>Summary</a>" + e + "<a href='outlet1.html'>Outlet 1</a>" + e + "<a href='outlet2.html'>Outlet 2</a>" + e + "<a href='outlet3.html'>Outlet 3</a>" + e + "Outlet 4"; setSubNav(t); loop(); }
-window.onload = onWindowLoad;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"><div style="width:70%; min-width:200px; margin-left:auto; margin-right:auto;"> <table style="width:100%; border:1px solid #CCCCCC; text-align:left;"><tr><td colspan="2"><h3>Outlet 4</h3></td></tr> <tr><td>Outlet ID:</td><td><span id="PARAM_outletId_4"></span></td></tr><tr><td>Current Demand:</td><td><span id="PARAM_outletTotalLineCurrentDemand_4"></span></td></tr> <tr><td>Current Demand Peak:</td><td><span id="PARAM_outletPeakTotalLineCurrentDemand_4"></span></td></tr><tr><td>Power Factor:</td><td><span id="PARAM_outletPowerFactorAverage_4"></span></td></tr> <tr><td>Active Power:</td><td><span id="PARAM_outletTotalActivePower_4"></span></td></tr><tr><td>Apparent Power:</td><td><span id="PARAM_outletTotalApparentPower_4"></span></td></tr> <tr><td>Reactive Power:</td><td><span id="PARAM_outletTotalReactivePower_4"></span></td></tr><tr><td>Metered Energy:</td><td><span id="PARAM_outletTotalEnergy_4"></span></td></tr> <tr><td>L1 Current:</td><td><span id="PARAM_outletLineCurrent_4_1"></span></td></tr><tr><td>L2 Current:</td><td><span id="PARAM_outletLineCurrent_4_2"></span></td></tr> <tr><td>L3 Current:</td><td><span id="PARAM_outletLineCurrent_4_3"></span></td></tr><tr><td>Neutral Current:</td><td><span id="PARAM_outletLineCurrent_4_4"></span></td></tr> <tr><td>&nbsp;</td></tr><tr><td>Timestamp:</td><td><span id="PARAM_TIMESTAMP"></span></td></tr></table></div></div><%INCLUDE:footer.html%></div></body></html>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"><head><title>Update Failed</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var oNavClass;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-function onWindowLoad() { setCurrentTab("config", "Uploads"); var a = "<a href='upload.html'>Return to Upload</a>"; setSubNav(a); }
-window.onload = onWindowLoad;
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"><h1>Changes saved.</h1><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><h4>Not all parameters were updated. This may be caused by an invalid access level or and invalid range.</h4></div><%INCLUDE:footer.html%></div></body></html>�PNG
-
-IHDR  �   )   �2ق   tEXtSoftware Adobe ImageReadyq�e<   0PLTE���G��s��o]��ư��������Ǡ����z�������僄� f�����.O   tRNS��������������� �#]  �IDATx�웋r�*@����4���	?�l�;�3��N� ���W��M]Kp!��OA�s�6���Co����"����ֆ��!,񽥏���9�___�=��6�c3:�w;�M���G����;�㚔�?@�P>�O����B�vh����]���Υj��ubM�����6Bؔ���:���E�~s��Fx������6�Ğ�P�T�7J!^O �Qn��q�/�,H��bl"�P��RdFXz�8�c��󅂡�˕�p�����^�<g����˦6�B�ə#��}��\.�'.�Qr��a\���`���_��5
-�z(��#$5��2t|jH��������~�u��T�>���c�3�&k�i� n#1�����(��#4�F�
-(tK*./iapu�a<�P!;�U�-��k�
-���ւ�B��Q'�P=�Ej�	��
-+#BOn��GQ ��!]�!,a�Y!dW�"T}Q���g��Њ��B��l�<yqn��T�a���Yf�َ�H�{�hIE8MwʐBUC��#�^�"̫��I�|�^1��x�&���/��� :Q��	�v�k�޳��
-�t��ǭp�Ǧ�mwE�rQP�NO#}�T}z���؆�ò�#�l>���x#K���B���+��wjv���C-72�c^oE��g֔1��SX����{����'FaYA-99)��	��<�c�|�s�r��Y5��G�����NX0慤vGK<Z�G6�V^wV�!/�#��΅9"��p<�����#~>k .|����Z�+��,���c���#L�W�\����X�m�T�2� W��#BK��eN��ǽ\fY0M'�K� ���q��]C
-�V
-��_��(g�l=N~!�E�w�L}\E�m��w���_W �H��
-*"�e!)!s�ZW���aC��p�:�v��C��1R��CG����u]¡%52�]E�i>�|�#t��G��}��+O+u�ta�
-�T$7�yc�)�$=|�q__B��u)�/����ҡ���0�o/��z��~1�?��~N�������9O�����j��e�O� b�ø�N    IEND�B`�<style>
-body { padding: 0px; margin: 0px; background-color: #ddd; font-family: Calibri, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: normal; color: #666666; }
-#wrap { width: 90%; max-width: 980px; margin: auto; background-color:#FFFFFF; padding: 0px; }
-#container th {text-align: right; color: #333333; font-weight:normal; }
-#container thead th { text-align: center; color: #666; }
-#container td { color: #000; font-weight: bold; }
-#deviceInfo th { text-align: left; color: #000; }
-#deviceInfo td { color: #fff; }
-h1, h2, h3, h4 { color: #0067a0; margin: 0; padding: 0 0 5px; }
-#header { background-color: #fff; background-image:url(HeaderBackground.png); background-repeat:repeat-x; height:81px; }
-#footer { background-color: #fff; background-image:url(FooterBackground.png); background-repeat:repeat-x; height:34px; color:#FFFFFF; text-align:right; font-size:10pt; vertical-align:middle; }
-.footerContent { padding-top:8px; padding-right:10px; }
-#firmwareVersion  { background-color: #4c4c4c; font-size:10pt; color:#FFFFFF; padding:2px; text-align:center; }
-#logo { height: 100px; width: 450px; }
-#logo-graphic { padding: 20px 20px 0px 20px; height: 41px; width: 450px; }
-#nav { padding: 0px 0px 0px 0px; float: left; width:auto; line-height: 100%; }
-#subNav { float:left; margin-left:40px; min-width:500px; width:auto; padding-top:9px; font-size:11pt; color:#000000; }
-#subNav a, #subNav a:active, #subNav a:visited { color:#000000; }
-#subNav a:hover { color:#FF0000; }
-#nav ul { margin: 0; padding: 0; }
-#shellmenu { line-height: 0; height: 0; }
-#shellmenu li { list-style-type: none; display: inline; }
-#shellmenu-text { display: none; }
-#mainmenu { display: inline; }
-#navContainer { width:auto; height:60px; background-color:#e4e4e4; border:2px solid #FFFFFF; border-bottom:0px; padding-bottom:2px; background-image:url(navBacking.png); background-repeat:repeat-x; }
-#currentLocation { background-color:#005f98; color:#FFFFFF; font-size:18pt; font-weight:bold; width:150px; height:60px; text-align: center; vertical-align: middle; line-height: 55px; float:left; }
-#nav a { color: #FFF; text-decoration: none; font-size: 1em; font-weight: bold; padding: 10px 0px; display: block; position: relative; width:122px; }
-.lastmenuitem a { padding: 0px 40px 22px 10px !important; }
-#nav a:hover { color: #0067A0; background-color: #e4e4e4; }
-#nav .current a { color: #000000; background-color: #e4e4e4; }
-#nav a img { border: 0; }
-.menuicon { width: 30px; }
-#deviceInfo { clear: both; margin: auto; padding: 10px 20px 50px; background-color: #0067a0; }
-.mainmenu-listitem { float: left; list-style-type: none; text-align: center; }
-#container { clear: both; padding: 20px; margin: 10px; background-color: #fff; }
-.error { color: red; }
-.menutext { padding: 0 5px; }
-.outfeedRight th { white-space: nowrap; }
-.outfeedRight td { white-space: nowrap; }
-.button { line-height: 1; }
-
-/* rules for full width devices, like desktops */
-@media only screen and (min-width: 1000px) { }
-
-/* rules for iPads and small devices, held portrait */
-@media only screen and (max-width: 999px) {
-  .menutext { }
-  .menubreak { display: none; }
-  #currentLocation { background-color:#005f98; color:#FFFFFF; font-size:18pt; font-weight:bold; width:100px; height:60px; text-align: center; vertical-align: middle; line-height: 55px; }
-  #navContainer { width:auto; height:60px; border:2px solid #FFFFFF; border-bottom:0px; padding-bottom:2px; }
-  #nav a { width:98px; }
-  #subNav { float:left; margin-left:30px; min-width:500px; width:auto; }
-  .lastmenuitem a { padding: 35px 40px 35px 10px !important; }
-}
-
-/* rules for tablets, held portrait */
-@media only screen and (max-width: 768px) {
-  #logo { height: 80px; }
-  #logo-graphic { padding: 15px 20px 0; }
-  #currentLocation { background-color:#005f98; color:#FFFFFF; font-size:16pt; font-weight:bold; width:100px; height:50px; text-align: center; vertical-align: middle; line-height: 50px; }
-  #navContainer { height:50px; }
-  #nav { clear: none; float: left; padding: 0; width: auto; }
-  #nav a { font-size:10.5pt; padding: 11px 10px; width:42px; color:#FFFFFF; }
-  #subNav { float:left; margin-left:15px; min-width:350px; width:auto; padding-top:3px; }
-  .lastmenuitem a { padding: 15px 10px !important; }
-  #nav a:hover { color: #0067A0; }
-  #deviceInfo { padding: 10px; }
-  #wrap { width:100%; }
-}
-
-/* rules for smart phones, held portrait */
-@media only screen and (max-width : 480px) {
-  #body { background: none; }
-  #logo { width: 350px; height: 68px; }
-  #logo-graphic { height: 32px; width: 350px; }
-  /* reveal the hidden Menu */
-  #shellmenu { line-height: 1.6px; height: 1.6px; }
-  #currentLocation { display:none; }
-  .menuicon { height: 15px; width: 15px; padding: 0 10px 0 0; }
-  .menutext { display: inline; font-size: 90%; padding: 0; margin: 0; }
-  .mainmenu-listitem { text-align: left; }
-  #nav { width: auto; clear: none; float: left; padding: 0px 0 0 0px; background-color: #fff; font-weight: bold; }
-  #subNav { font-size:10pt; padding-top:25px; }
-  #shellmenu-text { display: block; padding: 0px 0px 0px 0px; color: #fff; background-color: #0067a0; }
-  #header th, #header td { font-size: 80%; }
-  /* these are the new rules for the js powered dropdown menu */
-  #nav { padding: 0; margin: 0; }
-  #shellmenu { padding: 0px; background-color: #333; color: #fff; text-align: center; }
-  #shellmenu-text { padding: 10 0 30px; background: #fff; }
-  #shellmenu ul { display: none; list-style: none; margin-left: 0; padding-left: 0; margin-bottom: 0; }
-  #shellmenu ul.expanded { display: block; }
-  #shellmenu li a { display: block; position: relative; padding: 5px; border-top: 1px solid #ffffff; font-size: 90%; color: #ccc; text-decoration: none; width: 120px; }
-  .lastmenuitem a { padding: 5px !important; }
-  #navContainer { height:22px; }
-  #nav a { font-size:12pt; background: #666; color: #fff; width:110px; }
-  #nav a:hover { background: #0067a0; color: #fff; }
- .mainmenu-listitem { float: none; }
- .menu_button { display: block; text-align: left; color: #fff; background-color: #0067a0; text-decoration: none; width: 110px; }
- .menu_button:hover { color: #fff; background: #0067a0; text-decoration: none; }
-  /* other rules */
-  #container { padding: 5px; margin: 5px; padding-top:50px; }
-  #container th { font-size: 75%; }
-  #container td { font-size: 75%; }
-  #deviceInfo th, #deviceInfo td { font-size: 90%; }
-}
-
-@media only screen and (max-width : 360px) {
-    #logo { width: 200px; height: 68px; }
-    #logo-graphic { height: 18px; width: 200px; }
-    #logoRight { display:none; }
-    #logo-graphic-right { display:none; }
-}
-</style>﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"><head><title>Configuration</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"> <%INCLUDE:style.css%> <%INCLUDE:mkreq.js%> <script>
-var oNavClass;
-function toggleNav() { var e = document.getElementById('mainmenu'); var c = e.className; if (oNavClass === undefined) { oNavClass = c; } e.className = /expanded/.test(c) ? oNavClass : oNavClass + ' expanded'; }
-function onWindowLoad() { setCurrentTab("config", "Uploads"); var a = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; var e = "<a href='devconfig.html'>Administration</a>" + a + "<a href='devconfigEthernet.html'>Ethernet</a>" + a + "<a href='devconfigwifi.html'>Wi-Fi</a>" + a + "<a href='devconfigsnmp.html'>SNMP</a>" + a + "<a href='devconfigmodbus.html'>Modbus</a>" + a + "<a href='devconfigemail.html'>Email</a>" + a + "<a href='devconfigbacnet.html'>BACnet</a>" + a + "Uploads"; setSubNav(e); checkAlarms(); }
-window.onload = onWindowLoad;
-function checkfirmwaredata() { var fup = document.getElementById('image'); var fileName = fup.value; var fileNameIndex = fileName.lastIndexOf('\\') + 1; fileName = fileName.substring(fileNameIndex); if (fileName != null && fileName.length > 0) { if (fileName.substring(0, 5) == "firmw" && getFileExtension(fileName) == "bin") { return true; } else { alert("Error: This is not an acceptable Firmware file."); } } else { alert("File is required for upload"); } fup.focus(); return false; }
-function checkWebpageData() { var fup = document.getElementById('web'); var fileName = fup.value; var fileNameIndex = fileName.lastIndexOf('\\') + 1; fileName = fileName.substring(fileNameIndex); if (fileName != null && fileName.length > 0) { if (fileName.substring(0, 5) == "web_p" && getFileExtension(fileName) == "tfs") { return true; } else { alert("Error: This is not an acceptable Webpage file."); } } else { alert("File is required for upload"); } return false; }
-function checkcertdata() { var fup = document.getElementById('certs'); var fileName = fup.value; var fileNameIndex = fileName.lastIndexOf('\\') + 1; fileName = fileName.substring(fileNameIndex); if (fileName != null && fileName.length > 0) { if (fileName.substring(0, 5) == "certi" && getFileExtension(fileName) == "tfs") { return true; } else { alert("Error: This is not an acceptable certificate file."); } } else { alert("File is required for upload"); } return false; }
-function checkmeterdata() { var fup = document.getElementById('meter'); var fileName = fup.value; var fileNameIndex = fileName.lastIndexOf('\\') + 1; fileName = fileName.substring(fileNameIndex); if (fileName != null && fileName.length > 0) { if (fileName.substring(0, 5) == "meter" && getFileExtension(fileName) == "hex") { return true; } else { alert("Error: This is not an acceptable meter data file."); } } else { alert("File is required for upload"); } return false; }
-function checkwifidata() { var fup = document.getElementById('wifi'); var fileName = fup.value; var fileNameIndex = fileName.lastIndexOf('\\') + 1; fileName = fileName.substring(fileNameIndex); if (fileName != null && fileName.length > 0) { if (fileName.substring(0, 5) == "wifi_" && getFileExtension(fileName) == "bin") { return true; } else { alert("Error: This is not an acceptable WIFI data file."); } } else { alert("File is required for upload"); } return false; }
-function getFileExtension(name) { var found = name.lastIndexOf('.') + 1; return (found > 0 ? name.substr(found) : ""); }
-</script></head> <body><div id="wrap"><div id="banner"><%INCLUDE:banner.html%></div><div id="container"> <form method="POST" action="upload_file.cgi" name="form1" id="form1" enctype="multipart/form-data" onsubmit="return checkfirmwaredata();"><h2>Firmware upload</h2><input id="image" type="file" name="image" class="button"><input type="submit" value="Upload" class="button"></form> <p><form method="POST" action="upload_file.cgi" name="form2" id="form2" enctype="multipart/form-data" onsubmit="return checkWebpageData();"><h2>Web pages upload</h2><input id="web" type="file" name="web" class="button"><input type="submit" value="Upload" class="button"></form></p> <p><form method="POST" action="upload_file.cgi" name="cert_upload" id="cert_upload" enctype="multipart/form-data" onsubmit="return checkcertdata();"><h2>Certificate upload</h2><input id="certs" type="file" name="certs" class="button"><input type="submit" value="Upload" class="button"></form></p> <p><form method="POST" action="upload_file.cgi" name="meter_upload" id="meter_upload" enctype="multipart/form-data" onsubmit="return checkmeterdata();"><h2>Meter upload</h2><input id="meter" type="file" name="meter" class="button"><input type="submit" value="Upload" class="button"></form></p> <p><form method="POST" action="upload_file.cgi" name="wifi_upload" id="wifi_upload" enctype="multipart/form-data" onsubmit="return checkwifidata();"><h2>Wifi upload</h2><input type="checkbox" name="program" value="program" checked="checked" style="display: none;"><input id="wifi" type="file" name="wifi" class="button"> <input type="submit" value="Upload" class="button"></form></p> <p><form method="POST" action="reboot.cgi" name="reboot" id="reboot"><input type="submit" value="Reboot" class="button"></form></p></div><%INCLUDE:footer.html%></div></body></html>
------------------------------7dd3201c5104d4
