@@ -33,8 +33,8 @@ def upload_file(host, fname, slot, path):
     headers = {'Content-Disposition ': 'form-data; name="' + slot + '"; filename="' + path + '"'}
     #mydata = {'name': slot, 'filename': path}
 
-    myfile = {fname: open(path, "rb")}
-
+    #myfile = {'file':(fname, open(path, 'rb'),'application/octet-stream',{'Expires': '0'}}
+    myfile = {'file': (fname, open(fname, 'rb'), 'application/octet-stream', {'Expires': '0'})}
     #response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
     response = Request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
     #response = Request("POST", url=host, files=myfile, data=mydata, auth=('factory', 'factory'))
