@@ -34,10 +34,9 @@ def upload_file(host, fname, slot, path):
     #mydata = {'name': slot, 'filename': path}
 
     myfile = {'web': (fname, open(fname, 'rb'), 'application/octet-stream')}
-    #response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
+    response = requests.request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
     response = Request("POST", url=host, files=myfile, headers=headers, auth=('factory', 'factory'))
-    #response = Request("POST", url=host, files=myfile, data=mydata, auth=('factory', 'factory'))
-    pretty_print_POST(response.prepare())
+    #pretty_print_POST(response.prepare())
 
     #print("response")
     #print(response.status_code)
