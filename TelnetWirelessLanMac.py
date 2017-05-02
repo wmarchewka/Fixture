@@ -3,7 +3,7 @@ import socket
 def write_wifi_mac(host):
     try:
         port = 23
-        print('Starting button test on ' + host)
+        print('Setting wireless LAN MAC ' + host)
         sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sc.settimeout(2)
         conn = host, port
