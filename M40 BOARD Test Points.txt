@@ -1,6 +1,6 @@
 TP1 	1V8
-TP2	    MB "A"			MOBUS
-TP3	    MB "B"			MODBUS
+TP2	    MB "A"			MOBUS A     red wire on rj11        yellow on rj11 is gnd
+TP3	    MB "B"			MODBUS      green wire on rj11
 TP4	    UART5 RX 		DEBUG
 TP5 	UART5 TX 		DEBUG
 TP6	    GND

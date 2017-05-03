@@ -1,0 +1,6 @@
+black   gnd
+brown   term1   for termination
+red     power   5v 250ma
+orange  data A+
+yellow  data B-
+green   term2   for termination
