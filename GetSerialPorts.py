@@ -42,12 +42,13 @@ def serial_ports():
             #st = s.get_settings()
             s.close()
             settings.append(port)
+            print(port)
         except (OSError, serial.SerialException):
             pass
     return settings
 
 def main():
-    pass
+    serial_ports()
 
 if __name__ == '__main__':
     main()
