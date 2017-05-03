@@ -1,11 +1,9 @@
 import minimalmodbus
 import time
 
-def mbComm(comport,address):
+def mbComm(comport, address, register):
 
     try:
-
-
         uut = minimalmodbus.Instrument(comport, address)
         uut.debug = True
         uut.serial.timeout = 0.5
@@ -16,7 +14,8 @@ def mbComm(comport,address):
         uut.mode = minimalmodbus.MODE_RTU
         count = 0
         while count < 5:
-            value = uut.read_register(19, 1 , 4)     #register, number of decimals
+            value = uut.read_register(register, 1 , 4)     #register, number of decimals
+            value = uut.read_float(register)  # register, number of decimals
             print('Value->' + str(value))
             time.sleep(1)
             count = count + 1
@@ -40,7 +39,8 @@ def __init__(self):
 def main():
     add = 1
     comport = 'COM44'
-    ret = mbComm(comport, add)
+    register = 490
+    ret = mbComm(comport, add, register)
     print(ret)
 
 if __name__ == '__main__':
