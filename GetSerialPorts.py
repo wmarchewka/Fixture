@@ -35,6 +35,7 @@ def serial_ports():
     else:
         raise EnvironmentError('Unsupported platform')
 
+    print("Searching for serial ports...")
     settings = []
     for port in ports:
         try:
@@ -42,7 +43,7 @@ def serial_ports():
             #st = s.get_settings()
             s.close()
             settings.append(port)
-            print(port)
+            print('Found->' + port)
         except (OSError, serial.SerialException):
             pass
     return settings

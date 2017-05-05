@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
-    <height>494</height>
+    <width>1024</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Fixture</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pbPowerOn">
@@ -314,7 +314,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>768</width>
+     <width>1024</width>
      <height>21</height>
     </rect>
    </property>
@@ -333,4 +333,3 @@
  <resources/>
  <connections/>
 </ui>
-

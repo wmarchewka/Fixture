@@ -11,24 +11,24 @@ import Cyclone_Program as pc
 import GetSerialPorts as gs
 import BarCode as sc
 import Configuration as cf
-import mainwindow_auto
+import QT_Project.mainwindow_auto as mw
 from PyQt5.QtCore import QObject, pyqtSignal
 import GPIO_Init
 from PyQt5.QtWidgets import *
 import PingUUT as pn
 
-global ser
+global DemoJM_Serialport
 
-class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
+class MainWindow(QMainWindow, mw.Ui_MainWindow,GPIO_Init.Init):
 
     serialtrigger = pyqtSignal(bytes)
-    global ser
+    global DemoJM_Serialport
 
     def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
         self.serialtrigger.connect(self.parse_serial_data)
-        serial_ports_list = gs.serial_ports()
+        serial_ports_list = gs.serial_ports()                                               #run serial port routine
         self.cbTFP3ComPort.addItems(serial_ports_list)
         self.cbScannerComPort.addItems(serial_ports_list)
         self.cbCycloneComPort.addItems(serial_ports_list)
@@ -48,32 +48,34 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
         self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
         self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
         self.lnSerialTest.textChanged.connect(self.SerialTest)
-        self.check_for_config()
+        self.check_for_config()                                                                 #open configuration file
         self.populate_defaults()
-        print(self.tfp3relay_pin)
+        print('TFP3 relay pin ' + str(self.tfp3relay_pin))
         self.check_serial_event()
 
     def check_serial_event(self):
-        global ser
+        global DemoJM_Serialport
         serial_thread = threading.Timer(1, self.check_serial_event)
-        if ser.isOpen() == True:
-            serial_thread.start()
-            print('running serial thread')
-            assert isinstance(ser, serial.Serial)
-            if ser.inWaiting():
-                while True:
-                    c = ser.read(1)
-                    print('received ' + str(c))
-                    if c:
-                        self.serialtrigger.emit(c)
-                        break
-                    else:
-                        break
+        try:
+            if DemoJM_Serialport.isOpen() == True:
+                serial_thread.start()
+                print('running serial thread')
+                assert isinstance(DemoJM_Serialport, serial.Serial)
+                if DemoJM_Serialport.inWaiting():
+                    while True:
+                        c = DemoJM_Serialport.read(1)
+                        print('received ' + str(c))
+                        if c:
+                            self.serialtrigger.emit(c)
+                            break
+                        else:
+                            break
+        except:
+            print('error in check serial')
 
-
-    def check_for_config(selfself):
+    def check_for_config(self):
         ret = cf.config_read('CONFIG','file_ver')
-        print(ret)
+        print('Found Configuration file version ' + ret)
 
     def power_up_relay(self):
         print('power up power relay')
@@ -126,8 +128,8 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
 
     def parse_serial_data(self,bData):
         strData = bData.decode('utf-8')
-        global ser
-        ser.write(bData + b'\r')
+        global DemoJM_Serialport
+        DemoJM_Serialport.write(bData + b'\r')
         self.txtSerialData.appendPlainText(strData)
         print('incoming data->' + strData)
         if (strData == 'S') or (strData == 's'):
@@ -139,8 +141,8 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
         else:
             try:
                 #Send ACK to LabVIEW
-                ser.write(b'K')
-                ser.write(b'\r')
+                DemoJM_Serialport.write(b'K')
+                DemoJM_Serialport.write(b'\r')
             except:
                 print('no serial port')
 
@@ -254,13 +256,13 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
         demojm_serial_port = self.cbDemoJMComPort.currentText()
         cf.config_write('DEMOJM', 'COM_PORT', demojm_serial_port)
         print('DemoJM port changed to ' + demojm_serial_port)
-        global ser
+        global DemoJM_Serialport
         try:
-            ser = serial.Serial(demojm_serial_port, baudrate=115200, timeout=10,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            bytesize=serial.EIGHTBITS
-                            )
+            DemoJM_Serialport = serial.Serial(demojm_serial_port, baudrate=115200, timeout=10,
+                                              parity=serial.PARITY_NONE,
+                                              stopbits=serial.STOPBITS_ONE,
+                                              bytesize=serial.EIGHTBITS
+                                              )
             print('Opened demojm serial port on port ' + demojm_serial_port)
         except:
             print('serial port error opening demojm')
@@ -271,7 +273,9 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
         global cyclone_serial_port
         global modbus_serial_port
         global demojm_serial_port
-        global ser
+        global DemoJM_Serialport
+
+        print('Populating defaults...')
 
         tfp3_serial_port = cf.config_read('TFP3', 'COM_PORT')
         index = self.cbTFP3ComPort.findText(tfp3_serial_port)
@@ -297,17 +301,7 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow,GPIO_Init.Init):
         index = self.cbDemoJMComPort.findText(demojm_serial_port)
         if index >= 0:
             self.cbDemoJMComPort.setCurrentIndex(index)
-        try:
-            ser = serial.Serial(demojm_serial_port, baudrate=115200, timeout=10,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            bytesize=serial.EIGHTBITS
-                            )
 
-
-        except:
-            ser = None
-            print('cannot find serial port')
 
 def main():
 

@@ -3,21 +3,41 @@ import os
 import base64
 import GetOS as gs
 import sys
+import Configuration as cf
 
 global osname
 osname = gs.get_platform()
 
-
 def file_size(fname):
     import os
     statinfo = os.stat(fname)
-    #print('filesize->' + str(statinfo.st_size))
     return statinfo.st_size
 
-def upload_file(host,fname,slot,path,user,password):
+def upload_file(slot):
     try:
+        boardtype = cf.config_read('UUT',"major_board_type")
+        if boardtype == "M40":
+            section = 'M40_FOLDERS'
+        if boardtype == "M50":
+            section = 'M50_FOLDERS'
+        if boardtype == "M60":
+            section = 'M60_FOLDERS'
+
+        if slot == 'wifi':
+            key = 'm40_wifi_firmware'
+        if slot == 'web':
+            key = 'm40_web_page_upload'
+        if slot == 'meter':
+            key = 'm40_meter_ic_firmware'
+        if slot == 'firmware':
+            key = 'm40_firmware'
+
+        path = cf.config_read(section, key)
+        host = cf.config_read('TELNET',"ip_address")
+        user = 'factory'
+        password = 'factory'
         port = 80
-        print('Starting uploading of file to  ' + host)
+        print('Starting uploading of file ' + path + ' to  ' + host)
         sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sc.settimeout(5)
         conn = host, port
@@ -44,7 +64,7 @@ def upload_file(host,fname,slot,path,user,password):
 
         my_req_head = "POST /upload_file.cgi HTTP/1.1\r\n"
         my_req_head = my_req_head + "Accept-Language: en-us\r\n"
-        my_req_head = my_req_head + "Host: 192.168.1.99\r\n"
+        my_req_head = my_req_head + "Host: " + str(host) + "\r\n"
         my_req_head = my_req_head + "Content-Type: multipart/form-data; boundary=---------------------------7dd3201c5104d4\r\n"
         my_req_head = my_req_head + "Content-Length: " + str(totalsize) + "\r\n"
         my_req_head = my_req_head + "Connection: Keep-Alive\r\n"
@@ -97,22 +117,14 @@ def upload_file(host,fname,slot,path,user,password):
 
 
 def main():
-
     global osname
-    host = '192.168.1.99'
-    #host = '10.0.0.229'
     slot = 'web'
-    username = 'factory'
-    password = 'factory'
     print(osname)
-
     if osname == "Windows":
         path = r"C:\web_pages_UEC_AC_025_ENG.tfs"
     elif osname == "OS X":
         path = os.path.expanduser("~/web_pages_UEC025_ENG.tfs")
-
-    fname = 'web_pages_UEC025_ENG.tfs'
-    ret = upload_file(host,fname,slot, path, username, password)
+    ret = upload_file(slot)
     print(ret)
 
 if __name__ == '__main__':

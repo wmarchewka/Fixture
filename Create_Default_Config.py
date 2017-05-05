@@ -36,8 +36,8 @@ def config_write_defaults():
     config.set('M40_FOLDERS', 'TEST_REPORTS', 'C:\\UEC\\Functional Test\\M40\\Test Reports\\Dual Ethernet')
     config.set('M40_FOLDERS', 'CONFIGURATION', 'C:\\UEC\\Functional Test\\M40\\Configuration')
     config.set('M40_FOLDERS', 'M40_FIRMWARE', 'C:\\UEC\\Functional Test\\M40\\Configuration\\firmware_v3.39.bin')
-    config.set('M40_FOLDERS', 'M40_WIFI_FIRWARE', 'C:\\UEC\\Functional Test\\M40\\Configuration\\wifi_v0x2124a503.bin')
-    config.set('M40_FOLDERS', 'M40_WEB_PAGE_UPOAD', 'C:\\UEC\\Functional Test\\M40\\Configuration\\web_pages_UEC025_ENG.tfs')
+    config.set('M40_FOLDERS', 'M40_WIFI_FIRMWARE', 'C:\\UEC\\Functional Test\\M40\\Configuration\\wifi_v0x2124a503.bin')
+    config.set('M40_FOLDERS', 'M40_WEB_PAGE_UPLOAD', 'C:\\UEC\\Functional Test\\M40\\Configuration\\web_pages_UEC025_ENG.tfs')
     config.set('M40_FOLDERS', 'M40_METER_IC_FIRMWARE', 'C:\\UEC\\Functional Test\\M40\\Configuration\\meter_v1.20.hex')
     config.add_section('M50_FOLDERS')
     config.set('M50_FOLDERS', 'M50_BASE', 'C:\\UEC\\Functional Test\\M50')
@@ -65,6 +65,8 @@ def config_write_defaults():
     config.set('UUT', 'REVISION', '')
     config.set('UUT', 'BUILD_DATE', '')
     config.set('UUT', 'SERIAL_NUMBER', '')
+    config.set('UUT', 'MAJOR_BOARD_TYPE', '')
+    config.set('UUT', 'BOARD_VOLTAGE', '')
 
     with open('master_configuration.cfg', 'w') as configfile:
         config.write(configfile)

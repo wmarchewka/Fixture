@@ -4,7 +4,7 @@ def config_write(section,key,value):
 
     config = configparser.RawConfigParser()
     config.read('configuration.cfg')
-
+    print('Writing to config->Section:' + section + 'Key:' + key + ' Value: ' + value)
     try:
         config.add_section(section)
         config.set(section, key, value)
@@ -17,12 +17,11 @@ def config_write(section,key,value):
 
 
 def config_read(section,key):
-
     config = configparser.RawConfigParser()
     config.read('configuration.cfg')
-
     try:
         value = config.get(section,key)
+        print('Reading from config-> Section:' + section + ' Key:' + key + ' Value: ' + value)
         return value
     except:
         return ('ERROR')
