@@ -3,7 +3,7 @@
 
 import configparser
 
-def config_write(section,key,value):
+def testlogConfigWrite(section,key,value):
 
     config = configparser.RawConfigParser()
     config.read('configuration.cfg')
@@ -19,7 +19,7 @@ def config_write(section,key,value):
             config.write(configfile)
 
 
-def config_read(section,key):
+def testlogConfigRead(section,key):
 
     config = configparser.RawConfigParser()
     config.read('configuration.cfg')

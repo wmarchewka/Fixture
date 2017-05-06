@@ -1,25 +1,39 @@
-import GetOS as gos
-os_name = gos.get_platform()
-print('os name->' + os_name)
-import RPi.GPIO as gp
+#native libraries
 import threading
-import serial
 import time
-import TelnetGetVoltagesCurrents as gv
-import TFP3_Program as tf
-import Cyclone_Program as pc
-import GetSerialPorts as gs
-import BarCode as sc
-import Configuration as cf
-import QT_Project.mainwindow_auto as mw
-from PyQt5.QtCore import QObject, pyqtSignal
-import GPIO_Init
+
+#other libraries
+import serial
+import RPi.GPIO as gp
 from PyQt5.QtWidgets import *
-import PingUUT as pn
+
+#my libraries
+from QT_Project import mainwindow_auto as mw
+from PyQt5.QtCore import pyqtSignal
+import SupportLibrary as sl
+import EthernetCommLibrary as el
+import ProgrammersLibrary as pl
+import SerialBarCodeModbusLibrary as ml
+import FileConfigurationLibrary as fl
+
+gv = el.GetTelnetVoltages()
+pn = el.PingUUT()
+pc = pl.CycloneProgram()
+tf = pl.TFP3Program()
+gs = ml.collectSerialPorts()
+sc = ml.ScanBarcode()
+
+
+os_name = sl.get_platform()
+print('os name->' + os_name)
+
 
 global DemoJM_Serialport
+global Testing
 
-class MainWindow(QMainWindow, mw.Ui_MainWindow,GPIO_Init.Init):
+
+
+class MainWindow(QMainWindow, mw.Ui_MainWindow ):
 
     serialtrigger = pyqtSignal(bytes)
     global DemoJM_Serialport

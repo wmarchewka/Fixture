@@ -1,6 +1,6 @@
 import socket
-import UploadFirmware
-import BarCode as bc
+
+from OLD_Files import UploadFirmware
 
 
 def setup_wifi(host, new_mac):
@@ -22,6 +22,9 @@ def setup_wifi(host, new_mac):
         old_mac = str(old_mac)
         if old_mac == 'N/A':
             print('No WIFI MAC Found')
+            return False, "No WIFI MAC found"
+        else:
+            print("Current MAC " + old_mac)
         if new_mac:
             print('old_mac -> ' + str(old_mac))
             print('new_mac -> ' + new_mac)
@@ -39,6 +42,8 @@ def setup_wifi(host, new_mac):
                 print('Lan Mac successfully set')
                 ret = UploadFirmware.upload_file('wifi')
 
+                print(ret)
+
     except OSError as err:
         print(err)
         return False, err
@@ -47,7 +52,7 @@ def setup_wifi(host, new_mac):
 
 def main():
     ip_add = '192.168.1.99'
-    mac_add = ''
+    mac_add = '58:2f:42:20:00:01'
     ret = setup_wifi(ip_add, mac_add)
     print(ret)
 

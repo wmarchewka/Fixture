@@ -1,9 +1,8 @@
-import socket
-import os
 import base64
-import GetOS as gs
-import sys
-import Configuration as cf
+import os
+import socket
+
+from OLD_Files import Configuration as cf, GetOS as gs
 
 global osname
 osname = gs.get_platform()

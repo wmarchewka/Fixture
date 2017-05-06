@@ -1,8 +1,9 @@
-import requests
-from requests import Request, Session
-import io
-import GetOS as gs
 import os
+
+import requests
+from requests import Request
+
+from OLD_Files import GetOS as gs
 
 global osname
 osname = gs.get_platform()
