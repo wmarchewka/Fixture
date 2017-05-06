@@ -10,7 +10,7 @@ global osname
 osname = gs.get_platform()
 
 #******************************************************************************************
-def PingUUT(ip_add, secs):
+def pinguut(ip_add, secs):
     pingcount = 0
     while True:
         print("pinging UUT at ip " + ip_add +' count ' +  str(pingcount))
@@ -34,12 +34,12 @@ def check_reset_button(ip_add):
     global respond_initial
     global reset
     while  True:
-        val = PingUUT(ip_add)
+        val = pinguut(ip_add)
         if val:
             respond_initial = True
             print('press reset button')
             time.sleep(2)
-        if respond_initial == False:
+        if not respond_initial:
             print('did not respond to initial ping')
             return False,  'Did not respond to initial ping'
         if respond_initial == True and val ==  False:
@@ -52,7 +52,7 @@ def check_reset_button(ip_add):
 #******************************************************************************************
 def write_lan_mac(ip_add):
     try:
-        host = "192.168.1.8"
+        host = ip_add
         port = 23
         print('Starting button test on ' + host)
         sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -89,10 +89,9 @@ def write_lan_mac(ip_add):
         return False, err
 
 #******************************************************************************************
-def GetTelnetVoltages():
+def getvoltages(ip_add):
     try:
-        HOST = "192.168.1.6"
-        #HOST = '192.168.1.99'
+        HOST = ip_add
         print("Getting Voltages from " + HOST)
         PORT = 23
         TIMEOUT = 5
@@ -145,7 +144,7 @@ def GetTelnetVoltages():
         return False, err
 
 #******************************************************************************************
-def TelnetM40ButtonTest():
+def m40buttontest():
     try:
         host = "192.168.1.8"
         port = 23
@@ -211,7 +210,7 @@ def TelnetM40ButtonTest():
         return False, err
 
 #******************************************************************************************
-def ModbusInit(ip_add):
+def modbusinit(ip_add):
     print("Setting modbus defaults")
     PORT = 23
     TIMEOUT = 5
@@ -228,7 +227,7 @@ def ModbusInit(ip_add):
 
     return tempdata
 #******************************************************************************************
-def SetPCR(host):
+def setpcr(host):
     try:
         print("Setting PCR value on " + host)
         sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -580,16 +579,16 @@ def main():
         ret = write_serialnumber(ip_add)
 
     if module == "G":
-        ret = SetPCR(ip_add)
+        ret = setpcr(ip_add)
 
     if module == "H":
-        ret = ModbusInit(ip_add)
+        ret = modbusinit(ip_add)
 
     if module == "I":
-        ret  = TelnetM40ButtonTest()
+        ret  = m40buttontest()
 
     if module == "J":
-        ret = GetTelnetVoltages()
+        ret = getvoltages()
 
     if module == "K":
         ret = write_lan_mac(ip_add)
@@ -603,7 +602,7 @@ def main():
 
     if module == "M":
         secs = 3
-        ret = PingUUT(ip_add, secs)
+        ret = pinguut(ip_add, secs)
 
 
 

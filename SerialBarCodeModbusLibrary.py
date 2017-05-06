@@ -1,5 +1,6 @@
 import glob
 import time
+import sys
 
 import minimalmodbus
 import serial
@@ -37,6 +38,7 @@ def collectSerialPorts():
             print('Found->' + port)
         except (OSError, serial.SerialException):
             pass
+    settings.append('none')
     return settings
 
 #******************************************************************************************
@@ -102,7 +104,7 @@ def ScanBarcode(port):
             serial_number =  nospaces[3]
             partnumber = p_number + '-' + board_type + '-' + config_cal + '-' + unknown + '-' + revision + '-' + build_date + '-' + serial_number
             filename = partnumber + '.txt'
-            board_major_type = MajorBoardType(p_number, board_type, config_cal)
+            MajorBoardType(p_number, board_type, config_cal)
             print('Filename ' + filename)
             cf.config_write('UUT', 'PART_NUMBER', partnumber)
             cf.config_write('UUT', 'P_NUMBER', p_number)

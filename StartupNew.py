@@ -4,45 +4,36 @@ import time
 
 #other libraries
 import serial
-import RPi.GPIO as gp
+try:
+    import RPi.GPIO as gp
+except ImportError:
+    import FakeRPi.GPIO as gp
 from PyQt5.QtWidgets import *
 
 #my libraries
 from QT_Project import mainwindow_auto as mw
 from PyQt5.QtCore import pyqtSignal
-import SupportLibrary as sl
 import EthernetCommLibrary as el
 import ProgrammersLibrary as pl
 import SerialBarCodeModbusLibrary as ml
 import FileConfigurationLibrary as fl
 
-gv = el.GetTelnetVoltages()
-pn = el.PingUUT()
-pc = pl.CycloneProgram()
-tf = pl.TFP3Program()
-gs = ml.collectSerialPorts()
-sc = ml.ScanBarcode()
-
-
-os_name = sl.get_platform()
-print('os name->' + os_name)
-
-
-global DemoJM_Serialport
 global Testing
+import SupportLibrary as sl
+global demojm_serial_port
 
+class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
-
-class MainWindow(QMainWindow, mw.Ui_MainWindow ):
-
-    serialtrigger = pyqtSignal(bytes)
     global DemoJM_Serialport
+    serialtrigger = pyqtSignal(bytes)
 
     def __init__(self):
+        os_name = sl.getOsPlatform(self)
+        print('os name->' + os_name)
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
         self.serialtrigger.connect(self.parse_serial_data)
-        serial_ports_list = gs.serial_ports()                                               #run serial port routine
+        serial_ports_list = ml.collectSerialPorts()                                            #run serial port routine
         self.cbTFP3ComPort.addItems(serial_ports_list)
         self.cbScannerComPort.addItems(serial_ports_list)
         self.cbCycloneComPort.addItems(serial_ports_list)
@@ -51,7 +42,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
         self.pbPowerOn.clicked.connect(lambda: self.power_up_relay())
         self.pbPowerOff.clicked.connect(lambda: self.power_down_relay())
         self.pbSendTelnet.clicked.connect(lambda: self.pressedTelnetButton())
-        self.pbTelnetGetVoltages.clicked.connect(lambda: self.TelnetGetVoltage())
+        self.pbTelnetGetVoltages.clicked.connect(lambda: self.GetVoltages())
         self.pbReadScanner.clicked.connect(lambda: self.pressedSendScannerButton())
         self.pbDoPing.clicked.connect(lambda: self.PingUUT())
         self.pbProgCyclone.clicked.connect(lambda: self.programCyclone())
@@ -61,17 +52,19 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
         self.cbCycloneComPort.currentIndexChanged.connect(self.CycloneSerialPortChanged)
         self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
         self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
+        self.cbDemoJMComPort.activated[str].connect(self.DemoJMSerialPortChanged)
         self.lnSerialTest.textChanged.connect(self.SerialTest)
         self.check_for_config()                                                                 #open configuration file
         self.populate_defaults()
-        print('TFP3 relay pin ' + str(self.tfp3relay_pin))
+        print('TFP3 relay pin ' + str(sl.gpio_tfp3relay_pin))
         self.check_serial_event()
+        ip_address = fl.configfileRead('TELNET','ip_address')
 
     def check_serial_event(self):
         global DemoJM_Serialport
         serial_thread = threading.Timer(1, self.check_serial_event)
         try:
-            if DemoJM_Serialport.isOpen() == True:
+            if DemoJM_Serialport.isOpen():
                 serial_thread.start()
                 print('running serial thread')
                 assert isinstance(DemoJM_Serialport, serial.Serial)
@@ -84,11 +77,17 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
                             break
                         else:
                             break
-        except:
-            print('error in check serial')
+        except OSError as err:
+            print(err)
+        except ValueError as err:
+            print(err)
+        except SystemError as err:
+            print(err)
+        except NameError as err:
+            print(err)
 
     def check_for_config(self):
-        ret = cf.config_read('CONFIG','file_ver')
+        ret = fl.configfileRead('CONFIG','file_ver')
         print('Found Configuration file version ' + ret)
 
     def power_up_relay(self):
@@ -100,7 +99,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
         gp.output(self.powerrelay_pin, self.gpio_off)  ## Switch on pin 7
         time.sleep(2)
         gp.output(self.powerrelay_pin, self.gpio_on)  ## Switch on pin 7
-
 
     def power_down_relay(self):
         print('power down power relay')
@@ -127,9 +125,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
     def get_status(self):
         print('gpio get status off all pins')
         gp.output(self.gpio_tfp3relay_pin, self.gpio_off)
-
-        pass
-
 
     def send_report(self):
         pass
@@ -179,18 +174,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
         elif ((strData == 'W') or (strData == 'w')):
             MainWindow.all_outputs_toggle(self)
 
-    def scanSerialPorts(self):
-        serial_ports_list = gs.serial_ports()
-        self.cbTFP3ComPort.addItems(serial_ports_list)
-        self.cbScannerComPort.addItems(serial_ports_list)
-        self.cbCycloneComPort.addItems(serial_ports_list)
-        self.cbModbusComPort.addItems(serial_ports_list)
-        self.populate_defaults()
-
-    def TelnetGetVoltage(self):
+    def GetVoltages(self):
         print("Pressed voltage...")
-        data = gv.GetTelnetVoltages(self)
-        OS_NAME = data
+        data = el.getvoltages()
         print(data)
 
     def pressedSendSerialButton(self):
@@ -199,7 +185,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
     def pressedTFP3Button(self):
         self.lblStatus.setText("TFP3 programming...")
         print('Starting TFP3 programmer on port ' + tfp3_serial_port)
-        ret = tf.StartProgram(tfp3_serial_port)
+        ret = pl.TFP3Program(tfp3_serial_port)
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
         if ret[0]:
@@ -210,7 +196,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
     def programCyclone(self):
         self.lblStatus.setText("Programming cyclone !")
         print("Programming cyclone !")
-        ret = pc.Main.ProgramCyclone(cyclone_serial_port)
+        ret = pl.CycloneProgram(cyclone_serial_port)
         print ('Returned value '+ str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
         if ret[0]:
@@ -221,7 +207,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
 
     def pressedSendScannerButton(self):
         print("Pressed Scanner Send")
-        ret = sc.ScanBarcode(scanner_serial_port)
+        ret = ml.ScanBarcode(scanner_serial_port)
         print('Received from scanner: '+ str(ret[0]))
 
         if ret:
@@ -233,7 +219,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
         print("Pressed Telnet")
 
     def PingUUT(self):
-        ret = pn.PingUUT('192.168.1.99', 5)
+        ret = el.pinguut(ip_address, 5)
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
         if ret[0]:
@@ -244,31 +230,31 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
     def tfp3SerialPortChanged(self):
         global tfp3_serial_port
         tfp3_serial_port = self.cbTFP3ComPort.currentText()
-        cf.config_write('TFP3','COM_PORT',tfp3_serial_port)
+        fl.configfileWrite('TFP3','COM_PORT',tfp3_serial_port)
         print('TFP3 port changed to  ' + tfp3_serial_port)
 
     def ScannerSerialPortChanged(self):
         global scanner_serial_port
         scanner_serial_port = self.cbScannerComPort.currentText()
-        cf.config_write('SCANNER','COM_PORT',scanner_serial_port)
+        fl.configfileWrite('SCANNER','COM_PORT',scanner_serial_port)
         print('Scanner port changed to '+ scanner_serial_port )
 
     def CycloneSerialPortChanged(self):
         global cyclone_serial_port
         cyclone_serial_port = self.cbCycloneComPort.currentText()
-        cf.config_write('CYCLONE','COM_PORT',cyclone_serial_port)
+        fl.configfileWrite('CYCLONE','COM_PORT',cyclone_serial_port)
         print('Cyclone port changed to ' + cyclone_serial_port)
 
     def ModbusSerialPortChanged(self):
         global modbus_serial_port
         modbus_serial_port = self.cbModbusComPort.currentText()
-        cf.config_write('MODBUS','COM_PORT',modbus_serial_port)
+        fl.configfileWrite('MODBUS','COM_PORT',modbus_serial_port)
         print('Modbus port changed to ' + modbus_serial_port)
 
     def DemoJMSerialPortChanged(self):
         global demojm_serial_port
         demojm_serial_port = self.cbDemoJMComPort.currentText()
-        cf.config_write('DEMOJM', 'COM_PORT', demojm_serial_port)
+        fl.configfileWrite('DEMOJM', 'COM_PORT', demojm_serial_port)
         print('DemoJM port changed to ' + demojm_serial_port)
         global DemoJM_Serialport
         try:
@@ -278,8 +264,16 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
                                               bytesize=serial.EIGHTBITS
                                               )
             print('Opened demojm serial port on port ' + demojm_serial_port)
-        except:
-            print('serial port error opening demojm')
+            self.check_serial_event()
+
+        except OSError as err:
+            print(err)
+        except ValueError as err:
+            print(err)
+        except SystemError as err:
+            print(err)
+        except NameError as err:
+            print(err)
 
     def populate_defaults(self):
         global tfp3_serial_port
@@ -291,29 +285,45 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow ):
 
         print('Populating defaults...')
 
-        tfp3_serial_port = cf.config_read('TFP3', 'COM_PORT')
+        tfp3_serial_port = fl.configfileRead('TFP3', 'COM_PORT')
         index = self.cbTFP3ComPort.findText(tfp3_serial_port)
         if index >= 0:
             self.cbTFP3ComPort.setCurrentIndex(index)
+        else:
+            index = self.cbTFP3ComPort.findText('none')
+            self.cbTFP3ComPort.setCurrentIndex(index)
 
-        scanner_serial_port = cf.config_read('SCANNER', 'COM_PORT')
+        scanner_serial_port = fl.configfileRead('SCANNER', 'COM_PORT')
         index = self.cbScannerComPort.findText(scanner_serial_port)
-        if index >= 0:
+        if index >=0:
+            self.cbScannerComPort.setCurrentIndex(index)
+        else:
+            index = self.cbScannerComPort.findText('none')
             self.cbScannerComPort.setCurrentIndex(index)
 
-        cyclone_serial_port = cf.config_read('CYCLONE', 'COM_PORT')
+        cyclone_serial_port = fl.configfileRead('CYCLONE', 'COM_PORT')
         index = self.cbCycloneComPort.findText(cyclone_serial_port)
-        if index >= 0:
+        if index >=0:
+            self.cbCycloneComPort.setCurrentIndex(index)
+        else:
+            index = self.cbCycloneComPort.findText('none')
             self.cbCycloneComPort.setCurrentIndex(index)
 
-        modbus_serial_port = cf.config_read('MODBUS', 'COM_PORT')
+
+        modbus_serial_port = fl.configfileRead('MODBUS', 'COM_PORT')
         index = self.cbModbusComPort.findText(modbus_serial_port)
-        if index >= 0:
+        if index >=0:
+            self.cbModbusComPort.setCurrentIndex(index)
+        else:
+            index = self.cbModbusComPort.findText('none')
             self.cbModbusComPort.setCurrentIndex(index)
 
-        demojm_serial_port = cf.config_read('DEMOJM', 'COM_PORT')
+        demojm_serial_port = fl.configfileRead('DEMOJM', 'COM_PORT')
         index = self.cbDemoJMComPort.findText(demojm_serial_port)
-        if index >= 0:
+        if index >=0:
+            self.cbDemoJMComPort.setCurrentIndex(index)
+        else:
+            index = self.cbDemoJMComPort.findText('none')
             self.cbDemoJMComPort.setCurrentIndex(index)
 
 
@@ -329,4 +339,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
