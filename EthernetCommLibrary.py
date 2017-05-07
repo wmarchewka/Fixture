@@ -35,14 +35,17 @@ class EthComLib(object):
 
     #******************************************************************************************
     def check_reset_button(self, ip_add):
+        self.lblStatus.setText('Running button reset...')
+
         global respond_initial
         global reset
         while  True:
-            val = EthComLib.pinguut(self,ip_add,1)
+            val = EthComLib.pinguut(self,ip_add, 1)
             if val:
                 respond_initial = True
                 print('Press reset button')
                 update = ('Press reset button...')
+                self.lblStatus.setText(update)
                 time.sleep(2)
             if not respond_initial:
                 print('Did not respond to initial ping...')

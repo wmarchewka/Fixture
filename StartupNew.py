@@ -1,7 +1,11 @@
 #native libraries
 import threading
+import sys
+import base64
+import os
+import socket
+import telnetlib
 import time
-
 # other libraries
 import serial
 
@@ -10,7 +14,7 @@ try:
 except ImportError:
     import FakeRPi.GPIO as gp
 from PyQt5.QtWidgets import *
-
+from PyQt5 import QtGui
 #my libraries
 from QT_Project import mainwindow_auto as mw
 from PyQt5.QtCore import pyqtSignal
@@ -29,12 +33,11 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     serialtrigger = pyqtSignal(bytes)
 
     def __init__(self):
-        os_name = sl.getOsPlatform()
-        print('os name->' + os_name)
+
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
         self.serialtrigger.connect(self.parse_serial_data)
-        serial_ports_list = ml.collectSerialPorts()                                            #run serial port routine
+        serial_ports_list = ml.collectSerialPorts()  # run serial port routine
         self.cbTFP3ComPort.addItems(serial_ports_list)
         self.cbScannerComPort.addItems(serial_ports_list)
         self.cbCycloneComPort.addItems(serial_ports_list)
@@ -59,14 +62,16 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.populate_defaults()
         print('TFP3 relay pin ' + str(sl.gpio_tfp3relay_pin))
         self.check_serial_event()
+        
 
     def check_serial_event(self):
+        print('Starting serial receive thread')
         global DemoJM_Serialport
         serial_thread = threading.Timer(1, self.check_serial_event)
         try:
             if DemoJM_Serialport.isOpen():
                 serial_thread.start()
-                print('running serial thread')
+                print('Running serial thread')
                 assert isinstance(DemoJM_Serialport, serial.Serial)
                 if DemoJM_Serialport.inWaiting():
                     while True:
@@ -78,13 +83,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
                         else:
                             break
         except OSError as err:
-            print(err)
+            print('Serial thread not running due to ' + str(err))
         except ValueError as err:
-            print(err)
+            print('Serial thread not running due to ' + str(err))
         except SystemError as err:
-            print(err)
+            print('Serial thread not running due to ' + str(err))
         except NameError as err:
-            print(err)
+            print('Serial thread not running due to ' + str(err))
 
     def check_for_config(self):
         ret = fl.configfileRead('CONFIG','file_ver')
@@ -222,13 +227,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
 
     def PingUUT(self):
-        ret = el.EthComLib.pinguut(self,ip_address, 5)
+        ret = el.EthComLib.pinguut(self, ip_address, 5)
         print('Returned value ' + str(ret[0]))
-        self.lblStatus.setText(str(ret[1]))
-        if ret[0]:
-            pass
-        else:
-            pass
+
 
     def tfp3SerialPortChanged(self):
         global tfp3_serial_port
@@ -288,7 +289,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global ip_address
 
         print('Populating defaults...')
-
+        os_name = sl.getOsPlatform()
+        print('os name->' + os_name)
         ip_address = fl.configfileRead('TELNET','ip_address')
 
         tfp3_serial_port = fl.configfileRead('TFP3', 'COM_PORT')
@@ -335,7 +337,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
 def main():
 
-    import sys
     # a new app instance
     app = QApplication(sys.argv)
     form = MainWindow()
