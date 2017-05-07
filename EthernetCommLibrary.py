@@ -5,8 +5,7 @@ import telnetlib
 import time
 
 import FileConfigurationLibrary as fl
-
-from OLD_Files import SupportLibrary as sl
+import SupportLibrary as sl
 
 global osname
 osname = sl.getOsPlatform()

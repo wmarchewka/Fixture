@@ -14,8 +14,11 @@ from PyQt5.QtWidgets import *
 #my libraries
 from QT_Project import mainwindow_auto as mw
 from PyQt5.QtCore import pyqtSignal
-from OLD_Files import EthernetCommLibrary as el, SupportLibrary as sl, FileConfigurationLibrary as fl, \
-    SerialBarCodeModbusLibrary as ml, ProgrammersLibrary as pl
+import SerialBarCodeModbusLibrary as ml
+import ProgrammersLibrary as pl
+import EthernetCommLibrary as el
+import FileConfigurationLibrary as fl
+import SupportLibrary as sl
 
 global demojm_serial_port
 global Testing
@@ -56,15 +59,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.populate_defaults()
         print('TFP3 relay pin ' + str(sl.gpio_tfp3relay_pin))
         self.check_serial_event()
-
-
-
-
-
-
-
-
-
 
     def check_serial_event(self):
         global DemoJM_Serialport
