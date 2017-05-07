@@ -42,20 +42,21 @@ class EthComLib(object):
             if val:
                 respond_initial = True
                 print('Press reset button')
-                self.lblStatus.setText('Press reset button...')
+                update = ('Press reset button...')
                 time.sleep(2)
             if not respond_initial:
                 print('Did not respond to initial ping...')
-                self.lblStatus.setText('Did not respond to initial ping...')
+                update = ('Did not respond to initial ping...')
                 return False,  'Did not respond to initial ping'
             if respond_initial == True and val ==  False:
                 print ('Unit resetting...')
-                self.lblStatus.setText('Unit resetting...')
+                update = ('Unit resetting...')
                 reset = True
             if  val == True and reset == True:
                  print("Successfully reset...")
-                 self.lblStatus.setText('"Successfully reset...')
+                 update = ('"Successfully reset...')
                  return True, "Successfully reset..."
+            self.lblStatus.setText(update)
 
     #******************************************************************************************
     def write_lan_mac(ip_add):
