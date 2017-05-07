@@ -9,7 +9,7 @@ gpio_tfp3relay_pin = 3
 
 
 #******************************************************************************************
-def gpioInit(self):
+def gpioInit():
     #global powerrelay_pin
     #global tfp3relay_pin
     #example
@@ -25,11 +25,11 @@ def gpioInit(self):
     gpio_off = 0
 
 #******************************************************************************************
-def getOsPlatform(self):
+def getOsPlatform():
     platforms = {
         'linux1': 'Linux',
         'linux2': 'Linux',
-        'darwin': 'OS X',
+        'darwin': 'OSX',
         'win32': 'Windows'
     }
     if sys.platform not in platforms:

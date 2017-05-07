@@ -4,20 +4,24 @@ import socket
 import telnetlib
 import time
 
-from OLD_Files import UploadFirmware, Configuration as cf, GetOS as gos, GetOS as gs
+import FileConfigurationLibrary as fl
+
+from OLD_Files import SupportLibrary as sl
 
 global osname
-osname = gs.get_platform()
+osname = sl.getOsPlatform()
 
 #******************************************************************************************
 def pinguut(ip_add, secs):
     pingcount = 0
     while True:
         print("pinging UUT at ip " + ip_add +' count ' +  str(pingcount))
-        if gos.get_platform =='Linux':
+        if sl.getOsPlatform() =='Linux':
             data = ('ping '+ ip_add + ' -w 1000 -c 1')  # set ping timeout to 1000ms
-        else:
+        elif sl.getOsPlatform() =='Windows':
             data = ('ping '+ ip_add + ' -w 1000 -n 1')
+        elif sl.getOsPlatform() == 'OSX':
+            data = ('ping ' + ip_add + ' -W 1000 -c 1')
         response = os.system(data)              #default ping takes 3 secs to respond
         print(response)
         if response == 0:
@@ -350,7 +354,7 @@ def file_size(fname):
 #******************************************************************************************
 def upload_file(slot):
     try:
-        boardtype = cf.config_read('UUT',"major_board_type")
+        boardtype = fl.configfileRead('UUT',"major_board_type")
         if boardtype == "M40":
             section = 'M40_FOLDERS'
         if boardtype == "M50":
@@ -367,8 +371,8 @@ def upload_file(slot):
         if slot == 'firmware':
             key = 'm40_firmware'
 
-        path = cf.config_read(section, key)
-        host = cf.config_read('TELNET',"ip_address")
+        path = fl.configfileRead(section, key)
+        host = fl.configfileRead('TELNET',"ip_address")
         user = 'factory'
         password = 'factory'
         port = 80
@@ -537,7 +541,7 @@ def setup_wifi(host, new_mac):
                 return False, "Lan Mac not set"
             else:
                 print('Lan Mac successfully set')
-                ret = UploadFirmware.upload_file('wifi')
+                ret = upload_file('wifi')
 
                 print(ret)
 

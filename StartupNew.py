@@ -2,8 +2,9 @@
 import threading
 import time
 
-#other libraries
+# other libraries
 import serial
+
 try:
     import RPi.GPIO as gp
 except ImportError:
@@ -13,14 +14,11 @@ from PyQt5.QtWidgets import *
 #my libraries
 from QT_Project import mainwindow_auto as mw
 from PyQt5.QtCore import pyqtSignal
-import EthernetCommLibrary as el
-import ProgrammersLibrary as pl
-import SerialBarCodeModbusLibrary as ml
-import FileConfigurationLibrary as fl
+from OLD_Files import EthernetCommLibrary as el, SupportLibrary as sl, FileConfigurationLibrary as fl, \
+    SerialBarCodeModbusLibrary as ml, ProgrammersLibrary as pl
 
-global Testing
-import SupportLibrary as sl
 global demojm_serial_port
+global Testing
 
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
@@ -28,7 +26,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     serialtrigger = pyqtSignal(bytes)
 
     def __init__(self):
-        os_name = sl.getOsPlatform(self)
+        os_name = sl.getOsPlatform()
         print('os name->' + os_name)
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
@@ -58,7 +56,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.populate_defaults()
         print('TFP3 relay pin ' + str(sl.gpio_tfp3relay_pin))
         self.check_serial_event()
-        ip_address = fl.configfileRead('TELNET','ip_address')
+
+
+
+
+
+
+
+
+
 
     def check_serial_event(self):
         global DemoJM_Serialport
@@ -172,11 +178,12 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         elif ((strData == 'A') or (strData == 'a')):
             MainWindow.adc(self)
         elif ((strData == 'W') or (strData == 'w')):
-            MainWindow.all_outputs_toggle(self)
+            MainWindow.all_outputs_toggle()
 
     def GetVoltages(self):
+        global ip_address
         print("Pressed voltage...")
-        data = el.getvoltages()
+        data = el.getvoltages(ip_address)
         print(data)
 
     def pressedSendSerialButton(self):
@@ -221,7 +228,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def PingUUT(self):
         ret = el.pinguut(ip_address, 5)
         print('Returned value ' + str(ret[0]))
-        self.lblStatus.setText(str(ret[1]))
+        #self.lblStatus.setText(str(ret[1]))
         if ret[0]:
             pass
         else:
@@ -282,8 +289,11 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global modbus_serial_port
         global demojm_serial_port
         global DemoJM_Serialport
+        global ip_address
 
         print('Populating defaults...')
+
+        ip_address = fl.configfileRead('TELNET','ip_address')
 
         tfp3_serial_port = fl.configfileRead('TFP3', 'COM_PORT')
         index = self.cbTFP3ComPort.findText(tfp3_serial_port)
