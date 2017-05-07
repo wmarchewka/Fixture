@@ -12,7 +12,7 @@ osname = sl.getOsPlatform()
 
 class EthComLib(object):
     #******************************************************************************************
-    def pinguut(ip_add, secs):
+    def pinguut(self, ip_add, numpings):
         pingcount = 0
         while True:
             print("pinging UUT at ip " + ip_add +' count ' +  str(pingcount))
@@ -26,32 +26,35 @@ class EthComLib(object):
             print(response)
             if response == 0:
                 print(ip_add + ' is up!')
-                mainwindow.lblStatus.setText('test')
                 return True, ip_add + ' is up!'
             else:
                 print(ip_add + ' is down!')
                 pingcount = pingcount + 1
-                if pingcount > secs:
+                if pingcount > numpings:
                     return False, ip_add + ' is down!'
 
     #******************************************************************************************
-    def check_reset_button(ip_add):
+    def check_reset_button(self, ip_add):
         global respond_initial
         global reset
         while  True:
-            val = pinguut(ip_add)
+            val = EthComLib.pinguut(self,ip_add,1)
             if val:
                 respond_initial = True
-                print('press reset button')
+                print('Press reset button')
+                self.lblStatus.setText('Press reset button...')
                 time.sleep(2)
             if not respond_initial:
-                print('did not respond to initial ping')
+                print('Did not respond to initial ping...')
+                self.lblStatus.setText('Did not respond to initial ping...')
                 return False,  'Did not respond to initial ping'
             if respond_initial == True and val ==  False:
                 print ('Unit resetting...')
+                self.lblStatus.setText('Unit resetting...')
                 reset = True
             if  val == True and reset == True:
                  print("Successfully reset...")
+                 self.lblStatus.setText('"Successfully reset...')
                  return True, "Successfully reset..."
 
     #******************************************************************************************

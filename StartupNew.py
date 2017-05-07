@@ -16,11 +16,9 @@ from QT_Project import mainwindow_auto as mw
 from PyQt5.QtCore import pyqtSignal
 import SerialBarCodeModbusLibrary as ml
 import ProgrammersLibrary as pl
-import EthernetCommLibrary
+import EthernetCommLibrary as el
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
-
-EthernetLib = EthernetCommLibrary
 
 global demojm_serial_port
 global Testing
@@ -44,7 +42,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.cbDemoJMComPort.addItems(serial_ports_list)
         self.pbPowerOn.clicked.connect(lambda: self.power_up_relay())
         self.pbPowerOff.clicked.connect(lambda: self.power_down_relay())
-        self.pbSendTelnet.clicked.connect(lambda: self.pressedTelnetButton())
+        self.pbSendTelnet.clicked.connect(lambda: self.pressedResetButton())
         self.pbTelnetGetVoltages.clicked.connect(lambda: self.GetVoltages())
         self.pbReadScanner.clicked.connect(lambda: self.pressedSendScannerButton())
         self.pbDoPing.clicked.connect(lambda: self.PingUUT())
@@ -218,11 +216,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         else:
             pass
 
-    def pressedTelnetButton(self):
-        print("Pressed Telnet")
+    def pressedResetButton(self):
+        print("Pressed reset button")
+        ret = el.EthComLib.check_reset_button(self,ip_address)
+
 
     def PingUUT(self):
-        ret = EthernetLib.EthComLib.pinguut(ip_address, 5)
+        ret = el.EthComLib.pinguut(self,ip_address, 5)
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
         if ret[0]:
