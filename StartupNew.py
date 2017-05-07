@@ -16,9 +16,11 @@ from QT_Project import mainwindow_auto as mw
 from PyQt5.QtCore import pyqtSignal
 import SerialBarCodeModbusLibrary as ml
 import ProgrammersLibrary as pl
-import EthernetCommLibrary as el
+import EthernetCommLibrary
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
+
+EthernetLib = EthernetCommLibrary
 
 global demojm_serial_port
 global Testing
@@ -220,9 +222,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print("Pressed Telnet")
 
     def PingUUT(self):
-        ret = el.pinguut(ip_address, 5)
+        ret = EthernetLib.EthComLib.pinguut(ip_address, 5)
         print('Returned value ' + str(ret[0]))
-        #self.lblStatus.setText(str(ret[1]))
+        self.lblStatus.setText(str(ret[1]))
         if ret[0]:
             pass
         else:
