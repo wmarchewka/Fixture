@@ -23,7 +23,7 @@ class MainWindow(QtWidgets.QMainWindow, mw.Ui_MainWindow):   #QMainWindow, mw.Ui
 
     def pressedResetButton(self):
         print("Pressed reset button")
-        gui_thread = threading._start_new_thread(self.ButtonTest(self),)
+        gui_thread = threading.Timer(1, self.ButtonTest(self))
         gui_thread.start()
 
 
@@ -35,11 +35,6 @@ class MainWindow(QtWidgets.QMainWindow, mw.Ui_MainWindow):   #QMainWindow, mw.Ui
     def ButtonTest(self):
         self.lblStatus.setText("Button test running...")
         el.EthComLib.check_reset_button(self,'192.168.1.99')
-
-    def on_job_done(self, generated_str):
-        print("Generated string : ", generated_str)
-        self.lblStatus.setText(generated_str)
-
 
 
 def main():
