@@ -35,7 +35,6 @@ class EthComLib(object):
 
     #******************************************************************************************
     def check_reset_button(self, ip_add):
-        self.lblStatus.setText('Running button reset...')
 
         global respond_initial
         global reset
@@ -45,7 +44,6 @@ class EthComLib(object):
                 respond_initial = True
                 print('Press reset button')
                 update = ('Press reset button...')
-                self.lblStatus.setText(update)
                 time.sleep(2)
             if not respond_initial:
                 print('Did not respond to initial ping...')
@@ -59,8 +57,7 @@ class EthComLib(object):
                  print("Successfully reset...")
                  update = ('"Successfully reset...')
                  return True, "Successfully reset..."
-            self.lblStatus.setText(update)
-
+#
     #******************************************************************************************
     def write_lan_mac(ip_add):
         try:
