@@ -14,7 +14,7 @@ def trap_exc_during_debug(*args):
 sys.excepthook = trap_exc_during_debug
 
 class MainWindow(QtWidgets.QMainWindow, mw.Ui_MainWindow):   #QMainWindow, mw.Ui_MainWindow
-    def __init__(self, parent=None):
+    def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
 
@@ -22,33 +22,18 @@ class MainWindow(QtWidgets.QMainWindow, mw.Ui_MainWindow):   #QMainWindow, mw.Ui
         self.pbDoPing.clicked.connect(self.PingUUT)
         self.lblStatus.setText('Welcome')
 
+    def PingUUT(self):
+        pass
 
     def pressedResetButton(self):
         print("Pressed reset button")
         self.lblStatus.setText("Button test running...")
-        gui_thread = threading.Thread(None, self.reset ,None)
+        gui_thread = threading.Thread(None, self.ButtonTest ,None)
         gui_thread.start()
-
-    def reset(self):
-        #ret = el.EthComLib.check_reset_button(self,'192.168.1.99')
-        ret = el.EthComLib.m40buttontest(self)
-        print(ret)
-
-
-    def PingUUT(self):
-        print("Button test stated")
-        gui_thread = threading.Thread(1, self.ButtonTest())
-
 
     def ButtonTest(self):
         self.lblStatus.setText("Button test running...")
-        el.EthComLib.check_reset_button(self,'192.168.1.99')
-
-    def on_job_done(self, generated_str):
-        print("Generated string : ", generated_str)
-        self.lblStatus.setText(generated_str)
-
-
+        el.EthComLib.m40buttontest(self)
 
 def main():
     # a new app instance
