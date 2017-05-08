@@ -36,6 +36,7 @@ class EthComLib(object):
     #******************************************************************************************
     def check_reset_button(self, ip_add):
 
+
         global respond_initial
         global reset
         while  True:
@@ -57,7 +58,8 @@ class EthComLib(object):
                  print("Successfully reset...")
                  update = ('"Successfully reset...')
                  return True, "Successfully reset..."
-#
+            self.lblStatus.setText(update)
+
     #******************************************************************************************
     def write_lan_mac(ip_add):
         try:
