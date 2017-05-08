@@ -23,7 +23,7 @@ class MainWindow(QtWidgets.QMainWindow, mw.Ui_MainWindow):   #QMainWindow, mw.Ui
 
     def pressedResetButton(self):
         print("Pressed reset button")
-        gui_thread = threading.Timer(1, self.ButtonTest)
+        gui_thread = threading.Thread(None, self.ButtonTest ,None)
         gui_thread.start()
 
 
