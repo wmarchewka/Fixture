@@ -14,6 +14,7 @@ class EthComLib(object):
     #******************************************************************************************
     def pinguut(self, ip_add, numpings):
         pingcount = 0
+
         while True:
             print("pinging UUT at ip " + ip_add +' count ' +  str(pingcount))
             if sl.getOsPlatform() =='Linux':
@@ -36,28 +37,31 @@ class EthComLib(object):
     #******************************************************************************************
     def check_reset_button(self, ip_add):
 
-
-        global respond_initial
-        global reset
+        respond_initial = False
+        reset = False
         while  True:
             val = EthComLib.pinguut(self,ip_add, 1)
-            if val:
+            print('val->' + str(val))
+            if val[0] == True:
                 respond_initial = True
                 print('Press reset button')
                 update = ('Press reset button...')
-                time.sleep(2)
+                time.sleep(2.0)
             if not respond_initial:
                 print('Did not respond to initial ping...')
                 update = ('Did not respond to initial ping...')
                 return False,  'Did not respond to initial ping'
-            if respond_initial == True and val ==  False:
+            if respond_initial == True and val[0] == False:
                 print ('Unit resetting...')
                 update = ('Unit resetting...')
                 reset = True
-            if  val == True and reset == True:
+            if  val[0] == True and reset == True:
                  print("Successfully reset...")
-                 update = ('"Successfully reset...')
+                 update = ('Successfully reset...')
+                 self.lblStatus.setText(update)
                  return True, "Successfully reset..."
+            print('respond initial->' + str(respond_initial))
+            print('')
             self.lblStatus.setText(update)
 
     #******************************************************************************************
@@ -155,12 +159,13 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def m40buttontest():
+    def m40buttontest(self):
         try:
-            host = "192.168.1.8"
+            host = "192.168.1.99"
             port = 23
             #HOST = '10.0.0.210'
             print('Starting button test on ' + host)
+            self.lblStatus.setText('Starting button test on ' + host)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             conn = host,port
             PORT = 23
@@ -199,16 +204,21 @@ class EthComLib(object):
                 p = d
                 print( d.encode('ascii') )
                 if d == '1':
-                    print('press button 1')
+                    print('Press Button 1')
+                    self.lblStatus.setText('Press Button 1')
                     r = 1
                 if d == '2':
                     print('press button 2')
+                    self.lblStatus.setText('Press Button 2')
                 if d == '3':
                     print('press button 3')
+                    self.lblStatus.setText('Press Button 3')
                 if d == '4':
                     print('press button 4')
+                    self.lblStatus.setText('Press Button 4')
                 if d == '5':
                     print('Unit passed button test')
+                    self.lblStatus.setText('Unit passed button test')
                     sc.close
                     return True,"Unit passed Button Test"
             print("timeout")

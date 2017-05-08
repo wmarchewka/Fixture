@@ -17,14 +17,22 @@ class MainWindow(QtWidgets.QMainWindow, mw.Ui_MainWindow):   #QMainWindow, mw.Ui
     def __init__(self, parent=None):
         super(MainWindow, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
+
         self.pbSendTelnet.clicked.connect(self.pressedResetButton)
         self.pbDoPing.clicked.connect(self.PingUUT)
         self.lblStatus.setText('Welcome')
 
+
     def pressedResetButton(self):
         print("Pressed reset button")
-        gui_thread = threading.Thread(None, self.ButtonTest ,None)
+        self.lblStatus.setText("Button test running...")
+        gui_thread = threading.Thread(None, self.reset ,None)
         gui_thread.start()
+
+    def reset(self):
+        #ret = el.EthComLib.check_reset_button(self,'192.168.1.99')
+        ret = el.EthComLib.m40buttontest(self)
+        print(ret)
 
 
     def PingUUT(self):
