@@ -171,7 +171,7 @@
      <string>READ SCANNER</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pbSendTelnet">
+   <widget class="QPushButton" name="pbButtonTest">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -181,7 +181,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TELNET</string>
+     <string>BUTTON TEST</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbDoPing">
@@ -194,7 +194,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Do PING</string>
+     <string>PING TEST</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbGetADC">
@@ -234,7 +234,7 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>18</pointsize>
+      <pointsize>12</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>

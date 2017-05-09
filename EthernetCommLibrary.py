@@ -17,6 +17,7 @@ class EthComLib(object):
 
         while True:
             print("pinging UUT at ip " + ip_add +' count ' +  str(pingcount))
+            self.lblStatus.setText("pinging UUT at ip " + ip_add +' count ' +  str(pingcount))
             if sl.getOsPlatform() =='Linux':
                 data = ('ping '+ ip_add + ' -w 1000 -c 1')  # set ping timeout to 1000ms
             elif sl.getOsPlatform() =='Windows':
@@ -27,9 +28,11 @@ class EthComLib(object):
             print(response)
             if response == 0:
                 print(ip_add + ' is up!')
+                self.lblStatus.setText(ip_add + ' is up!')
                 return True, ip_add + ' is up!'
             else:
                 print(ip_add + ' is down!')
+                self.lblStatus.setText(ip_add + ' is down!')
                 pingcount = pingcount + 1
                 if pingcount > numpings:
                     return False, ip_add + ' is down!'
@@ -104,16 +107,20 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def getvoltages(ip_add):
-        try:
-            HOST = ip_add
-            print("Getting Voltages from " + HOST)
-            PORT = 23
-            TIMEOUT = 5
-            tn = telnetlib.Telnet(host=HOST, port=PORT, timeout=TIMEOUT)
-            tn.set_debuglevel(0)
-            tn.write(b"$login,factory,factory\n")
-            tn.write(b"$mdra,0,U0512,U377520\n")
+    def getvoltages(self, ip_add):
+        #try:
+            print("Getting Voltages from " + ip_add)
+            self.lblStatus.setText("Getting voltages from " + ip_add)
+            tn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            conn = ip_add, 23
+            tn.connect(conn)
+            tn.send(b"\n")
+            tempdata = tn.recv(100)
+            tn.send(b"$login,factory,factory\n\r")
+            tempdata = tn.recv(50)
+            print(str(tempdata))
+            tn.send(lb"$mdra,0,U0512,U377520\n")
+
             tn.write(b"$mdra,0,U0513,U377520\n")
             tn.write(b"$mdra,0,U0514,U377520\n")
             tn.write(b"$mdra,0,215,000000C0\n")
@@ -137,6 +144,9 @@ class EthComLib(object):
             tn.write(b"$mdra,0,U0058\n")
             tn.write(b"\r")
             tempdata = tn.read_all().decode('ascii')
+            print(tempdata)
+            if not tempdata.find('SLIP_DRIVER_ERROR_READ_TIMEOUT'):
+                return False, 'Slip Error'
             tn.close()
             tempdata = tempdata.split(',')
             voltageA = float(tempdata[tempdata.index('U0007') + 1]) / 1000
@@ -150,13 +160,18 @@ class EthComLib(object):
             currentCneg = float(tempdata[tempdata.index('U0058') + 1]) / 1000
             print(voltageA,voltageB,voltageC)
             print(currentA,currentAneg,currentB,currentBneg,currentC,currentCneg)
+            self.lblStatus.setText("Voltages acquired from " + ip_add)
+            #TODO need to log this data in log
             return True,tempdata
 
+        # except OSError as err:
+        #      #tn.close
+        #      print(err)
+        #      return False, err
+        # except:
+        #      #tn.close
+        #      return False, 'General Error'
 
-        except OSError as err:
-            #tn.close
-            print(err)
-            return False, err
 
     #******************************************************************************************
     def m40buttontest(self):

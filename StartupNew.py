@@ -37,7 +37,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
         self.serialtrigger.connect(self.parse_serial_data)
-        serial_ports_list = ml.collectSerialPorts()  # run serial port routine
+        serial_ports_list = ml.SCML.collectSerialPorts(self)  # run serial port routine
         self.cbTFP3ComPort.addItems(serial_ports_list)
         self.cbScannerComPort.addItems(serial_ports_list)
         self.cbCycloneComPort.addItems(serial_ports_list)
@@ -45,10 +45,10 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.cbDemoJMComPort.addItems(serial_ports_list)
         self.pbPowerOn.clicked.connect(lambda: self.power_up_relay())
         self.pbPowerOff.clicked.connect(lambda: self.power_down_relay())
-        self.pbSendTelnet.clicked.connect(lambda: self.pressedResetButton())
-        self.pbTelnetGetVoltages.clicked.connect(lambda: self.GetVoltages())
-        self.pbReadScanner.clicked.connect(lambda: self.pressedSendScannerButton())
-        self.pbDoPing.clicked.connect(lambda: self.PingUUT())
+        self.pbButtonTest.clicked.connect(lambda: self.button_buttontest())
+        self.pbTelnetGetVoltages.clicked.connect(lambda: self.button_voltages())
+        self.pbReadScanner.clicked.connect(self.button_scanner)
+        self.pbDoPing.clicked.connect(self.button_ping)
         self.pbProgCyclone.clicked.connect(lambda: self.programCyclone())
         self.pbProgTFP3.clicked.connect(lambda: self.pressedTFP3Button())
         self.cbTFP3ComPort.currentIndexChanged.connect(self.tfp3SerialPortChanged)
@@ -178,16 +178,19 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             MainWindow.adc(self)
         elif ((strData == 'W') or (strData == 'w')):
             MainWindow.all_outputs_toggle()
-
-    def GetVoltages(self):
+    # ****************************************************************************************************
+    def button_voltages(self):
         global ip_address
         print("Pressed voltage...")
-        data = el.getvoltages(ip_address)
-        print(data)
+        gui_thread = threading.Thread(None, self.voltages_command)
+        gui_thread.start()
+    # ****************************************************************************************************
+    def voltages_command(self):
+        self.lblStatus.setText("Getting voltages...")
+        ret = el.EthComLib.getvoltages(self, ip_address)
+        print('Returned value '+ str(ret[1]))
 
-    def pressedSendSerialButton(self):
-        print("Pressed Serial Send")
-
+    # ****************************************************************************************************
     def pressedTFP3Button(self):
         self.lblStatus.setText("TFP3 programming...")
         print('Starting TFP3 programmer on port ' + tfp3_serial_port)
@@ -210,27 +213,42 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         else:
             pass
 
+    # ****************************************************************************************************
+    def button_scanner(self):
+        print("Pressed Scanner button...")
+        gui_thread = threading.Thread(None, self.scanner_command, None)
+        gui_thread.start()
 
-    def pressedSendScannerButton(self):
-        print("Pressed Scanner Send")
-        ret = ml.ScanBarcode(scanner_serial_port)
-        print('Received from scanner: '+ str(ret[0]))
+    # ****************************************************************************************************
+    def scanner_command(self):
+        ret = ml.SCML.ScanBarcode(self, scanner_serial_port, 5)
+        print('Returned value '+ str(ret[0]))
 
-        if ret:
-            pass
-        else:
-            pass
-
-    def pressedResetButton(self):
+    #****************************************************************************************************
+    def button_buttontest(self):
         print("Pressed reset button")
-        ret = el.EthComLib.check_reset_button(self,ip_address)
+        gui_thread = threading.Thread(None, self.buttonttest_command, None)
+        gui_thread.start()
 
+    # ****************************************************************************************************
+    def buttonttest_command(self):
+        self.lblStatus.setText("Reset test running...")
+        ret = el.EthComLib.m40buttontest(self)
+        print('Returned value ' + str(ret[0]))
 
-    def PingUUT(self):
+    # ****************************************************************************************************
+    def button_ping(self):
+        print('Pressed ping button')
+        gui_thread = threading.Thread(None, self.ping_command, None)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def ping_command(self):
+        self.lblStatus.setText("Ping test running...")
         ret = el.EthComLib.pinguut(self, ip_address, 5)
         print('Returned value ' + str(ret[0]))
 
-
+    # ****************************************************************************************************
     def tfp3SerialPortChanged(self):
         global tfp3_serial_port
         tfp3_serial_port = self.cbTFP3ComPort.currentText()
