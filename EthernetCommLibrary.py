@@ -43,7 +43,7 @@ class EthComLib(object):
                     return False, ip_add + ' is down!'
 
     #******************************************************************************************
-    def check_reset_button(self, ip_add):
+    def reset_button_check(self, ip_add):
         update = ''
         timecounter = 0
         respond_initial = False
@@ -81,7 +81,7 @@ class EthComLib(object):
             self.lblStatus.setText(update)
 
     #******************************************************************************************
-    def write_lan_mac(self, ip_add):
+    def lan_mac_write(self, ip_add):
         try:
             host = ip_add
             port = 23
@@ -123,7 +123,7 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def getvoltages(self, ip_add):
+    def voltage_read(self, ip_add):
         try:
             print("Getting Voltages from " + ip_add)
             self.lblStatus.setText("Getting voltages from " + ip_add)
@@ -204,7 +204,7 @@ class EthComLib(object):
 
 
 #******************************************************************************************
-    def m40buttontest(self):
+    def m40_buttontest(self):
         try:
             host = "192.168.1.99"
             port = 23
@@ -276,10 +276,13 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def modbusinit(ip_add):
-        print("Setting modbus defaults")
+    def modbus_init(self, ip_add):
+
+        #TODO need to finsih this
+        # print("Setting modbus defaults")
         PORT = 23
         TIMEOUT = 5
+        self.lblStatus.setText('Writing Modbus settings')
         tn = telnetlib.Telnet(host=ip_add, port=PORT, timeout=TIMEOUT)
         tn.write(b'$login,factory,factory\n')
         tn.write(b'$modbd,s,19200\n')
@@ -290,12 +293,12 @@ class EthComLib(object):
         tempdata = tn.read_all().decode('ascii')
         print(tempdata)
         tn.close()
-
-        return tempdata
+        return True,tempdata
     #******************************************************************************************
-    def setpcr(host):
+    def pcr_write(self, host):
         try:
             print("Setting PCR value on " + host)
+            self.lblStatus.setText('Setting PCR value on ' + host)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             port = 23
             conn = host, port
@@ -313,9 +316,12 @@ class EthComLib(object):
             sc.close()
             if data > 0:
                 print('PCR not set')
+                self.lblStatus.setText('PCR not set' + host)
                 return False, "PCR not set"
+
             else:
                 print('PCR successfully set')
+                self.lblStatus.setText('PCR successfully set')
                 return True, 'PCR successfully set'
 
         except socket.timeout as err:
@@ -332,11 +338,13 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def write_serialnumber(host):
+    def serialnumber_write(self, host):
         try:
             #TODO this needs finished
             port = 23
-            print('Starting button test on ' + host)
+            print('Writing serial number to ' + host)
+            self.lblStatus.setText('Writing serial number to ' + host)
+
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
             conn = host, port
@@ -347,18 +355,7 @@ class EthComLib(object):
             data = sc.recv(100)
             print(data)
             sc.write(b'$wlanmac,G\r\n')
-            old_mac = sc.recv(100)
-            old_mac = old_mac.decode().split(',')[2]
-            print('old_mac -> ' + old_mac)
-            old_mac = str(old_mac)
-            new_mac = old_mac
-            print('new_mac -> ' + new_mac)
-            se = '$wlanmac,S,' + new_mac + str('\r\n')
-            sc.write(se.encode())
-            data = sc.recv(100)
-            print('data->' + str(data))
-            result = data.decode().split(',')[3].find('OK')
-            print('result->' + str(result))
+
             if result > 0:
                 print('Wireless lan mac not set')
                 return False, "Wireless lan mac not set"
@@ -371,7 +368,7 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def write_wifi_mac(host):
+    def wifi_mac_write(self, host):
         try:
             port = 23
             print('Setting wireless LAN MAC ' + host)
@@ -391,6 +388,7 @@ class EthComLib(object):
             old_mac = str(old_mac)
             new_mac = old_mac
             print('new_mac -> ' + new_mac)
+            self.lblStatus.setText('Old MAC : ' + str(old_mac) + '     New MAC : ' + str(new_mac))
             se = '$wlanmac,S,' + new_mac + str('\r\n')
             sc.write(se.encode())
             data = sc.recv(100)
@@ -399,10 +397,12 @@ class EthComLib(object):
             print('result->' + str(result))
             if result > 0:
                 print('Wireless lan mac not set')
-                return False, "Wireless lan mac not set"
+                self.lblStatus.setText('WIFI MAC not set')
+                return False, "WIFI MAC not set"
             else:
-                print('Wireless lan mac successfully set')
-                return True, 'Wireless lan mac successfully set'
+                print('WIFI mac successfully set')
+                self.lblStatus.setText('WIFI mac successfully set')
+                return True, 'WIFI MAC successfully set'
 
         except OSError as err:
             print(err)
@@ -415,7 +415,7 @@ class EthComLib(object):
         return statinfo.st_size
 
     #******************************************************************************************
-    def upload_file(slot):
+    def fileupload(self, slot):
         try:
             boardtype = fl.configfileRead('UUT',"major_board_type")
             if boardtype == "M40":
@@ -440,6 +440,8 @@ class EthComLib(object):
             password = 'factory'
             port = 80
             print('Starting uploading of file ' + path + ' to  ' + host)
+            self.lblStatus.setText('Starting uploading of file ' + path + ' to  ' + host)
+
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(5)
             conn = host, port
@@ -479,6 +481,7 @@ class EthComLib(object):
             #sys.stdout.buffer.write(fn)
             #sys.stdout.write(str(my_req_end))
 
+            self.lblStatus.setText('Writing header info...')
             buffer = my_req_head.encode('ascii') + my_req_body.encode('ascii')
             while buffer:
                 bytes = sc.write(buffer)
@@ -487,6 +490,7 @@ class EthComLib(object):
             print('return data-------------------------')
             print(data)
 
+            self.lblStatus.setText('Writing file info...')
             buffer = fn
             while buffer:
                 bytes = sc.write(buffer)
@@ -495,6 +499,7 @@ class EthComLib(object):
             print('return data-------------------------')
             print(data)
 
+            self.lblStatus.setText('Writing ending info...')
             buffer = my_req_end.encode('ascii')
             while buffer:
                 bytes = sc.write(buffer)
@@ -509,16 +514,19 @@ class EthComLib(object):
             data = str(data)
             sc.close()
             if data.find('url=upload.html'):
-                print('upload sucessful')
+                print('File upload successful')
+                self.lblStatus.setText('File upload successful ')
             else:
-                print('upload failed')
+                print('File upload failed')
+                self.lblStatus.setText('File upload failed')
+
 
         except OSError as err:
             print(err)
             return False, err
 
     #******************************************************************************************
-    def write_script(host, path):
+    def script_write(self, host, path):
         try:
             port = 23
             print('Uploading script ' + path)
@@ -545,7 +553,7 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def check_webpageversion(host):
+    def webpageversion_read(host):
         try:
             #TODO this needs finished
             port = 23

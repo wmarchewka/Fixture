@@ -33,7 +33,7 @@ class MainWindow(QtWidgets.QMainWindow, mw.Ui_MainWindow):   #QMainWindow, mw.Ui
 
     def ButtonTest(self):
         self.lblStatus.setText("Button test running...")
-        el.EthComLib.m40buttontest(self)
+        el.EthComLib.m40_buttontest(self)
 
 def main():
     # a new app instance
