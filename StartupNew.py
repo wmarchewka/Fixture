@@ -340,7 +340,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         gui_thread.start()
     # ****************************************************************************************************
     def setupwifi_command(self):
-        ret = el.EthComLib.setup_wifi(self, ip_address)
+        ret = el.EthComLib.wifi_setup(self, ip_address)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))

@@ -10,6 +10,8 @@ global osname
 osname = sl.getOsPlatform()
 
 #TODO make sure to come up with a way to get ip address from config file
+#TODO make sure all exception hndling is done and the same
+#TODO make sure all testing and data log is the same
 
 class EthComLib(object):
 
@@ -356,7 +358,7 @@ class EthComLib(object):
             print(data)
             sc.write(b'$wlanmac,G\r\n')
 
-            if result > 0:
+            if True > 0:
                 print('Wireless lan mac not set')
                 return False, "Wireless lan mac not set"
             else:
@@ -530,6 +532,7 @@ class EthComLib(object):
         try:
             port = 23
             print('Uploading script ' + path)
+            self.lblStatus.setText('Uploading script ' + path)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(5)
             conn = host, port
@@ -546,18 +549,21 @@ class EthComLib(object):
                 sc.write(linedata + b'\r\n')
                 data = sc.recv(1000)
                 print('data->' + str(data))
+            self.lblStatus.setText('Uploading script successful')
 
 
         except OSError as err:
             print(err)
+            self.lblStatus.setText('Uploading script failed. ' + str(err))
             return False, err
 
     #******************************************************************************************
-    def webpageversion_read(host):
+    def webpageversion_read(self, host):
         try:
             #TODO this needs finished
             port = 23
             print('Checking webpage version...')
+            self.lblStatus.setText('Checking webpage version...')
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(5)
             conn = host, port
@@ -568,7 +574,7 @@ class EthComLib(object):
             sc.write('')
             data = sc.recv(100)
             print('return data->' + str(data))
-
+            self.lblStatus.setText('Webpage version is ' + str(data))
 
 
         except OSError as err:
@@ -576,11 +582,13 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def setup_wifi(host, new_mac):
+    def wifi_setup(self, host, new_mac):
         try:
             #TODO enusre this is able to set wifi ssid and other things needed
             port = 23
             print('Starting WIFI Configuration ' + host)
+            self.lblStatus.setText('Starting WIFI Configuration ' + host)
+
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
             conn = host, port
@@ -596,6 +604,7 @@ class EthComLib(object):
             old_mac = str(old_mac)
             if old_mac == 'N/A':
                 print('No WIFI MAC Found')
+                self.lblStatus.setText('No WIFI MAC found')
                 return False, "No WIFI MAC found"
             else:
                 print("Current MAC " + old_mac)
@@ -603,6 +612,7 @@ class EthComLib(object):
                 print('old_mac -> ' + str(old_mac))
                 print('new_mac -> ' + new_mac)
                 print('Setting new mac address...')
+                self.lblStatus.setText('Setting new mac address to ' + str(new_mac))
                 se = '$wlanmac,S,' + new_mac + str('\r\n')
                 sc.write(se.encode())
                 data = sc.recv(100)
@@ -611,11 +621,12 @@ class EthComLib(object):
                 print('result->' + str(result))
                 if result > 0:
                     print('Lan Mac not set')
+                    self.lblStatus.setText("Lan Mac not set")
                     return False, "Lan Mac not set"
                 else:
                     print('Lan Mac successfully set')
-                    ret = upload_file('wifi')
-
+                    self.lblStatus.setText("Lan Mac successfully set")
+                    ret = EthComLib.fileupload(self, 'wifi')
                     print(ret)
 
         except OSError as err:
@@ -631,13 +642,13 @@ def main():
     module = 'A'
 
     if module == "A":
-        ret = setup_wifi(ip_add, mac_add)
+        ret = EthComLib.wifi_setup(ip_add, mac_add)
 
     if module == "B":
-        ret = check_webpageversion(ip_add)
+        ret = EthComLib.webpageversion_read(ip_add)
 
     if module == "C":
-        ret = write_script(ip_add,path)
+        ret = EthComLib.script_write(ip_add,path)
 
     if module == "D":
         global osname
@@ -647,39 +658,39 @@ def main():
             path = r"C:\web_pages_UEC_AC_025_ENG.tfs"
         elif osname == "OS X":
             path = os.path.expanduser("~/web_pages_UEC025_ENG.tfs")
-        ret = upload_file(slot)
+            ret = EthComLib.fileupload(slot)
 
     if module == "E":
-        ret = write_wifi_mac(ip_add)
+        ret = EthComLib.wifi_mac_write(ip_add)
 
     if module == "F":
-        ret = write_serialnumber(ip_add)
+        ret = EthComLib.serialnumber_write(ip_add)
 
     if module == "G":
-        ret = setpcr(ip_add)
+        ret = EthComLib.pcr_write(ip_add)
 
     if module == "H":
-        ret = modbusinit(ip_add)
+        ret = EthComLib.modbus_init(ip_add)
 
     if module == "I":
-        ret  = m40buttontest()
+        ret  = EthComLib.m40_buttontest()
 
     if module == "J":
-        ret = getvoltages()
+        ret = EthComLib.voltage_read()
 
     if module == "K":
-        ret = write_lan_mac(ip_add)
+        ret = EthComLib.lan_mac_write(ip_add)
 
     if module == "L":
         global respond_initial
         global reset
         respond_initial = False
         reset = False
-        ret = check_reset_button(ip_add)
+        ret = EthComLib.reset_button_check(ip_add)
 
     if module == "M":
         secs = 3
-        ret = pinguut(ip_add, secs)
+        ret = EthComLib.pinguut(ip_add, secs)
 
 
 
