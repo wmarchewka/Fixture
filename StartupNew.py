@@ -36,31 +36,57 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
+
+        #setup serial triiger
         self.serialtrigger.connect(self.parse_serial_data)
+
+        #read serial port list OS and populate comboboxes
         serial_ports_list = ml.SCML.collectSerialPorts(self)  # run serial port routine
         self.cbTFP3ComPort.addItems(serial_ports_list)
         self.cbScannerComPort.addItems(serial_ports_list)
         self.cbCycloneComPort.addItems(serial_ports_list)
         self.cbModbusComPort.addItems(serial_ports_list)
         self.cbDemoJMComPort.addItems(serial_ports_list)
-        self.pbPowerOn.clicked.connect(lambda: self.power_up_relay())
-        self.pbPowerOff.clicked.connect(lambda: self.power_down_relay())
-        self.pbButtonTest.clicked.connect(lambda: self.button_buttontest())
-        self.pbTelnetGetVoltages.clicked.connect(lambda: self.button_voltages())
+
+        #setup button signals
+        self.pbPowerOn.clicked.connect(self.power_up_relay)
+        self.pbPowerOff.clicked.connect(self.power_down_relay)
+        self.pbButtonTest.clicked.connect(self.button_buttontest)
+        self.pbTelnetGetVoltages.clicked.connect(self.button_voltages)
         self.pbReadScanner.clicked.connect(self.button_scanner)
         self.pbDoPing.clicked.connect(self.button_ping)
-        self.pbProgCyclone.clicked.connect(lambda: self.programCyclone())
-        self.pbProgTFP3.clicked.connect(lambda: self.pressedTFP3Button())
+        self.pbProgCyclone.clicked.connect(self.button_cyclone)
+        self.pbProgTFP3.clicked.connect(self.button_tfp3)
+        self.pbResetTest.clicked.connect(self.button_reset)
+        self.pbWriteLanMac.clicked.connect(self.button_lanmac)
+        self.pbWriteWifiMac.clicked.connect(self.button_wifimac)
+        self.pbModbusInit.clicked.connect(self.button_modbusinit)
+        self.pbSetPCR.clicked.connect(self.button_setpcr)
+        self.pbWriteSerialNumber.clicked.connect(self.button_writeserialnummber)
+        self.pbUploadFile.clicked.connect(self.button_uploadfile)
+        self.pbWriteScript.clicked.connect(self.button_writescript)
+        self.pbWebpageVersion.clicked.connect(self.button_webpageversion)
+        self.pbSetupWIFI.clicked.connect(self.button_setupwifi)
+
+        #setup combobox change signals
         self.cbTFP3ComPort.currentIndexChanged.connect(self.tfp3SerialPortChanged)
         self.cbScannerComPort.currentIndexChanged.connect(self.ScannerSerialPortChanged)
         self.cbCycloneComPort.currentIndexChanged.connect(self.CycloneSerialPortChanged)
         self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
         self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
         self.cbDemoJMComPort.activated[str].connect(self.DemoJMSerialPortChanged)
+
+        # setup combobox change signals
         self.lnSerialTest.textChanged.connect(self.SerialTest)
+
+        #look to ensure we have a configuration file
         self.check_for_config()                                                                 #open configuration file
+
+        #do all initializtion
         self.populate_defaults()
         print('TFP3 relay pin ' + str(sl.gpio_tfp3relay_pin))
+
+        #check srial event thread
         self.check_serial_event()
         
 
@@ -135,6 +161,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         pass
 
     def SerialTest(self):
+        'used to simulate receiving commands from labview'
         data = self.lnSerialTest.text()
         print('serial test' + data)
         self.lnSerialTest.clear()
@@ -165,7 +192,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         elif ((strData == 'C') or (strData == 'c')):
             MainWindow.power_cycle_relay(self)
         elif ((strData == 'G') or (strData == 'g')):
-            MainWindow.programCyclone
+            MainWindow.button_cyclone
         elif ((strData == 'D') or (strData == 'd')):
             MainWindow.power_down_relay(self)
         elif ((strData == 'R')  or (strData == 'r')):
@@ -179,6 +206,117 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         elif ((strData == 'W') or (strData == 'w')):
             MainWindow.all_outputs_toggle()
     # ****************************************************************************************************
+    def button_reset(self):
+        self.lblStatus.setText("Reset test...")
+        print("Reset test...")
+        gui_thread = threading.Thread(None, self.reset_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def reset_command(self):
+        self.lblStatus.setText("Reset test running... !")
+        time.sleep(1)
+        ret = el.EthComLib.check_reset_button(self, ip_address)
+        print('Returned value '+ str(ret[1]))
+        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText(str(ret[1]))
+
+    # ****************************************************************************************************
+    def button_lanmac(self):
+        self.lblStatus.setText("Setting LAN MAC...")
+        print("Setting LAN MAC...")
+        gui_thread = threading.Thread(None, self.lanmac_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def lanmac_command(self):
+        time.sleep(1)
+        ret = el.EthComLib.write_lan_mac(self, ip_address)
+        print('Returned value '+ str(ret[1]))
+        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText(str(ret[1]))
+
+    # ****************************************************************************************************
+    def button_wifimac(self):
+        self.lblStatus.setText("Setting WIFI MAC...")
+
+        pass
+
+    # ****************************************************************************************************
+    def wifimac_command(self):
+        pass
+
+    # ****************************************************************************************************
+    def button_modbusinit(self):
+        self.lblStatus.setText("Setting Modbus init...")
+
+        pass
+
+    # ****************************************************************************************************
+    def modbusinit_command(self):
+        pass
+    # ****************************************************************************************************
+    def button_setpcr(self):
+        self.lblStatus.setText("Setting PCR...")
+
+        pass
+
+    # ****************************************************************************************************
+    def setpcr_command(self):
+
+        pass
+    # ****************************************************************************************************
+    def button_writeserialnummber(self):
+        self.lblStatus.setText("Setting device serial number...")
+
+        pass
+
+    # ****************************************************************************************************
+    def writeserialnumber_command():
+        pass
+    # ****************************************************************************************************
+    def button_uploadfile(self):
+        self.lblStatus.setText("Uploading file...")
+
+        pass
+
+    # ****************************************************************************************************
+    def uploadfile_(selfself):
+
+        pass
+    # ****************************************************************************************************
+    def button_writescript(self):
+        self.lblStatus.setText("Writing script settings...")
+
+        pass
+
+    # ****************************************************************************************************
+    def writescript(self):
+        pass
+
+    # ****************************************************************************************************
+    def button_webpageversion(self):
+        self.lblStatus.setText("Getting webpage version...")
+
+        pass
+
+    # ****************************************************************************************************
+    def webpageversion(selfself):
+
+        pass
+
+    # ****************************************************************************************************
+    def button_setupwifi(self):
+        self.lblStatus.setText("Setting up WIFI...")
+
+        pass
+
+    # ****************************************************************************************************
+    def setupwifi_command(self):
+
+        pass
+
+    # ****************************************************************************************************
     def button_voltages(self):
         global ip_address
         print("Pressed voltage...")
@@ -191,27 +329,32 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Returned value '+ str(ret[1]))
 
     # ****************************************************************************************************
-    def pressedTFP3Button(self):
+    def button_tfp3(self):
         self.lblStatus.setText("TFP3 programming...")
         print('Starting TFP3 programmer on port ' + tfp3_serial_port)
+        gui_thread = threading.Thread(None, self.tftp3_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def tftp3_command(self):
+        self.lblStatus.setText("Programming TFP3 !")
         ret = pl.TFP3Program(tfp3_serial_port)
+        print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
-        if ret[0]:
-            pass
-        else:
-            pass
 
-    def programCyclone(self):
-        self.lblStatus.setText("Programming cyclone !")
+    # ****************************************************************************************************
+    def button_cyclone(self):
         print("Programming cyclone !")
+        gui_thread = threading.Thread(None, self.cyclone_command)
+        gui_thread.start()
+    # ****************************************************************************************************
+    def cyclone_command(self):
+        self.lblStatus.setText("Programming cyclone !")
         ret = pl.CycloneProgram(cyclone_serial_port)
-        print ('Returned value '+ str(ret[0]))
+        print('Returned value '+ str(ret[1]))
+        print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
-        if ret[0]:
-            pass
-        else:
-            pass
 
     # ****************************************************************************************************
     def button_scanner(self):

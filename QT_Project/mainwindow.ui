@@ -227,9 +227,9 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>320</y>
+      <y>390</y>
       <width>351</width>
-      <height>31</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="font">
@@ -250,6 +250,9 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QComboBox" name="cbDemoJMComPort">
@@ -288,8 +291,8 @@
    <widget class="QLineEdit" name="lnSerialTest">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>360</y>
+      <x>630</x>
+      <y>440</y>
       <width>113</width>
       <height>21</height>
      </rect>
@@ -306,6 +309,136 @@
     </property>
     <property name="text">
      <string>GET VOLTAGES</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbResetTest">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>260</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RESET TEST</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbWriteLanMac">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>260</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>WRITE LAN MAC</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbWriteWifiMac">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>260</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>WRITE WIFI MAC</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbModbusInit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>290</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MODBUS INIT</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbSetPCR">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>290</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SET PCR</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbWriteSerialNumber">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>290</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>WRITE SERIAL NUMBER</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbUploadFile">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>290</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>UPLOAD FILE</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbWriteScript">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>WRITE SCRIPT</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbWebpageVersion">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>320</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>WEBPAGE VERSION</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbSetupWIFI">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>320</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SEWTUP WIFI</string>
     </property>
    </widget>
   </widget>

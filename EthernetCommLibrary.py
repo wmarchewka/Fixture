@@ -9,10 +9,15 @@ import SupportLibrary as sl
 global osname
 osname = sl.getOsPlatform()
 
+#TODO make sure to come up with a way to get ip address from config file
 
 class EthComLib(object):
+
+    def __init__(self):
+        print('EthComLib class is initializing')
+
     #******************************************************************************************
-    def pinguut(self, ip_add, numpings):
+    def pinguut(self=None, ip_add=None, numpings=1):
         pingcount = 0
 
         while True:
@@ -39,17 +44,30 @@ class EthComLib(object):
 
     #******************************************************************************************
     def check_reset_button(self, ip_add):
-
+        update = ''
+        timecounter = 0
         respond_initial = False
         reset = False
         while  True:
-            val = EthComLib.pinguut(self,ip_add, 1)
+            val = EthComLib.pinguut(self, ip_add, 1)
             print('val->' + str(val))
+            if val[0] == True and reset == True:
+                print("Successfully reset...")
+                update = ('Successfully reset...')
+                self.lblStatus.setText(update)
+                return True, "Successfully reset..."
             if val[0] == True:
+                timecounter = timecounter + 1
                 respond_initial = True
-                print('Press reset button')
-                update = ('Press reset button...')
-                time.sleep(2.0)
+                print('Press reset button. Waiting ' + str(timecounter) + ' seconds')
+                update = ('Press reset button.  Waiting ' + str(timecounter) + ' seconds')
+                self.lblStatus.setText(update)
+                time.sleep(1.0)
+                if timecounter == 5:
+                    print('Timedout waiting for button press...')
+                    update = ('Timed out waiting for button press...')
+                    self.lblStatus.setText(update)
+                    return False, 'Timed out waiting for button press'
             if not respond_initial:
                 print('Did not respond to initial ping...')
                 update = ('Did not respond to initial ping...')
@@ -58,39 +76,35 @@ class EthComLib(object):
                 print ('Unit resetting...')
                 update = ('Unit resetting...')
                 reset = True
-            if  val[0] == True and reset == True:
-                 print("Successfully reset...")
-                 update = ('Successfully reset...')
-                 self.lblStatus.setText(update)
-                 return True, "Successfully reset..."
             print('respond initial->' + str(respond_initial))
             print('')
             self.lblStatus.setText(update)
 
     #******************************************************************************************
-    def write_lan_mac(ip_add):
+    def write_lan_mac(self, ip_add):
         try:
             host = ip_add
             port = 23
-            print('Starting button test on ' + host)
+            print('Setting LAN MAC address on ' + host)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
             conn = host, port
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
-            sc.send(b'$login,factory,factory\r\n')
+            sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.send(b'$lanmac,G\r\n')
+            sc.write(b'$lanmac,G\r\n')
             old_mac = sc.recv(100)
             old_mac = old_mac.decode().split(',')[2]
             print('old_mac -> ' + old_mac)
             old_mac = str(old_mac)
             new_mac = old_mac
             print('new_mac -> ' + new_mac)
+            self.lblStatus.setText('Old MAC : ' + str(old_mac) + '     New MAC : ' + str(new_mac))
             se = '$lanmac,S,' + new_mac + str('\r\n')
-            sc.send(se.encode())
+            sc.write(se.encode())
             data = sc.recv(100)
             print('data->' + str(data))
             result = data.decode().split(',')[3].find('OK')
@@ -98,9 +112,11 @@ class EthComLib(object):
             if result > 0:
                 print('Lan Mac not set')
                 return False, "Lan Mac not set"
+                self.lblStatus.setText('Lan MAC not set')
             else:
                 print('Lan Mac successfully set')
                 return True, 'Lan Mac successfully set'
+                self.lblStatus.setText('Lan MAC successfully set')
 
         except OSError as err:
             print(err)
@@ -108,7 +124,7 @@ class EthComLib(object):
 
     #******************************************************************************************
     def getvoltages(self, ip_add):
-        #try:
+        try:
             print("Getting Voltages from " + ip_add)
             self.lblStatus.setText("Getting voltages from " + ip_add)
             tn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -116,64 +132,78 @@ class EthComLib(object):
             tn.connect(conn)
             tn.send(b"\n")
             tempdata = tn.recv(100)
-            tn.send(b"$login,factory,factory\n\r")
+            tn.send(b"$login,factory,factory\n")
             tempdata = tn.recv(50)
             print(str(tempdata))
-            tn.send(lb"$mdra,0,U0512,U377520\n")
+            tn.send(b"$mdra,0,U0018\n")         # use this to see if a slip error returns
+            tempdata = tn.recv(100)
+            print(str(tempdata))
+            slip_err = tempdata.find(b'SLIP_DRIVER_ERROR_READ_TIMEOUT')
+            tempdata = ''
+            if slip_err >=0:
+                print('SLIP driver error')
+                self.lblStatus.setText('Failed to get voltages.  SLIP Error')
+                return False, 'Failed to get voltages.  SLIP Error'
+            else:
+                tn.close()
+                PORT = 23
+                TIMEOUT = 5
+                tn = telnetlib.Telnet(host=ip_add, port=PORT, timeout=TIMEOUT)
+                tn.write(b'$login,factory,factory\n')
+                tn.write(b"$mdra,0,U0512,U377520\n")
+                tn.write(b"$mdra,0,U0513,U377520\n")
+                tn.write(b"$mdra,0,U0514,U377520\n")
+                tn.write(b"$mdra,0,215,000000C0\n")
+                tn.write(b"$mdra,0,U0007\n")
+                tn.write(b"$mdra,0,U0008\n")
+                tn.write(b"$mdra,0,U0009\n")
+                 # TODO need to scale these values upon return
+                tn.write(b"$mdra,0,U0518,U5000\n")
+                tn.write(b"$mdra,0,U0519,U5000\n")
+                tn.write(b"$mdra,0,U0520,U5000\n")
+                tn.write(b"$mdra,0,U0521,U5000\n")
+                tn.write(b"$mdra,0,U0522,U5000\n")
+                tn.write(b"$mdra,0,U0523,U5000\n")
+                tn.write(b"$mdra,0,215,000000C0\n")
+                # TODO need burden resistor value from config
+                tn.write(b"$mdra,0,U0018\n")
+                tn.write(b"$mdra,0,U0026\n")
+                tn.write(b"$mdra,0,U0034\n")
+                tn.write(b"$mdra,0,U0042\n")
+                tn.write(b"$mdra,0,U0050\n")
+                tn.write(b"$mdra,0,U0058\n")
+                tn.write(b"\r")
+                tempdata = tn.read_all()
+                print(tempdata)
+                #tn.close()
+                tempdata = str(tempdata)
+                tempdata = tempdata.split(',')
+                voltageA = float(tempdata[tempdata.index('U0007') + 1]) / 1000
+                voltageB = float(tempdata[tempdata.index('U0008') + 1]) / 1000
+                voltageC = float(tempdata[tempdata.index('U0009') + 1]) / 1000
+                currentA = float(tempdata[tempdata.index('U0018') + 1]) / 1000
+                currentAneg = float(tempdata[tempdata.index('U0026') + 1]) / 1000
+                currentB = float(tempdata[tempdata.index('U0034') + 1]) / 1000
+                currentBneg = float(tempdata[tempdata.index('U0042') + 1]) / 1000
+                currentC = float(tempdata[tempdata.index('U0050') + 1]) / 1000
+                currentCneg = float(tempdata[tempdata.index('U0058') + 1]) / 1000
+                print(voltageA,voltageB,voltageC)
+                print(currentA,currentAneg,currentB,currentBneg,currentC,currentCneg)
+                data =  ("Voltages acquired from " + ip_add + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(voltageB) + '  L3: ' +str(voltageC))
+                self.lblStatus.setText(data)
+                #TODO need to log this data in log
+                return True,tempdata
 
-            tn.write(b"$mdra,0,U0513,U377520\n")
-            tn.write(b"$mdra,0,U0514,U377520\n")
-            tn.write(b"$mdra,0,215,000000C0\n")
-            tn.write(b"$mdra,0,U0007\n")
-            tn.write(b"$mdra,0,U0008\n")
-            tn.write(b"$mdra,0,U0009\n")
-             # TODO need to scale these values upon return
-            tn.write(b"$mdra,0,U0518,U5000\n")
-            tn.write(b"$mdra,0,U0519,U5000\n")
-            tn.write(b"$mdra,0,U0520,U5000\n")
-            tn.write(b"$mdra,0,U0521,U5000\n")
-            tn.write(b"$mdra,0,U0522,U5000\n")
-            tn.write(b"$mdra,0,U0523,U5000\n")
-            tn.write(b"$mdra,0,215,000000C0\n")
-            # TODO need burden resistor value from config
-            tn.write(b"$mdra,0,U0018\n")
-            tn.write(b"$mdra,0,U0026\n")
-            tn.write(b"$mdra,0,U0034\n")
-            tn.write(b"$mdra,0,U0042\n")
-            tn.write(b"$mdra,0,U0050\n")
-            tn.write(b"$mdra,0,U0058\n")
-            tn.write(b"\r")
-            tempdata = tn.read_all().decode('ascii')
-            print(tempdata)
-            if not tempdata.find('SLIP_DRIVER_ERROR_READ_TIMEOUT'):
-                return False, 'Slip Error'
-            tn.close()
-            tempdata = tempdata.split(',')
-            voltageA = float(tempdata[tempdata.index('U0007') + 1]) / 1000
-            voltageB = float(tempdata[tempdata.index('U0008') + 1]) / 1000
-            voltageC = float(tempdata[tempdata.index('U0009') + 1]) / 1000
-            currentA = float(tempdata[tempdata.index('U0018') + 1]) / 1000
-            currentAneg = float(tempdata[tempdata.index('U0026') + 1]) / 1000
-            currentB = float(tempdata[tempdata.index('U0034') + 1]) / 1000
-            currentBneg = float(tempdata[tempdata.index('U0042') + 1]) / 1000
-            currentC = float(tempdata[tempdata.index('U0050') + 1]) / 1000
-            currentCneg = float(tempdata[tempdata.index('U0058') + 1]) / 1000
-            print(voltageA,voltageB,voltageC)
-            print(currentA,currentAneg,currentB,currentBneg,currentC,currentCneg)
-            self.lblStatus.setText("Voltages acquired from " + ip_add)
-            #TODO need to log this data in log
-            return True,tempdata
-
-        # except OSError as err:
-        #      #tn.close
-        #      print(err)
-        #      return False, err
-        # except:
-        #      #tn.close
-        #      return False, 'General Error'
+        except OSError as err:
+             tn.close
+             print(err)
+             return False, err
+        except:
+             tn.close
+             return False, 'General Error'
 
 
-    #******************************************************************************************
+#******************************************************************************************
     def m40buttontest(self):
         try:
             host = "192.168.1.99"
@@ -192,19 +222,19 @@ class EthComLib(object):
             #tn.write(b'$login,factory,factory\n')
             #tn.write(b"$bts,s,0\n")
             #tn.write(b"$bts,G\n\r")
-            sc.send(b'$login,factory,factory\r\n')
+            sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.send(b'$bts,s,0\r\n')
+            sc.write(b'$bts,s,0\r\n')
             data = sc.recv(100)
             print(data)
-            sc.send(b'$bts,G\r\n')
+            sc.write(b'$bts,G\r\n')
             data = sc.recv(100)
             print(data)
             t = 0
             p = ''
             while True:
-                sc.send(b'$bts,G\r\n')
+                sc.write(b'$bts,G\r\n')
                 data = sc.recv(100)
                 print(data)
                 time.sleep(1)
@@ -273,10 +303,10 @@ class EthComLib(object):
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
-            sc.send(b'$login,factory,factory\r\n')
+            sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.send(b'$PCR,S,E0100110\r\n')
+            sc.write(b'$PCR,S,E0100110\r\n')
             data = sc.recv(100)
             print('data -> ' + str(data))
             data = data.decode().split(',')[3].find('OK')
@@ -304,6 +334,7 @@ class EthComLib(object):
     #******************************************************************************************
     def write_serialnumber(host):
         try:
+            #TODO this needs finished
             port = 23
             print('Starting button test on ' + host)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -312,10 +343,10 @@ class EthComLib(object):
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
-            sc.send(b'$login,factory,factory\r\n')
+            sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.send(b'$wlanmac,G\r\n')
+            sc.write(b'$wlanmac,G\r\n')
             old_mac = sc.recv(100)
             old_mac = old_mac.decode().split(',')[2]
             print('old_mac -> ' + old_mac)
@@ -323,7 +354,7 @@ class EthComLib(object):
             new_mac = old_mac
             print('new_mac -> ' + new_mac)
             se = '$wlanmac,S,' + new_mac + str('\r\n')
-            sc.send(se.encode())
+            sc.write(se.encode())
             data = sc.recv(100)
             print('data->' + str(data))
             result = data.decode().split(',')[3].find('OK')
@@ -350,10 +381,10 @@ class EthComLib(object):
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
-            sc.send(b'$login,factory,factory\r\n')
+            sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.send(b'$wlanmac,G\r\n')
+            sc.write(b'$wlanmac,G\r\n')
             old_mac = sc.recv(100)
             old_mac = old_mac.decode().split(',')[2]
             print('old_mac -> ' + old_mac)
@@ -361,7 +392,7 @@ class EthComLib(object):
             new_mac = old_mac
             print('new_mac -> ' + new_mac)
             se = '$wlanmac,S,' + new_mac + str('\r\n')
-            sc.send(se.encode())
+            sc.write(se.encode())
             data = sc.recv(100)
             print('data->' + str(data))
             result = data.decode().split(',')[3].find('OK')
@@ -450,7 +481,7 @@ class EthComLib(object):
 
             buffer = my_req_head.encode('ascii') + my_req_body.encode('ascii')
             while buffer:
-                bytes = sc.send(buffer)
+                bytes = sc.write(buffer)
                 buffer = buffer[bytes:]
             data = sc.recv(250)
             print('return data-------------------------')
@@ -458,7 +489,7 @@ class EthComLib(object):
 
             buffer = fn
             while buffer:
-                bytes = sc.send(buffer)
+                bytes = sc.write(buffer)
                 buffer = buffer[bytes:]
             data = sc.recv(1000)
             print('return data-------------------------')
@@ -466,7 +497,7 @@ class EthComLib(object):
 
             buffer = my_req_end.encode('ascii')
             while buffer:
-                bytes = sc.send(buffer)
+                bytes = sc.write(buffer)
                 buffer = buffer[bytes:]
             data = sc.recv(500)
             print('return data-------------------------')
@@ -498,13 +529,13 @@ class EthComLib(object):
             fn = script.read()
             print('file-> ' + str(fn))
             sc.connect(conn)
-            sc.send(b'$login,factory,factory\r\n')
+            sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print('login data>' + str(data))
             splitdata = fn.split(b'\r\n')
             print(splitdata)
             for linedata in splitdata:
-                sc.send(linedata + b'\r\n')
+                sc.write(linedata + b'\r\n')
                 data = sc.recv(1000)
                 print('data->' + str(data))
 
@@ -516,16 +547,17 @@ class EthComLib(object):
     #******************************************************************************************
     def check_webpageversion(host):
         try:
+            #TODO this needs finished
             port = 23
             print('Checking webpage version...')
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(5)
             conn = host, port
             sc.connect(conn)
-            sc.send(b'$login,factory,factory\r\n')
+            sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print('login data-' + str(data))
-            sc.send('')
+            sc.write('')
             data = sc.recv(100)
             print('return data->' + str(data))
 
@@ -538,6 +570,7 @@ class EthComLib(object):
     #******************************************************************************************
     def setup_wifi(host, new_mac):
         try:
+            #TODO enusre this is able to set wifi ssid and other things needed
             port = 23
             print('Starting WIFI Configuration ' + host)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -546,10 +579,10 @@ class EthComLib(object):
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
-            sc.send(b'$login,factory,factory\r\n')
+            sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.send(b'$wlanmac,G\r\n')
+            sc.write(b'$wlanmac,G\r\n')
             old_mac = sc.recv(100)
             old_mac = old_mac.decode().split(',')[2]
             old_mac = str(old_mac)
@@ -563,7 +596,7 @@ class EthComLib(object):
                 print('new_mac -> ' + new_mac)
                 print('Setting new mac address...')
                 se = '$wlanmac,S,' + new_mac + str('\r\n')
-                sc.send(se.encode())
+                sc.write(se.encode())
                 data = sc.recv(100)
                 print('data->' + str(data))
                 result = data.decode().split(',')[3].find('OK')
