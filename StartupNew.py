@@ -54,7 +54,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteWifiMac.clicked.connect(self.button_wifimac)
         self.pbModbusInit.clicked.connect(self.button_modbusinit)
         self.pbSetPCR.clicked.connect(self.button_setpcr)
-        self.pbWriteSerialNumber.clicked.connect(self.button_writeserialnummber)
+        self.pbWriteSerialNumber.clicked.connect(self.button_writeserialnumber)
         self.pbUploadFile.clicked.connect(self.button_uploadfile)
         self.pbWriteScript.clicked.connect(self.button_writescript)
         self.pbWebpageVersion.clicked.connect(self.button_webpageversion)
