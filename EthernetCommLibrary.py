@@ -19,39 +19,42 @@ class EthComLib(object):
         print('EthComLib class is initializing')
 
     #******************************************************************************************
-    def pinguut(self=None, ip_add=None, numpings=1):
+    def pinguut(self, ip_address, numpings=1):
         pingcount = 0
 
+        #ip_address = fl.configfileRead('TELNET', "ip_address")
+
         while True:
-            print("pinging UUT at ip " + ip_add +' count ' +  str(pingcount))
-            self.lblStatus.setText("pinging UUT at ip " + ip_add +' count ' +  str(pingcount))
+            print("pinging UUT at ip " + ip_address +' count ' +  str(pingcount))
+            self.lblStatus.setText("pinging UUT at ip " + ip_address +' count ' +  str(pingcount))
             if sl.getOsPlatform() =='Linux':
-                data = ('ping '+ ip_add + ' -w 1000 -c 1')  # set ping timeout to 1000ms
+                data = ('ping '+ ip_address + ' -w 1000 -c 1')  # set ping timeout to 1000ms
             elif sl.getOsPlatform() =='Windows':
-                data = ('ping '+ ip_add + ' -w 1000 -n 1')
+                data = ('ping '+ ip_address + ' -w 1000 -n 1')
             elif sl.getOsPlatform() == 'OSX':
-                data = ('ping ' + ip_add + ' -W 1000 -c 1')
+                data = ('ping ' + ip_address + ' -W 1000 -c 1')
             response = os.system(data)              #default ping takes 3 secs to respond
             print(response)
             if response == 0:
-                print(ip_add + ' is up!')
-                self.lblStatus.setText(ip_add + ' is up!')
-                return True, ip_add + ' is up!'
+                print(ip_address + ' is up!')
+                self.lblStatus.setText(ip_address + ' is up!')
+                return True, ip_address + ' is up!'
             else:
-                print(ip_add + ' is down!')
-                self.lblStatus.setText(ip_add + ' is down!')
+                print(ip_address + ' is down!')
+                self.lblStatus.setText(ip_address + ' is down!')
                 pingcount = pingcount + 1
                 if pingcount > numpings:
-                    return False, ip_add + ' is down!'
+                    return False, ip_address + ' is down!'
 
     #******************************************************************************************
-    def reset_button_check(self, ip_add):
+    def reset_button_check(self, ip_address):
         update = ''
         timecounter = 0
         respond_initial = False
         reset = False
+
         while  True:
-            val = EthComLib.pinguut(self, ip_add, 1)
+            val = EthComLib.pinguut(self, ip_address, 1)
             print('val->' + str(val))
             if val[0] == True and reset == True:
                 print("Successfully reset...")
@@ -83,9 +86,9 @@ class EthComLib(object):
             self.lblStatus.setText(update)
 
     #******************************************************************************************
-    def lan_mac_write(self, ip_add):
+    def lan_mac_write(self, ip_address):
         try:
-            host = ip_add
+            host = ip_address
             port = 23
             print('Setting LAN MAC address on ' + host)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -125,12 +128,12 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def voltage_read(self, ip_add):
+    def voltage_read(self, ip_address):
         try:
-            print("Getting Voltages from " + ip_add)
-            self.lblStatus.setText("Getting voltages from " + ip_add)
+            print("Getting Voltages from " + ip_address)
+            self.lblStatus.setText("Getting voltages from " + ip_address)
             tn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            conn = ip_add, 23
+            conn = ip_address, 23
             tn.connect(conn)
             tn.send(b"\n")
             tempdata = tn.recv(100)
@@ -150,7 +153,7 @@ class EthComLib(object):
                 tn.close()
                 PORT = 23
                 TIMEOUT = 5
-                tn = telnetlib.Telnet(host=ip_add, port=PORT, timeout=TIMEOUT)
+                tn = telnetlib.Telnet(host=ip_address, port=PORT, timeout=TIMEOUT)
                 tn.write(b'$login,factory,factory\n')
                 tn.write(b"$mdra,0,U0512,U377520\n")
                 tn.write(b"$mdra,0,U0513,U377520\n")
@@ -191,7 +194,7 @@ class EthComLib(object):
                 currentCneg = float(tempdata[tempdata.index('U0058') + 1]) / 1000
                 print(voltageA,voltageB,voltageC)
                 print(currentA,currentAneg,currentB,currentBneg,currentC,currentCneg)
-                data =  ("Voltages acquired from " + ip_add + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(voltageB) + '  L3: ' +str(voltageC))
+                data =  ("Voltages acquired from " + ip_address + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(voltageB) + '  L3: ' +str(voltageC))
                 self.lblStatus.setText(data)
                 #TODO need to log this data in log
                 return True,tempdata
@@ -206,15 +209,15 @@ class EthComLib(object):
 
 
 #******************************************************************************************
-    def m40_buttontest(self):
+    def m40_buttontest(self,ip_address):
         try:
-            host = "192.168.1.99"
+            #host = "192.168.1.99"
             port = 23
             #HOST = '10.0.0.210'
-            print('Starting button test on ' + host)
-            self.lblStatus.setText('Starting button test on ' + host)
+            print('Starting button test on ' + ip_address)
+            self.lblStatus.setText('Starting button test on ' + ip_address)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            conn = host,port
+            conn = ip_address,port
             PORT = 23
             TIMEOUT = 5
             sc.connect(conn)
@@ -278,14 +281,14 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def modbus_init(self, ip_add):
+    def modbus_init(self, ip_address):
 
         #TODO need to finsih this
         # print("Setting modbus defaults")
         PORT = 23
         TIMEOUT = 5
         self.lblStatus.setText('Writing Modbus settings')
-        tn = telnetlib.Telnet(host=ip_add, port=PORT, timeout=TIMEOUT)
+        tn = telnetlib.Telnet(host=ip_address, port=PORT, timeout=TIMEOUT)
         tn.write(b'$login,factory,factory\n')
         tn.write(b'$modbd,s,19200\n')
         tn.write(b'$modp,s,1\n')
@@ -297,13 +300,13 @@ class EthComLib(object):
         tn.close()
         return True,tempdata
     #******************************************************************************************
-    def pcr_write(self, host):
+    def pcr_write(self, ip_address):
         try:
-            print("Setting PCR value on " + host)
-            self.lblStatus.setText('Setting PCR value on ' + host)
+            print("Setting PCR value on " + ip_address)
+            self.lblStatus.setText('Setting PCR value on ' + ip_address)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             port = 23
-            conn = host, port
+            conn = ip_address, port
             sc.settimeout(2)
             sc.connect(conn)
             data = sc.recv(100)
@@ -340,16 +343,16 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def serialnumber_write(self, host):
+    def serialnumber_write(self, ip_address, serialnumber):
         try:
             #TODO this needs finished
             port = 23
-            print('Writing serial number to ' + host)
-            self.lblStatus.setText('Writing serial number to ' + host)
+            print('Writing serial number to ' + ip_address)
+            self.lblStatus.setText('Writing serial number to ' + ip_address)
 
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
-            conn = host, port
+            conn = ip_address, port
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
@@ -370,13 +373,13 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def wifi_mac_write(self, host):
+    def wifi_mac_write(self, ip_address):
         try:
             port = 23
-            print('Setting wireless LAN MAC ' + host)
+            print('Setting wireless LAN MAC ' + ip_address)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
-            conn = host, port
+            conn = ip_address, port
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
@@ -417,7 +420,7 @@ class EthComLib(object):
         return statinfo.st_size
 
     #******************************************************************************************
-    def fileupload(self, slot):
+    def fileupload(self, ip_address, slot):
         try:
             boardtype = fl.configfileRead('UUT',"major_board_type")
             if boardtype == "M40":
@@ -437,16 +440,16 @@ class EthComLib(object):
                 key = 'm40_firmware'
 
             path = fl.configfileRead(section, key)
-            host = fl.configfileRead('TELNET',"ip_address")
+            #host = fl.configfileRead('TELNET',"ip_address")
             user = 'factory'
             password = 'factory'
             port = 80
-            print('Starting uploading of file ' + path + ' to  ' + host)
-            self.lblStatus.setText('Starting uploading of file ' + path + ' to  ' + host)
+            print('Starting uploading of file ' + path + ' to  ' + ip_address)
+            self.lblStatus.setText('Starting uploading of file ' + path + ' to  ' + ip_address)
 
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(5)
-            conn = host, port
+            conn = ip_address, port
             sc.connect(conn)
 
             fsize =  EthComLib.file_size(path)
@@ -470,7 +473,7 @@ class EthComLib(object):
 
             my_req_head = "POST /upload_file.cgi HTTP/1.1\r\n"
             my_req_head = my_req_head + "Accept-Language: en-us\r\n"
-            my_req_head = my_req_head + "Host: " + str(host) + "\r\n"
+            my_req_head = my_req_head + "Host: " + str(ip_address) + "\r\n"
             my_req_head = my_req_head + "Content-Type: multipart/form-data; boundary=---------------------------7dd3201c5104d4\r\n"
             my_req_head = my_req_head + "Content-Length: " + str(totalsize) + "\r\n"
             my_req_head = my_req_head + "Connection: Keep-Alive\r\n"
@@ -528,14 +531,14 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def script_write(self, host, path):
+    def script_write(self, ip_address, path):
         try:
             port = 23
             print('Uploading script ' + path)
             self.lblStatus.setText('Uploading script ' + path)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(5)
-            conn = host, port
+            conn = ip_address, port
             script = open(path,'br')
             fn = script.read()
             print('file-> ' + str(fn))
@@ -567,7 +570,7 @@ class EthComLib(object):
 
 
     #******************************************************************************************
-    def webpageversion_read(self, host):
+    def webpageversion_read(self, ip_address):
         try:
             #TODO this needs finished
             port = 23
@@ -575,7 +578,7 @@ class EthComLib(object):
             self.lblStatus.setText('Checking webpage version...')
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(5)
-            conn = host, port
+            conn = ip_address, port
             sc.connect(conn)
             sc.write(b'$login,factory,factory\r\n')
             data = sc.recv(100)
@@ -591,16 +594,16 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def wifi_setup(self, host, new_mac):
+    def wifi_setup(self, ip_address, new_mac):
         try:
             #TODO enusre this is able to set wifi ssid and other things needed
             port = 23
-            print('Starting WIFI Configuration ' + host)
-            self.lblStatus.setText('Starting WIFI Configuration ' + host)
+            print('Starting WIFI Configuration ' + ip_address)
+            self.lblStatus.setText('Starting WIFI Configuration ' + ip_address)
 
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
-            conn = host, port
+            conn = ip_address, port
             sc.connect(conn)
             data = sc.recv(100)
             print(data)

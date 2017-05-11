@@ -8,22 +8,22 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(320, 240)
-        self.inputText = QtWidgets.QTextEdit(Dialog)
-        self.inputText.setGeometry(QtCore.QRect(10, 20, 291, 31))
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(320, 240)
+        self.pbOK = QtWidgets.QPushButton(Form)
+        self.pbOK.setGeometry(QtCore.QRect(190, 200, 113, 32))
+        self.pbOK.setObjectName("pbOK")
+        self.inputText = QtWidgets.QTextEdit(Form)
+        self.inputText.setGeometry(QtCore.QRect(20, 20, 281, 51))
         self.inputText.setObjectName("inputText")
-        self.pkOK = QtWidgets.QPushButton(Dialog)
-        self.pkOK.setGeometry(QtCore.QRect(210, 190, 75, 23))
-        self.pkOK.setObjectName("pkOK")
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.pkOK.setText(_translate("Dialog", "PushButton"))
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.pbOK.setText(_translate("Form", "PushButton"))
 

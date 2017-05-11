@@ -14,7 +14,6 @@ try:
 except ImportError:
     import FakeRPi.GPIO as gp
 from PyQt5.QtWidgets import *
-from PyQt5 import QtCore
 # my libraries
 from QT_Project import mainwindow_auto as mw
 from QT_Project import popup_auto as pw
@@ -24,6 +23,10 @@ import ProgrammersLibrary as pl
 import EthernetCommLibrary as el
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit
+from PyQt5.QtGui import QIcon
+
 
 global demojm_serial_port
 global Testing
@@ -41,10 +44,7 @@ class FileDialog(QWidget):
     def initUI(self):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
-
         self.openFileNameDialog()
-        #self.openFileNamesDialog()
-        #self.saveFileDialog()
         self.show()
 
     def openFileNameDialog(self):
@@ -72,33 +72,11 @@ class FileDialog(QWidget):
         if fileName:
             print(fileName)
 
-
-class PopupWindow(QMainWindow, pw.Ui_Dialog):
-
-    func = None
-
-    def __init__(self):
-        super(self.__class__, self).__init__()
-        self.setupUi(self)  # gets defined in the UI file
-        self.inputText.setText('Test')
-        self.pkOK.clicked.connect(self.dialog_button_pressed)
-
-    def dialog_button_pressed(self):
-        print('button pressed')
-        PopupWindow.buttonValue = True
-        data = self.inputText.toPlainText()
-        print(data)
-        print(self.func)
-        gui_thread = threading.Thread(None, self.func)
-        gui_thread.run()
-        self.close()
-
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
     global DemoJM_Serialport
     serialtrigger = pyqtSignal(bytes)
 
     def __init__(self):
-
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
 
@@ -264,13 +242,10 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_reset(self):
-
-        ex = FileDialog.openFileNameDialog(self)
-        print('filename' + str(ex))
         self.lblStatus.setText("Reset test...")
-        #print("Reset test...")
-        #gui_thread = threading.Thread(None, self.reset_command)
-        #gui_thread.start()
+        print("Reset test...")
+        gui_thread = threading.Thread(None, self.reset_command)
+        gui_thread.start()
 
     # ****************************************************************************************************
     def reset_command(self):
@@ -345,12 +320,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def button_serialnumberwrite(self):
         self.lblStatus.setText("Setting device serial number...")
         print("Setting device serial number...")
-        gui_thread = threading.Thread(None, self.writeserialnumber_command)
-        gui_thread.start()
+        serialnumber, okPressed = QInputDialog.getInt(self, "Get integer", "Percentage:", 28, 0, 100, 1)
+        if okPressed:
+            print(serialnumber)
+            gui_thread = threading.Thread(None, self.writeserialnumber_command(serialnumber))
+            gui_thread.start()
 
     # ****************************************************************************************************
-    def writeserialnumber_command(self):
-        ret = el.EthComLib.serialnumber_write(self, ip_address)
+    def writeserialnumber_command(self, serialnumber):
+        ret = el.EthComLib.serialnumber_write(self, serialnumber)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
@@ -360,27 +338,30 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lblStatus.setText("Uploading file...")
         time.sleep(1)
         print("Uploading file...")
-        gui_thread = threading.Thread(None, self.uploadfile_command)
+        gui_thread = threading.Thread(None, self.uploadfile_command('wifi'))
         gui_thread.start()
+
     # ****************************************************************************************************
-    def uploadfile_command(self):
-        ret = el.EthComLib.fileupload(self, ip_address)
+    def uploadfile_command(self, slot):
+        ret = el.EthComLib.fileupload(self, ip_address, slot)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_scriptwrite(self):
-        self.mypopup = PopupWindow()
-        self.mypopup.show()
-        self.mypopup.func = self.scriptwrite_command
+        path = FileDialog.openFileNameDialog(self)
+        print('filename' + str(path))
+        if path != '':
+            gui_thread = threading.Thread(None, self.scriptwrite_command(path))
+            gui_thread.start()
 
     # ****************************************************************************************************
-    def scriptwrite_command(self):
+    def scriptwrite_command(self, path):
         time.sleep(1)
         self.lblStatus.setText("Writing script settings...")
         ip_address = '192.168.1.99'
-        path = r'C:\UEC\Functional Test\M50\Test_script.txt'
+        #path = r'C:\UEC\Functional Test\M50\Test_script.txt'
         ret = el.EthComLib.script_write(self, ip_address, path)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
@@ -607,16 +588,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             index = self.cbDemoJMComPort.findText('none')
             self.cbDemoJMComPort.setCurrentIndex(index)
 
-    def popupmsg(msg):
-
-        pass
-        #popup = tk.Tk()
-        #popup.wm_title("!")
-        #label = ttk.Label(popup, text=msg, font=NORM_FONT)
-        #label.pack(side="top", fill="x", pady=10)
-        #B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
-        #B1.pack()
-        #popup.mainloop()
 
 def main():
     app = QApplication(sys.argv)
