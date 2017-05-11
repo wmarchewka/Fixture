@@ -28,28 +28,70 @@ import SupportLibrary as sl
 global demojm_serial_port
 global Testing
 
+class FileDialog(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.title = 'PyQt5 file dialogs - pythonspot.com'
+        self.left = 10
+        self.top = 10
+        self.width = 640
+        self.height = 480
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+
+        self.openFileNameDialog()
+        #self.openFileNamesDialog()
+        #self.saveFileDialog()
+        self.show()
+
+    def openFileNameDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+                                                  "All Files (*);;Python Files (*.py)", options=options)
+        if fileName:
+            return fileName
+            print(fileName)
+
+    def openFileNamesDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
+                                                "All Files (*);;Python Files (*.py)", options=options)
+        if files:
+            print(files)
+
+    def saveFileDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getSaveFileName(self, "QFileDialog.getSaveFileName()", "",
+                                                  "All Files (*);;Text Files (*.txt)", options=options)
+        if fileName:
+            print(fileName)
+
 
 class PopupWindow(QMainWindow, pw.Ui_Dialog):
 
-    buttonValue = False
+    func = None
 
     def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
         self.inputText.setText('Test')
         self.pkOK.clicked.connect(self.dialog_button_pressed)
-        #print(self)
 
     def dialog_button_pressed(self):
         print('button pressed')
         PopupWindow.buttonValue = True
         data = self.inputText.toPlainText()
         print(data)
-
-
-    def wait(self):
-        pass
-
+        print(self.func)
+        gui_thread = threading.Thread(None, self.func)
+        gui_thread.run()
+        self.close()
 
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
     global DemoJM_Serialport
@@ -103,11 +145,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         # check srial event thread
         #self.check_serial_event()
-
-    def wait_for_input(self):
-        pass
-
-
 
     def check_serial_event(self):
         print('Starting serial receive thread')
@@ -227,10 +264,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_reset(self):
+
+        ex = FileDialog.openFileNameDialog(self)
+        print('filename' + str(ex))
         self.lblStatus.setText("Reset test...")
-        print("Reset test...")
-        gui_thread = threading.Thread(None, self.reset_command)
-        gui_thread.start()
+        #print("Reset test...")
+        #gui_thread = threading.Thread(None, self.reset_command)
+        #gui_thread.start()
 
     # ****************************************************************************************************
     def reset_command(self):
@@ -331,19 +371,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_scriptwrite(self):
-
         self.mypopup = PopupWindow()
         self.mypopup.show()
-        gui_thread = threading.Thread(None, self.scriptwrite_command)
-        gui_thread.run()
-        self.lblStatus.setText("Writing script settings...")
-        print("Writing script settings...")
+        self.mypopup.func = self.scriptwrite_command
 
     # ****************************************************************************************************
     def scriptwrite_command(self):
         time.sleep(1)
-        self.mypopup = PopupWindow()
-        self.mypopup.show()
         self.lblStatus.setText("Writing script settings...")
         ip_address = '192.168.1.99'
         path = r'C:\UEC\Functional Test\M50\Test_script.txt'
@@ -351,9 +385,12 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
+        return
 
     # ****************************************************************************************************
     def button_webpageversion(self):
+        name = self.sender()
+        print(name)
         self.lblStatus.setText("Getting webpage version...")
         time.sleep(1)
         print("Getting webpage version...")
