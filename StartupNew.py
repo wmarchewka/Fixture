@@ -14,9 +14,10 @@ try:
 except ImportError:
     import FakeRPi.GPIO as gp
 from PyQt5.QtWidgets import *
-from PyQt5 import QtGui
+from PyQt5 import QtCore
 # my libraries
 from QT_Project import mainwindow_auto as mw
+from QT_Project import popup_auto as pw
 from PyQt5.QtCore import pyqtSignal
 import SerialBarCodeModbusLibrary as ml
 import ProgrammersLibrary as pl
@@ -26,6 +27,25 @@ import SupportLibrary as sl
 
 global demojm_serial_port
 global Testing
+
+
+class PopupWindow(QMainWindow, pw.Ui_MainWindow):
+
+    buttonValue = False
+
+    def __init__(self):
+        super(self.__class__, self).__init__()
+        self.setupUi(self)  # gets defined in the UI file
+        self.inputText.setText('Test')
+        self.pbOK.clicked.connect(self.dialog_button_pressed)
+        #print(self)
+
+    def dialog_button_pressed(self):
+        print('button pressed')
+        PopupWindow.buttonValue = True
+
+    def wait(self):
+        pass
 
 
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
@@ -54,9 +74,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteWifiMac.clicked.connect(self.button_wifimac)
         self.pbModbusInit.clicked.connect(self.button_modbusinit)
         self.pbSetPCR.clicked.connect(self.button_setpcr)
-        self.pbWriteSerialNumber.clicked.connect(self.button_writeserialnumber)
+        self.pbWriteSerialNumber.clicked.connect(self.button_serialnumberwrite)
         self.pbUploadFile.clicked.connect(self.button_uploadfile)
-        self.pbWriteScript.clicked.connect(self.button_writescript)
+        self.pbWriteScript.clicked.connect(self.button_scriptwrite)
         self.pbWebpageVersion.clicked.connect(self.button_webpageversion)
         self.pbSetupWIFI.clicked.connect(self.button_setupwifi)
 
@@ -79,7 +99,12 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('TFP3 relay pin ' + str(sl.gpio_tfp3relay_pin))
 
         # check srial event thread
-        self.check_serial_event()
+        #self.check_serial_event()
+
+    def wait_for_input(self):
+        pass
+
+
 
     def check_serial_event(self):
         print('Starting serial receive thread')
@@ -274,7 +299,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
-    def button_writeserialnumber(self):
+    def button_serialnumberwrite(self):
         self.lblStatus.setText("Setting device serial number...")
         print("Setting device serial number...")
         gui_thread = threading.Thread(None, self.writeserialnumber_command)
@@ -302,19 +327,32 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
-    def button_writescript(self):
+    def button_scriptwrite(self):
+
+        self.mypopup = PopupWindow()
+        self.mypopup.show()
+        while True:
+            print(self.mypopup.buttonValue)
+            time.sleep(1)
+        #gui_thread = threading.Thread(None, self.wait_for_input)
+        #gui_thread.run()
         self.lblStatus.setText("Writing script settings...")
-        time.sleep(1)
         print("Writing script settings...")
-        gui_thread = threading.Thread(None, self.writescript_command)
-        gui_thread.start()
+        #gui_thread = threading.Thread(None, self.scriptwrite_command)
+        #gui_thread.run()
+
 
     # ****************************************************************************************************
-    def writescript_command(self):
+    def scriptwrite_command(self):
+        time.sleep(1)
+        self.lblStatus.setText("Writing script settings...")
+        ip_address = '192.168.1.99'
+        path = r'C:\UEC\Functional Test\M50\Test_script.txt'
         ret = el.EthComLib.script_write(self, ip_address, path)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
+
 
     # ****************************************************************************************************
     def button_webpageversion(self):
@@ -460,7 +498,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
                                               bytesize=serial.EIGHTBITS
                                               )
             print('Opened demojm serial port on port ' + demojm_serial_port)
-            self.check_serial_event()
+            #TODO reenable this
+            #self.check_serial_event()
 
         except OSError as err:
             print(err)
@@ -472,7 +511,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             print(err)
 
     def populate_defaults(self):
-
         global tfp3_serial_port
         global scanner_serial_port
         global cyclone_serial_port
@@ -534,14 +572,21 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             index = self.cbDemoJMComPort.findText('none')
             self.cbDemoJMComPort.setCurrentIndex(index)
 
+    def popupmsg(msg):
+
+        pass
+        #popup = tk.Tk()
+        #popup.wm_title("!")
+        #label = ttk.Label(popup, text=msg, font=NORM_FONT)
+        #label.pack(side="top", fill="x", pady=10)
+        #B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
+        #B1.pack()
+        #popup.mainloop()
 
 def main():
-    # a new app instance
-
     app = QApplication(sys.argv)
     form = MainWindow()
     form.show()
-    # without this, the script exits immediately.
     sys.exit(app.exec_())
 
 

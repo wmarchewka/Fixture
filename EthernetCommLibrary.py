@@ -540,22 +540,31 @@ class EthComLib(object):
             fn = script.read()
             print('file-> ' + str(fn))
             sc.connect(conn)
-            sc.write(b'$login,factory,factory\r\n')
+            sc.send(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print('login data>' + str(data))
             splitdata = fn.split(b'\r\n')
             print(splitdata)
             for linedata in splitdata:
-                sc.write(linedata + b'\r\n')
-                data = sc.recv(1000)
-                print('data->' + str(data))
+                if linedata != b'':
+                    sc.send(linedata + b'\r\n')
+                    data = sc.recv(1000)
+                    print('data->' + str(data))
+            sc.close()
             self.lblStatus.setText('Uploading script successful')
-
+            return True,'Uploading script successful'
 
         except OSError as err:
             print(err)
             self.lblStatus.setText('Uploading script failed. ' + str(err))
             return False, err
+
+        except AttributeError as err:
+            print(err)
+            self.lblStatus.setText('Uploading script failed. ' + str(err))
+            return False, err
+
+
 
     #******************************************************************************************
     def webpageversion_read(self, host):
