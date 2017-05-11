@@ -29,7 +29,7 @@ global demojm_serial_port
 global Testing
 
 
-class PopupWindow(QMainWindow, pw.Ui_MainWindow):
+class PopupWindow(QMainWindow, pw.Ui_Dialog):
 
     buttonValue = False
 
@@ -37,12 +37,15 @@ class PopupWindow(QMainWindow, pw.Ui_MainWindow):
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
         self.inputText.setText('Test')
-        self.pbOK.clicked.connect(self.dialog_button_pressed)
+        self.pkOK.clicked.connect(self.dialog_button_pressed)
         #print(self)
 
     def dialog_button_pressed(self):
         print('button pressed')
         PopupWindow.buttonValue = True
+        data = self.inputText.toPlainText()
+        print(data)
+
 
     def wait(self):
         pass
@@ -331,20 +334,16 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         self.mypopup = PopupWindow()
         self.mypopup.show()
-        while True:
-            print(self.mypopup.buttonValue)
-            time.sleep(1)
-        #gui_thread = threading.Thread(None, self.wait_for_input)
-        #gui_thread.run()
+        gui_thread = threading.Thread(None, self.scriptwrite_command)
+        gui_thread.run()
         self.lblStatus.setText("Writing script settings...")
         print("Writing script settings...")
-        #gui_thread = threading.Thread(None, self.scriptwrite_command)
-        #gui_thread.run()
-
 
     # ****************************************************************************************************
     def scriptwrite_command(self):
         time.sleep(1)
+        self.mypopup = PopupWindow()
+        self.mypopup.show()
         self.lblStatus.setText("Writing script settings...")
         ip_address = '192.168.1.99'
         path = r'C:\UEC\Functional Test\M50\Test_script.txt'
@@ -352,7 +351,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
-
 
     # ****************************************************************************************************
     def button_webpageversion(self):
