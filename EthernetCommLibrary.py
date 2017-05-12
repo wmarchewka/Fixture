@@ -6,8 +6,6 @@ import time
 
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
-global osname
-osname = sl.getOsPlatform()
 
 #TODO make sure to come up with a way to get ip address from config file
 #TODO make sure all exception hndling is done and the same
@@ -17,6 +15,7 @@ class EthComLib(object):
 
     def __init__(self):
         print('EthComLib class is initializing')
+        osname = sl.supportLibrary.getOsPlatform(self)
 
     #******************************************************************************************
     def pinguut(self, ip_address, numpings=1):
@@ -342,31 +341,70 @@ class EthComLib(object):
             print(err)
             return False, err
 
-    #******************************************************************************************
+    # ******************************************************************************************
     def serialnumber_write(self, ip_address, serialnumber):
         try:
-            #TODO this needs finished
+            # TODO this needs finished
             port = 23
-            print('Writing serial number to ' + ip_address)
-            self.lblStatus.setText('Writing serial number to ' + ip_address)
-
+            print('Writing serial number '+ str(serialnumber) + ' to ' + ip_address)
+            self.lblStatus.setText('Writing serial number ' + str(serialnumber) + ' to ' + ip_address)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
             conn = ip_address, port
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
-            sc.write(b'$login,factory,factory\r\n')
+            sc.send(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.write(b'$wlanmac,G\r\n')
-
-            if True > 0:
-                print('Wireless lan mac not set')
-                return False, "Wireless lan mac not set"
+            senddata = '$pserial,S,'+ str(serialnumber) + '\r\n'
+            print('senddata-> '+ senddata)
+            sc.send(senddata.encode('utf-8'))
+            data = sc.recv(100)
+            print(data.decode().split(',')[2].find('OK'))
+            if data.decode().split(',')[2].find('OK'):
+                print('Device Serial number set to ' + str(serialnumber))
+                self.lblStatus.setText('Device Serial number set to ' + str(serialnumber))
+                return True, serialnumber
             else:
-                print('Wireless lan mac successfully set')
-                return True, 'Wireless lan mac successfully set'
+                print('Device Serial not set')
+                self.lblStatus.setText("Device Serial not set")
+                return False, "Device Serial not set"
+
+
+        except OSError as err:
+            print(err)
+            return False, err
+
+    #******************************************************************************************
+    def serialnumber_read(self, ip_address):
+        try:
+            #TODO this needs finished
+            port = 23
+            print('Reading serial number from ' + ip_address)
+            self.lblStatus.setText('Writing serial number from ' + ip_address)
+
+            sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sc.settimeout(3)
+            conn = ip_address, port
+            sc.connect(conn)
+            data = sc.recv(100)
+            print(data)
+            sc.send(b'$login,factory,factory\r\n')
+            data = sc.recv(100)
+            print(data)
+            data=''
+            sc.send(b'$pserial,G\r\n')
+            data = sc.recv(100)
+            result = data.decode().split(',')[3].find('OK')
+            serialnumber = data.decode().split(',')[2]
+            print('return data->' + str(data))
+            if result:
+                print('Device serial number not set...')
+                return False, 'Device serial not set'
+            else:
+                print('Device serial ' +  str(serialnumber))
+                return True, serialnumber
 
         except OSError as err:
             print(err)
@@ -570,7 +608,7 @@ class EthComLib(object):
 
 
     #******************************************************************************************
-    def webpageversion_read(self, ip_address):
+    def wifiversion_read(self, ip_address):
         try:
             #TODO this needs finished
             port = 23
@@ -580,14 +618,17 @@ class EthComLib(object):
             sc.settimeout(5)
             conn = ip_address, port
             sc.connect(conn)
-            sc.write(b'$login,factory,factory\r\n')
+            sc.send(b'\r\n')
+            data = sc.recv(100)
+            sc.send(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print('login data-' + str(data))
-            sc.write('')
+            sc.send(b'$wv,g\r\n')
             data = sc.recv(100)
+            data = data.decode().split(',')[2]
             print('return data->' + str(data))
             self.lblStatus.setText('Webpage version is ' + str(data))
-
+            return True, 'Webpage version is ' + str(data)
 
         except OSError as err:
             print(err)
@@ -657,7 +698,7 @@ def main():
         ret = EthComLib.wifi_setup(ip_add, mac_add)
 
     if module == "B":
-        ret = EthComLib.webpageversion_read(ip_add)
+        ret = EthComLib.wifiversion_read(ip_add)
 
     if module == "C":
         ret = EthComLib.script_write(ip_add,path)

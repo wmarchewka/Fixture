@@ -7,15 +7,20 @@ cyclone_recv1 = b'jP&E,14,Universal_PEMBC0F62,none,0,0,Dec 12 2016,9.80,Rev. A,0
 cyclone_recv2 = b'hP&E,14,Universal_PEMBC0F62,none,0,0,Dec 12 2016,9.80,Rev. A,00:0d:01:bc:0f:62,0,1,K70FN1M0_EMMC,Generic,'
 
 #******************************************************************************************
-def CycloneProgram(port):
+def CycloneProgram(self, port):
         # open com port wait for error
         try:
-            print('Looking for scanner...')
+            print('Looking for Cyclone programmer...')
+            self.lblStatus.setText('Looking for Cyclone programmer...')
+            time.sleep(1)
             ser = serial.Serial(port, 115200, timeout=1)
+            ser.open()
         except:
-            print('Cyclone error...')
-            return False, "Com Error"
+            print('Cyclone programmer not found...')
+            self.lblStatus.setText('Cyclone programmer not found...')
+            return False, 'Cyclone programmer not found...'
         # port found send commands to identify what it is
+        self.lblStatus.setText('Programming Cyclone...')
         ser.write(b'\x03\x01\x18\x5d')          # first command
         print('SEND->\\x03\\x01\\x18\\x5d')     #
         line = ser.read(2)                      # response should be 01 00
@@ -27,6 +32,7 @@ def CycloneProgram(port):
         if line == cyclone_recv1 or cyclone_recv2:
             print('RECV->' + str(line))
             print('Found Cyclone programmer')
+            self.lblStatus.setText('Found Cyclone programmer')
             ser.write(b'\x03\x18\x41\x3f')  # command to start programming
             print('SEND->\\x03\\x18\\x41\\x3f')
             line = ser.read(2)  # Check for new line and CR     # response should be 01 ee
@@ -48,28 +54,35 @@ def CycloneProgram(port):
                         print('Cyclone Success')
                         ser.close()
                         return True, 'Cyclone Programmer Success'
+                        self.lblStatus.setText('Cyclone Programmer Success')
+
                     else:
                         print("Error " + str(line[2]))
                         ser.close()
+                        self.lblStatus.setText('Cyclone programmer failed. Error ' + str(line[2]))
                         return False, 'Cyclone programmer failed. Error ' + str(line[2])
         else:
             print('Did not find Cyclone programmer')
+            self.lblStatus.setText('Did not find Cyclone programmer')
             return False, 'Did not find Cyclone Programmer'
 
 # ******************************************************************************************
-def TFP3Program(port):
+def TFP3Program(self, port):
     try:
-        print('Trying to open port' + port)
-        se =  serial.Serial(port, 115200)
+        print('Looking for TFP3 programmer on port' + port)
+        self.lblStatus.setText('Looking for TFP3 programmer on port' + port)
+        se =  serial.Serial(port, 115200, timeout=5)
         se.write(b'P\r\n')
         print('Writing P to programmer')
         x = se.read_until(terminator = b'Programming')
         print(x)
         if x != b'P\r\r\nProgramming':
             print('Did not find TFP3 programmer')
-            return False,'TFP3 programmer not found'
+            self.lblStatus.setText('Did not find TFP3 programmer')
+            return False,'Did not find TFP3 programmer'
         else:
-            print('Found TFP3 programmer')
+            print('TFP3 programmer found')
+            self.lblStatus.setText('TFP3 programmer found')
             while True:
                 time.sleep(0.001)
                 n = se.inWaiting()
@@ -78,12 +91,16 @@ def TFP3Program(port):
                     print(data)
                     if data.find(b'Timeout') > -1:
                         print('TIMEOUT')
+                        self.lblStatus.setText('TFP3 timeout programming')
                         return False,'TFP3 timeout programming'
                     elif data.find(b'successful') > -1:
-                        print('Success')
+                        print('TFP3 program success')
+                        self.lblStatus.setText('TFP3 program success')
                         return True, 'TFP3 program success'
+
     except:
         return False,'Serial port error'
+        self.lblStatus.setText('Serial port error')
         print('Serial port error')
 
 #******************************************************************************************

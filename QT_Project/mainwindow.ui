@@ -23,6 +23,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>POWER ON</string>
     </property>
@@ -35,6 +40,11 @@
       <width>130</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>POWER OFF</string>
@@ -141,6 +151,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>PROG TFP3 </string>
     </property>
@@ -153,6 +168,11 @@
       <width>130</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>PROG CYCLONE</string>
@@ -167,6 +187,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>READ SCANNER</string>
     </property>
@@ -179,6 +204,11 @@
       <width>131</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>BUTTON TEST</string>
@@ -193,6 +223,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>PING TEST</string>
     </property>
@@ -205,6 +240,11 @@
       <width>130</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>GET ADC</string>
@@ -307,6 +347,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>GET VOLTAGES</string>
     </property>
@@ -319,6 +364,11 @@
       <width>131</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>RESET TEST</string>
@@ -333,6 +383,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>WRITE LAN MAC</string>
     </property>
@@ -345,6 +400,11 @@
       <width>131</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>WRITE WIFI MAC</string>
@@ -359,6 +419,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>MODBUS INIT</string>
     </property>
@@ -371,6 +436,11 @@
       <width>131</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>SET PCR</string>
@@ -385,8 +455,13 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>WRITE SERIAL NUMBER</string>
+     <string>SERIAL NUMBER</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbUploadFile">
@@ -397,6 +472,11 @@
       <width>131</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>UPLOAD FILE</string>
@@ -411,11 +491,16 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>WRITE SCRIPT</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pbWebpageVersion">
+   <widget class="QPushButton" name="pbWifiVersion">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -424,8 +509,13 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>WEBPAGE VERSION</string>
+     <string>WIFI VERSION</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbSetupWIFI">
@@ -437,8 +527,13 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>SEWTUP WIFI</string>
+     <string>SETUP WIFI</string>
     </property>
    </widget>
   </widget>
@@ -448,7 +543,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

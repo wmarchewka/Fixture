@@ -100,7 +100,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteSerialNumber.clicked.connect(self.button_serialnumberwrite)
         self.pbUploadFile.clicked.connect(self.button_uploadfile)
         self.pbWriteScript.clicked.connect(self.button_scriptwrite)
-        self.pbWebpageVersion.clicked.connect(self.button_webpageversion)
+        self.pbWifiVersion.clicked.connect(self.button_wifiversion)
         self.pbSetupWIFI.clicked.connect(self.button_setupwifi)
 
         # setup combobox change signals
@@ -118,14 +118,16 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.check_for_config()  # open configuration file
 
         # do all initializtion
+        self.lblStatus.setText('')
         self.populate_defaults()
-        print('TFP3 relay pin ' + str(sl.gpio_tfp3relay_pin))
+        print('TFP3 relay pin ' + str(sl.supportLibrary.gpio_tfp3relay_pin))
 
         # check srial event thread
         #self.check_serial_event()
 
     def check_serial_event(self):
         print('Starting serial receive thread')
+        self.lblStatus.setText('Starting serial receive thread')
         global DemoJM_Serialport
         serial_thread = threading.Timer(1, self.check_serial_event)
         try:
@@ -154,31 +156,41 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def check_for_config(self):
         ret = fl.configfileRead('CONFIG', 'file_ver')
         print('Found Configuration file version ' + ret)
+        self.lblStatus.setText('Found Configuration file version ' + ret)
+
+    def limitswitch_check(self):
+        print('limitswitch check')
+        self.lblStatus.setText('limitswitch check')
 
     def power_up_relay(self):
         print('power up power relay')
-        gp.output(self.powerrelay_pin, self.gpio_on)  # PIN
+        self.lblStatus.setText('power up power relay')
+        gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_on)
 
     def power_cycle_relay(self):
-        print('power up relay')
-        gp.output(self.powerrelay_pin, self.gpio_off)  ## Switch on pin 7
+        print('power cycle relay')
+        self.lblStatus.setText('power cycle relay')
+        gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_off)  ## Switch on pin 7
         time.sleep(2)
-        gp.output(self.powerrelay_pin, self.gpio_on)  ## Switch on pin 7
+        gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_on)  ## Switch on pin 7
 
     def power_down_relay(self):
         print('power down power relay')
-        gp.output(self.powerrelay_pin, self.gpio_off)
+        self.lblStatus.setText('power down power relay')
+        gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_off)
 
     def reset_tfp2(self):
         pass
 
     def powerup_tfp3(self):
         print('power up tfp3 relay')
-        gp.output(self.tfp3relay_pin, self.gpio_off)
+        self.lblStatus.setText('power up tfp3 relay')
+        gp.output(sl.supportLibrary.gpio_tfp3relay_pin, sl.supportLibrary.gpio_on)
 
     def powerdown_tfp3(self):
         print('power down tfp3 relay')
-        gp.output(self.tfp3relay_pin, self.gpio_off)
+        self.lblStatus.setText('power down power relay')
+        gp.output(sl.supportLibrary.gpio_tfp3relay_pin, sl.supportLibrary.gpio_off)
 
     def adc(self):
         # TODO figure out what pin is the adc
@@ -189,7 +201,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     def get_status(self):
         print('gpio get status off all pins')
-        gp.output(self.gpio_tfp3relay_pin, self.gpio_off)
+        self.lblStatus.setText('gpio get status off all pins')
 
     def send_report(self):
         pass
@@ -197,22 +209,24 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def SerialTest(self):
         'used to simulate receiving commands from labview'
         data = self.lnSerialTest.text()
-        print('serial test' + data)
+        print('serial test ' + data)
         self.lnSerialTest.clear()
-        self.parse_serial_data(data)
+        self.parse_serial_data(data.encode('utf-8'))
 
     def parse_serial_data(self, bData):
+        print(bData)
         strData = bData.decode('utf-8')
         global DemoJM_Serialport
         DemoJM_Serialport.write(bData + b'\r')
         self.txtSerialData.appendPlainText(strData)
-        print('incoming data->' + strData)
+        print('incoming serial data->' + strData)
+        self.lblStatus.setText('incoming serial data->' + strData)
         if (strData == 'S') or (strData == 's'):
-            MainWindow.send_report()
+            MainWindow.send_report(self)
         elif (strData == 'L') or (strData == 'l'):
-            MainWindow.limitswitch_check()
+            MainWindow.limitswitch_check(self)
         elif (strData == 'Z') or (strData == 'z'):
-            MainWindow.getstatus()
+            MainWindow.getstatus(self)
         else:
             try:
                 # Send ACK to LabVIEW
@@ -220,6 +234,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
                 DemoJM_Serialport.write(b'\r')
             except:
                 print('no serial port')
+                self.lblStatus.setText('no serial port')
 
         if (strData == 'P') or (strData == 'p'):
             MainWindow.power_up_relay(self)
@@ -320,18 +335,31 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def button_serialnumberwrite(self):
         self.lblStatus.setText("Setting device serial number...")
         print("Setting device serial number...")
-        serialnumber, okPressed = QInputDialog.getInt(self, "Get integer", "Percentage:", 28, 0, 100, 1)
-        if okPressed:
-            print(serialnumber)
-            gui_thread = threading.Thread(None, self.writeserialnumber_command(serialnumber))
-            gui_thread.start()
+        oldserialnumber = self.readserialnumber_command()
+        if oldserialnumber[0]:
+            serialnumber, okPressed = QInputDialog.getInt(self, "Get integer", "Enter serial number:", int(oldserialnumber[1]), 0, 100, 1)
+            if okPressed:
+                print(serialnumber)
+                gui_thread = threading.Thread(None, self.writeserialnumber_command(ip_address, serialnumber))
+                gui_thread.start()
+            else:
+                self.lblStatus.setText("Setting device serial number canceled. ..")
+                print("Setting device serial number canceled. ..")
+                self.error_display_popup('Error Title','Error Message')
 
     # ****************************************************************************************************
-    def writeserialnumber_command(self, serialnumber):
-        ret = el.EthComLib.serialnumber_write(self, serialnumber)
+    def writeserialnumber_command(self, ip_address, serialnumber):
+        ret = el.EthComLib.serialnumber_write(self, ip_address, serialnumber)
+        print('Returned value ' + str(ret[1]))
+        print('Returned status ' + str(ret[0]))
+
+    # ****************************************************************************************************
+    def readserialnumber_command(self):
+        ret = el.EthComLib.serialnumber_read(self, ip_address)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
+        return ret
 
     # ****************************************************************************************************
     def button_uploadfile(self):
@@ -369,18 +397,18 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         return
 
     # ****************************************************************************************************
-    def button_webpageversion(self):
+    def button_wifiversion(self):
         name = self.sender()
         print(name)
         self.lblStatus.setText("Getting webpage version...")
         time.sleep(1)
         print("Getting webpage version...")
-        gui_thread = threading.Thread(None, self.webpageversion_command)
+        gui_thread = threading.Thread(None, self.wifiversion_command)
         gui_thread.start()
 
     # ****************************************************************************************************
-    def webpageversion_command(self):
-        ret = el.EthComLib.webpageversion_read(self, ip_address)
+    def wifiversion_command(self):
+        ret = el.EthComLib.wifiversion_read(self, ip_address)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
@@ -422,7 +450,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def tftp3_command(self):
         self.lblStatus.setText("Programming TFP3 !")
-        ret = pl.TFP3Program(tfp3_serial_port)
+        ret = pl.TFP3Program(self, tfp3_serial_port)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
@@ -436,7 +464,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def cyclone_command(self):
         self.lblStatus.setText("Programming cyclone !")
-        ret = pl.CycloneProgram(cyclone_serial_port)
+        ret = pl.CycloneProgram(self, cyclone_serial_port)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
@@ -544,7 +572,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.cbDemoJMComPort.addItems(serial_ports_list)
 
         print('Populating defaults...')
-        os_name = sl.getOsPlatform()
+        os_name = sl.supportLibrary.getOsPlatform(self)
         print('os name->' + os_name)
         ip_address = fl.configfileRead('TELNET', 'ip_address')
 
@@ -587,6 +615,14 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         else:
             index = self.cbDemoJMComPort.findText('none')
             self.cbDemoJMComPort.setCurrentIndex(index)
+
+    def error_display_popup(self, title, message):
+        print('error display')
+        buttonReply = QMessageBox.question(self, title, message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if buttonReply == QMessageBox.Yes:
+            print('Yes clicked.')
+        else:
+            print('No clicked.')
 
 
 def main():
