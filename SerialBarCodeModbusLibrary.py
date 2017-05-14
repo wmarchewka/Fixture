@@ -40,9 +40,13 @@ class SCML(object):
                 s.close()
                 settings.append(port)
                 print('Found->' + port)
+                self.lblStatus.setText('Found->' + port)
+                time.sleep(1)
             except (OSError, serial.SerialException):
                 pass
         settings.append('none')
+        self.lblStatus.setText('Serial scan complete...')
+        print('Serial scan complete...')
         return settings
 
     #******************************************************************************************
@@ -78,16 +82,16 @@ class SCML(object):
             try:
                 print('Looking for barcode scanner...')  # check which port was really used
                 self.lblStatus.setText('Looking for barcode scanner...')
-                with serial.Serial(port, 115200, timeout=1) as ser:
-                    print('Found barcode scanner on port ' + ser.name)
-                    ser.write(b'\x16T\r')   #write trigger
-                    print('Sending trigger  \x16T\r')
-                    #TODO: make sure this isnt blocking and contains enough characters read
-                    line = ser.read(30)     #check for return data
-                    ser.write(b'\x16U\r')   #send off trigger
-                    line = line.decode('ascii')
-                    print(line)
-                    self.lblStatus.setText(line)
+                ser = serial.Serial(port, 115200, timeout=1)
+                print('Found barcode scanner on port ' + ser.name)
+                ser.write(b'\x16T\r')   #write trigger
+                print('Sending trigger  \x16T\r')
+                #TODO: make sure this isnt blocking and contains enough characters read
+                line = ser.read(30)     #check for return data
+                ser.write(b'\x16U\r')   #send off trigger
+                line = line.decode('ascii')
+                print(line)
+                self.lblStatus.setText(line)
             except OSError as err:
                 print(err)
                 return False, err
@@ -98,6 +102,7 @@ class SCML(object):
                     self.lblStatus.setText('Failed to scan. Retrying ' +  str(count))
                     time.sleep(0.5)
                 else:
+                    serial.Serial.close()
                     print('Data returned from scanner')
                     nodashes = str(line).split('-')
                     print(nodashes)

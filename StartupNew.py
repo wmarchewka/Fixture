@@ -31,6 +31,7 @@ from PyQt5.QtGui import QIcon
 global demojm_serial_port
 global Testing
 
+# ****************************************************************************************************
 class FileDialog(QWidget):
     def __init__(self):
         super().__init__()
@@ -72,6 +73,7 @@ class FileDialog(QWidget):
         if fileName:
             print(fileName)
 
+# ****************************************************************************************************
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
     global DemoJM_Serialport
     serialtrigger = pyqtSignal(bytes)
@@ -102,6 +104,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteScript.clicked.connect(self.button_scriptwrite)
         self.pbWifiVersion.clicked.connect(self.button_wifiversion)
         self.pbSetupWIFI.clicked.connect(self.button_setupwifi)
+        self.pbRescanSerialPorts.clicked.connect(self.button_collectserialports)
 
         # setup combobox change signals
         self.cbTFP3ComPort.currentIndexChanged.connect(self.tfp3SerialPortChanged)
@@ -125,6 +128,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         # check srial event thread
         #self.check_serial_event()
 
+    # ****************************************************************************************************
     def check_serial_event(self):
         print('Starting serial receive thread')
         self.lblStatus.setText('Starting serial receive thread')
@@ -153,20 +157,24 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         except NameError as err:
             print('Serial thread not running due to ' + str(err))
 
+    # ****************************************************************************************************
     def check_for_config(self):
         ret = fl.configfileRead('CONFIG', 'file_ver')
         print('Found Configuration file version ' + ret)
         self.lblStatus.setText('Found Configuration file version ' + ret)
 
+    # ****************************************************************************************************
     def limitswitch_check(self):
         print('limitswitch check')
         self.lblStatus.setText('limitswitch check')
 
+    # ****************************************************************************************************
     def power_up_relay(self):
         print('power up power relay')
         self.lblStatus.setText('power up power relay')
         gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_on)
 
+    # ****************************************************************************************************
     def power_cycle_relay(self):
         print('power cycle relay')
         self.lblStatus.setText('power cycle relay')
@@ -174,38 +182,47 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         time.sleep(2)
         gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_on)  ## Switch on pin 7
 
+    # ****************************************************************************************************
     def power_down_relay(self):
         print('power down power relay')
         self.lblStatus.setText('power down power relay')
         gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_off)
 
+    # ****************************************************************************************************
     def reset_tfp2(self):
         pass
 
+    # ****************************************************************************************************
     def powerup_tfp3(self):
         print('power up tfp3 relay')
         self.lblStatus.setText('power up tfp3 relay')
         gp.output(sl.supportLibrary.gpio_tfp3relay_pin, sl.supportLibrary.gpio_on)
 
+    # ****************************************************************************************************
     def powerdown_tfp3(self):
         print('power down tfp3 relay')
         self.lblStatus.setText('power down power relay')
         gp.output(sl.supportLibrary.gpio_tfp3relay_pin, sl.supportLibrary.gpio_off)
 
+    # ****************************************************************************************************
     def adc(self):
         # TODO figure out what pin is the adc
         pass
 
+    # ****************************************************************************************************
     def all_outputs_toggle(self):
         pass
 
+    # ****************************************************************************************************
     def get_status(self):
         print('gpio get status off all pins')
         self.lblStatus.setText('gpio get status off all pins')
 
+    # ****************************************************************************************************
     def send_report(self):
         pass
 
+    # ****************************************************************************************************
     def SerialTest(self):
         'used to simulate receiving commands from labview'
         data = self.lnSerialTest.text()
@@ -213,6 +230,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lnSerialTest.clear()
         self.parse_serial_data(data.encode('utf-8'))
 
+    # ****************************************************************************************************
     def parse_serial_data(self, bData):
         print(bData)
         strData = bData.decode('utf-8')
@@ -511,24 +529,28 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         fl.configfileWrite('TFP3', 'COM_PORT', tfp3_serial_port)
         print('TFP3 port changed to  ' + tfp3_serial_port)
 
+    # ****************************************************************************************************
     def ScannerSerialPortChanged(self):
         global scanner_serial_port
         scanner_serial_port = self.cbScannerComPort.currentText()
         fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
         print('Scanner port changed to ' + scanner_serial_port)
 
+    # ****************************************************************************************************
     def CycloneSerialPortChanged(self):
         global cyclone_serial_port
         cyclone_serial_port = self.cbCycloneComPort.currentText()
         fl.configfileWrite('CYCLONE', 'COM_PORT', cyclone_serial_port)
         print('Cyclone port changed to ' + cyclone_serial_port)
 
+    # ****************************************************************************************************
     def ModbusSerialPortChanged(self):
         global modbus_serial_port
         modbus_serial_port = self.cbModbusComPort.currentText()
         fl.configfileWrite('MODBUS', 'COM_PORT', modbus_serial_port)
         print('Modbus port changed to ' + modbus_serial_port)
 
+    # ****************************************************************************************************
     def DemoJMSerialPortChanged(self):
         global demojm_serial_port
         demojm_serial_port = self.cbDemoJMComPort.currentText()
@@ -554,15 +576,18 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         except NameError as err:
             print(err)
 
-    def populate_defaults(self):
+    # ****************************************************************************************************
+    def collectserialports_command(self):
+
         global tfp3_serial_port
         global scanner_serial_port
         global cyclone_serial_port
         global modbus_serial_port
         global demojm_serial_port
         global DemoJM_Serialport
-        global ip_address
 
+        self.lblStatus.setText("Seraching for serial ports...")
+        time.sleep(1)
         # read serial port list OS and populate comboboxes
         serial_ports_list = ml.SCML.collectSerialPorts(self)  # run serial port routine
         self.cbTFP3ComPort.addItems(serial_ports_list)
@@ -570,6 +595,18 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.cbCycloneComPort.addItems(serial_ports_list)
         self.cbModbusComPort.addItems(serial_ports_list)
         self.cbDemoJMComPort.addItems(serial_ports_list)
+
+    # ****************************************************************************************************
+    def button_collectserialports(self):
+        print("Pressed collect serial ports...")
+        gui_thread = threading.Thread(None, self.collectserialports_command, None)
+        gui_thread.start()
+
+    #****************************************************************************************************
+    def populate_defaults(self):
+
+        self.collectserialports_command()
+        global ip_address
 
         print('Populating defaults...')
         os_name = sl.supportLibrary.getOsPlatform(self)
@@ -616,6 +653,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             index = self.cbDemoJMComPort.findText('none')
             self.cbDemoJMComPort.setCurrentIndex(index)
 
+    # ****************************************************************************************************
     def error_display_popup(self, title, message):
         print('error display')
         buttonReply = QMessageBox.question(self, title, message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
@@ -624,7 +662,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         else:
             print('No clicked.')
 
-
+# ****************************************************************************************************
 def main():
     app = QApplication(sys.argv)
     form = MainWindow()
