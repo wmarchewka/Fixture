@@ -98,6 +98,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteLanMac.clicked.connect(self.button_lanmac)
         self.pbWriteWifiMac.clicked.connect(self.button_wifimac)
         self.pbModbusInit.clicked.connect(self.button_modbusinit)
+        self.pbDefaultsStore.clicked.connect(self.button_defaultsstore)
         self.pbSetPCR.clicked.connect(self.button_setpcr)
         self.pbWriteSerialNumber.clicked.connect(self.button_serialnumberwrite)
         self.pbUploadFile.clicked.connect(self.button_uploadfile)
@@ -322,6 +323,23 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def modbusinit_command(self):
         time.sleep(1)
         ret = el.EthComLib.modbus_init(self, ip_address)
+        print('Returned value ' + str(ret[1]))
+        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText(str(ret[1]))
+
+    # ****************************************************************************************************
+    def button_defaultsstore(self):
+        self.lblStatus.setText("Storing defaults...")
+        time.sleep(1)
+        print('Storing defaults...')
+        gui_thread = threading.Thread(None, self.defaultsstore_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def defaultsstore_command(self):
+
+        ret = el.EthComLib.defaults_store(self, ip_address)
+        print(ret)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
