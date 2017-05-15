@@ -104,17 +104,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteScript.clicked.connect(self.button_scriptwrite)
         self.pbWifiVersion.clicked.connect(self.button_wifiversion)
         self.pbSetupWIFI.clicked.connect(self.button_setupwifi)
-        self.pbRescanSerialPorts.clicked.connect(self.button_collectserialports)
+        self.pbRescanSerialPorts.clicked.connect(self.populate_defaults)
 
-        # setup combobox change signals
-        self.cbTFP3ComPort.currentIndexChanged.connect(self.tfp3SerialPortChanged)
-        self.cbScannerComPort.currentIndexChanged.connect(self.ScannerSerialPortChanged)
-        self.cbCycloneComPort.currentIndexChanged.connect(self.CycloneSerialPortChanged)
-        self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
-        self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
-        self.cbDemoJMComPort.activated[str].connect(self.DemoJMSerialPortChanged)
-
-        # setup combobox change signals
+        # setup serial test input change signals
         self.lnSerialTest.textChanged.connect(self.SerialTest)
 
         # look to ensure we have a configuration file
@@ -578,7 +570,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def collectserialports_command(self):
-
         global tfp3_serial_port
         global scanner_serial_port
         global cyclone_serial_port
@@ -586,29 +577,36 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global demojm_serial_port
         global DemoJM_Serialport
 
-        self.lblStatus.setText("Seraching for serial ports...")
-        time.sleep(1)
+        self.lblStatus.setText("Searching for serial ports...")
+        #time.sleep(1)
         # read serial port list OS and populate comboboxes
         serial_ports_list = ml.SCML.collectSerialPorts(self)  # run serial port routine
+
         self.cbTFP3ComPort.addItems(serial_ports_list)
         self.cbScannerComPort.addItems(serial_ports_list)
         self.cbCycloneComPort.addItems(serial_ports_list)
         self.cbModbusComPort.addItems(serial_ports_list)
         self.cbDemoJMComPort.addItems(serial_ports_list)
 
-    # ****************************************************************************************************
-    def button_collectserialports(self):
-        print("Pressed collect serial ports...")
-        gui_thread = threading.Thread(None, self.collectserialports_command, None)
-        gui_thread.start()
+        # setup combobox change signals
+        self.cbTFP3ComPort.currentIndexChanged.connect(self.tfp3SerialPortChanged)
+        self.cbScannerComPort.currentIndexChanged.connect(self.ScannerSerialPortChanged)
+        self.cbCycloneComPort.currentIndexChanged.connect(self.CycloneSerialPortChanged)
+        self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
+        self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
+        self.cbDemoJMComPort.activated[str].connect(self.DemoJMSerialPortChanged)
 
-    #****************************************************************************************************
+    # ****************************************************************************************************
     def populate_defaults(self):
 
-        self.collectserialports_command()
+        print('Populating defaults...')
+        self.lblStatus.setText('Populating defaults...')
+
+        def_thread = threading.Thread(None, self.collectserialports_command)
+        def_thread.run()
+
         global ip_address
 
-        print('Populating defaults...')
         os_name = sl.supportLibrary.getOsPlatform(self)
         print('os name->' + os_name)
         ip_address = fl.configfileRead('TELNET', 'ip_address')
