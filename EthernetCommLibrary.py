@@ -411,6 +411,48 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
+
+    def defaults_save(self, ip_address):
+        try:
+            port = 23
+            print('Setting wireless LAN MAC ' + ip_address)
+            sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sc.settimeout(2)
+            conn = ip_address, port
+            sc.connect(conn)
+            data = sc.recv(100)
+            print(data)
+            sc.write(b'$login,factory,factory\r\n')
+            data = sc.recv(100)
+            print(data)
+            sc.write(b'$wlanmac,G\r\n')
+            old_mac = sc.recv(100)
+            old_mac = old_mac.decode().split(',')[2]
+            print('old_mac -> ' + old_mac)
+            old_mac = str(old_mac)
+            new_mac = old_mac
+            print('new_mac -> ' + new_mac)
+            self.lblStatus.setText('Old MAC : ' + str(old_mac) + '     New MAC : ' + str(new_mac))
+            se = '$wlanmac,S,' + new_mac + str('\r\n')
+            sc.write(se.encode())
+            data = sc.recv(100)
+            print('data->' + str(data))
+            result = data.decode().split(',')[3].find('OK')
+            print('result->' + str(result))
+            if result > 0:
+                print('Wireless lan mac not set')
+                self.lblStatus.setText('WIFI MAC not set')
+                return False, "WIFI MAC not set"
+            else:
+                print('WIFI mac successfully set')
+                self.lblStatus.setText('WIFI mac successfully set')
+                return True, 'WIFI MAC successfully set'
+
+        except OSError as err:
+            print(err)
+            return False, err
+
+    #******************************************************************************************
     def wifi_mac_write(self, ip_address):
         try:
             port = 23
@@ -562,7 +604,6 @@ class EthComLib(object):
             else:
                 print('File upload failed')
                 self.lblStatus.setText('File upload failed')
-
 
         except OSError as err:
             print(err)

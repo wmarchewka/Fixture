@@ -12,43 +12,39 @@ class SCML(object):
         pass
     #******************************************************************************************
     def collectSerialPorts(self):
-        time.sleep(5)
-        # """ Lists serial port names
-        #
-        #     :raises EnvironmentError:
-        #         On unsupported or unknown platforms
-        #     :returns:
-        #         A list of the serial ports available on the system
-        # """
-        # if sys.platform.startswith('win'):
-        #     ports = ['COM%s' % (i + 1) for i in range(256)]
-        # elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        #     # this excludes your current terminal "/dev/tty"
-        #     ports = glob.glob('/dev/tty[A-Za-z]*')
-        # elif sys.platform.startswith('darwin'):
-        #     ports = glob.glob('/dev/tty.*')
-        # else:
-        #     raise EnvironmentError('Unsupported platform')
-        #
-        # print("Searching for serial ports...")
-        # settings = []
-        # for port in ports:
-        #     try:
-        #         s = serial.Serial(port)
-        #         #st = s.get_settings()
-        #         s.close()
-        #         settings.append(port)
-        #         print('Found->' + port)
-        #         self.lblStatus.setText('Found->' + port)
-        #         time.sleep(1)
-        #     except (OSError, serial.SerialException):
-        #         pass
-        # settings.append('none')
-        # self.lblStatus.setText('Serial scan complete...')
-        # print('Serial scan complete...')
-        #return settings
-        settings = ['com1', 'com2', 'com3']
+        """ Lists serial port names
+                    :raises EnvironmentError:
+                On unsupported or unknown platforms
+            :returns:
+                A list of the serial ports available on the system
+        """
+        if sys.platform.startswith('win'):
+            ports = ['COM%s' % (i + 1) for i in range(256)]
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+            # this excludes your current terminal "/dev/tty"
+            ports = glob.glob('/dev/tty[A-Za-z]*')
+        elif sys.platform.startswith('darwin'):
+            ports = glob.glob('/dev/tty.*')
+        else:
+            raise EnvironmentError('Unsupported platform')
+            print("Searching for serial ports...")
+        settings = []
+        for port in ports:
+            try:
+                s = serial.Serial(port)
+                #st = s.get_settings()
+                s.close()
+                settings.append(port)
+                print('Found->' + port)
+                self.lblStatus.setText('Found->' + port)
+                time.sleep(1)
+            except (OSError, serial.SerialException):
+                pass
+        settings.append('none')
+        self.lblStatus.setText('Serial scan complete...')
+        print('Serial scan complete...')
         return settings
+
     #******************************************************************************************
     def MajorBoardType(self,p_number, board_type, config_cal):
         global major_board_type
