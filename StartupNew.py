@@ -627,13 +627,18 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         time.sleep(1)
         # read serial port list OS and populate comboboxes
-        serial_ports_list = ml.SCML.collectSerialPorts(self)  # run serial port routine
-
-        self.cbTFP3ComPort.addItems(serial_ports_list)
-        self.cbScannerComPort.addItems(serial_ports_list)
-        self.cbCycloneComPort.addItems(serial_ports_list)
-        self.cbModbusComPort.addItems(serial_ports_list)
-        self.cbDemoJMComPort.addItems(serial_ports_list)
+        ret = ml.SCML.collectSerialPorts(self)  # run serial port routine
+        if ret[0]:
+            serial_ports_list = ret[1]
+            self.cbTFP3ComPort.addItems(serial_ports_list)
+            self.cbScannerComPort.addItems(serial_ports_list)
+            self.cbCycloneComPort.addItems(serial_ports_list)
+            self.cbModbusComPort.addItems(serial_ports_list)
+            self.cbDemoJMComPort.addItems(serial_ports_list)
+        else:
+            print('Error getting serial port list')
+            self.lblStatus.setText('Error getting serial port list')
+            time.sleep(2)
 
     # ****************************************************************************************************
     def populate_defaults(self):

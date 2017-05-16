@@ -38,12 +38,13 @@ class SCML(object):
                 print('Found->' + port)
                 self.lblStatus.setText('Found->' + port)
                 time.sleep(1)
-            except (OSError, serial.SerialException):
+            except (OSError, serial.SerialException) as err:
+                s.close()
                 pass
         settings.append('none')
         self.lblStatus.setText('Serial scan complete...')
         print('Serial scan complete...')
-        return settings
+        return True, settings
 
     #******************************************************************************************
     def MajorBoardType(self,p_number, board_type, config_cal):
@@ -95,15 +96,23 @@ class SCML(object):
 
             except OSError as err:
                 print(err)
+                self.lblStatus.setText(err)
                 return False, err
+
+            except Exception as err:
+                print(err)
+                self.lblStatus.setText(err)
+                return False, err
+
             try:
                 if not line:
                     count = count + 1
                     print('Failed to scan. Retrying ' + str(count))
                     self.lblStatus.setText('Failed to scan. Retrying ' +  str(count))
                     time.sleep(0.5)
+                    ser.close()
                 else:
-                    serial.Serial.close(self)
+                    ser.close()
                     print('Data returned from scanner')
                     nodashes = str(line).split('-')
                     print(nodashes)
@@ -180,10 +189,12 @@ class SCML(object):
 
             except OSError as err:
                 print(err)
+                self.lblStatus.setText(err)
                 return False, err
 
             except Exception as err:
                 print(err)
+                self.lblStatus.setText(err)
                 return False, err
 
         self.lblStatus.setText('Failed to scan')
