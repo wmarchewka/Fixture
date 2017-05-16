@@ -62,7 +62,7 @@ class SCML(object):
                     board_voltage = 'HIGH'
 
     #******************************************************************************************
-    def ScanBarcode(self, port, max):
+    def ScanBarcode(self, simulate, port, max):
         global major_board_type
         global board_voltage
         global p_number
@@ -74,6 +74,9 @@ class SCML(object):
         global serial_number
         global partnumber
         count = 0
+
+        print(simulate)
+
         while count < max:
             try:
                 print('Looking for barcode scanner...')  # check which port was really used
@@ -88,6 +91,8 @@ class SCML(object):
                 line = line.decode('ascii')
                 print(line)
                 self.lblStatus.setText(line)
+                self.lblCurrentSerialNumber.setText(line)
+
             except OSError as err:
                 print(err)
                 return False, err
@@ -98,7 +103,7 @@ class SCML(object):
                     self.lblStatus.setText('Failed to scan. Retrying ' +  str(count))
                     time.sleep(0.5)
                 else:
-                    serial.Serial.close()
+                    serial.Serial.close(self)
                     print('Data returned from scanner')
                     nodashes = str(line).split('-')
                     print(nodashes)
@@ -172,10 +177,15 @@ class SCML(object):
                     print('TEST_DATE_TIME', 'test_time', time.strftime('%H:%M:%S'))
                     print('TEST_DATE_TIME', 'test_date', time.strftime('%d:%m:%Y'))
                     return True, str(line)
-                ser.close()  # close port
+
             except OSError as err:
                 print(err)
                 return False, err
+
+            except Exception as err:
+                print(err)
+                return False, err
+
         self.lblStatus.setText('Failed to scan')
         return False,('Failed to scan')
 

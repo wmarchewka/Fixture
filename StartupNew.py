@@ -105,7 +105,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteScript.clicked.connect(self.button_scriptwrite)
         self.pbWifiVersion.clicked.connect(self.button_wifiversion)
         self.pbSetupWIFI.clicked.connect(self.button_setupwifi)
-        self.pbRescanSerialPorts.clicked.connect(self.populate_defaults)
+        self.pbRescanSerialPorts.clicked.connect(self.button_populatedefaults)
 
         # setup serial test input change signals
         self.lnSerialTest.textChanged.connect(self.SerialTest)
@@ -115,10 +115,10 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         # do all initializtion
         self.lblStatus.setText('')
-        self.populate_defaults()
+        #self.populate_defaults()
         print('TFP3 relay pin ' + str(sl.supportLibrary.gpio_tfp3relay_pin))
 
-        # check srial event thread
+        # check serial event thread
         #self.check_serial_event()
 
     # ****************************************************************************************************
@@ -505,7 +505,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def scanner_command(self):
-        ret = ml.SCML.ScanBarcode(self, scanner_serial_port, 5)
+        simulate = True
+        global scanner_serial_port
+        ret = ml.SCML.ScanBarcode(self, simulate, scanner_serial_port, 5)
         print('Returned value ' + str(ret[0]))
 
     # ****************************************************************************************************
@@ -523,7 +525,27 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def button_ping(self):
         print('Pressed ping button')
-        gui_thread = threading.Thread(None, self.ping_command, None)
+        gui_thread = threading.Thread(None, self.ping_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def button_populatedefaults(self):
+        print('Pressed repopulate serial ports')
+
+        self.cbTFP3ComPort.currentIndexChanged.disconnect(self.tfp3SerialPortChanged)
+        self.cbScannerComPort.currentIndexChanged.disconnect(self.ScannerSerialPortChanged)
+        self.cbCycloneComPort.currentIndexChanged.disconnect(self.CycloneSerialPortChanged)
+        self.cbModbusComPort.currentIndexChanged.disconnect(self.ModbusSerialPortChanged)
+        self.cbDemoJMComPort.currentIndexChanged.disconnect(self.DemoJMSerialPortChanged)
+        self.cbDemoJMComPort.activated[str].disconnect(self.DemoJMSerialPortChanged)
+
+        self.cbTFP3ComPort.clear()
+        self.cbScannerComPort.clear()
+        self.cbCycloneComPort.clear()
+        self.cbModbusComPort.clear()
+        self.cbDemoJMComPort.clear()
+
+        gui_thread = threading.Thread(None, self.populate_defaults)
         gui_thread.start()
 
     # ****************************************************************************************************
@@ -535,6 +557,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def tfp3SerialPortChanged(self):
         global tfp3_serial_port
+        print('TFP3 serial port changed....')
         tfp3_serial_port = self.cbTFP3ComPort.currentText()
         fl.configfileWrite('TFP3', 'COM_PORT', tfp3_serial_port)
         print('TFP3 port changed to  ' + tfp3_serial_port)
@@ -542,6 +565,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def ScannerSerialPortChanged(self):
         global scanner_serial_port
+        print('Scanner serial port changed....')
         scanner_serial_port = self.cbScannerComPort.currentText()
         fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
         print('Scanner port changed to ' + scanner_serial_port)
@@ -549,6 +573,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def CycloneSerialPortChanged(self):
         global cyclone_serial_port
+        print('Cyclone serial port changed....')
         cyclone_serial_port = self.cbCycloneComPort.currentText()
         fl.configfileWrite('CYCLONE', 'COM_PORT', cyclone_serial_port)
         print('Cyclone port changed to ' + cyclone_serial_port)
@@ -556,6 +581,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def ModbusSerialPortChanged(self):
         global modbus_serial_port
+        print('Modbus serial port changed....')
         modbus_serial_port = self.cbModbusComPort.currentText()
         fl.configfileWrite('MODBUS', 'COM_PORT', modbus_serial_port)
         print('Modbus port changed to ' + modbus_serial_port)
@@ -563,6 +589,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def DemoJMSerialPortChanged(self):
         global demojm_serial_port
+        print('DEMOJM serial port changed....')
         demojm_serial_port = self.cbDemoJMComPort.currentText()
         fl.configfileWrite('DEMOJM', 'COM_PORT', demojm_serial_port)
         print('DemoJM port changed to ' + demojm_serial_port)
@@ -596,7 +623,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global DemoJM_Serialport
 
         self.lblStatus.setText("Searching for serial ports...")
-        #time.sleep(1)
+        print("Searching for serial ports...")
+
+        time.sleep(1)
         # read serial port list OS and populate comboboxes
         serial_ports_list = ml.SCML.collectSerialPorts(self)  # run serial port routine
 
@@ -606,27 +635,27 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.cbModbusComPort.addItems(serial_ports_list)
         self.cbDemoJMComPort.addItems(serial_ports_list)
 
-        # setup combobox change signals
-        self.cbTFP3ComPort.currentIndexChanged.connect(self.tfp3SerialPortChanged)
-        self.cbScannerComPort.currentIndexChanged.connect(self.ScannerSerialPortChanged)
-        self.cbCycloneComPort.currentIndexChanged.connect(self.CycloneSerialPortChanged)
-        self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
-        self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
-        self.cbDemoJMComPort.activated[str].connect(self.DemoJMSerialPortChanged)
-
     # ****************************************************************************************************
     def populate_defaults(self):
 
-        print('Populating defaults...')
-        self.lblStatus.setText('Populating defaults...')
+        global tfp3_serial_port
+        global scanner_serial_port
+        global cyclone_serial_port
+        global modbus_serial_port
+        global demojm_serial_port
+        global DemoJM_Serialport
 
-        def_thread = threading.Thread(None, self.collectserialports_command)
-        def_thread.run()
+        print('Populating defaults...')
+        self.lblStatus.setText("Searching for serial ports...")
+        time.sleep(1)
+
+        self.collectserialports_command()
 
         global ip_address
 
         os_name = sl.supportLibrary.getOsPlatform(self)
         print('os name->' + os_name)
+
         ip_address = fl.configfileRead('TELNET', 'ip_address')
 
         tfp3_serial_port = fl.configfileRead('TFP3', 'COM_PORT')
@@ -669,6 +698,16 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             index = self.cbDemoJMComPort.findText('none')
             self.cbDemoJMComPort.setCurrentIndex(index)
 
+        # setup combobox change signals
+        self.cbTFP3ComPort.currentIndexChanged.connect(self.tfp3SerialPortChanged)
+        self.cbScannerComPort.currentIndexChanged.connect(self.ScannerSerialPortChanged)
+        self.cbCycloneComPort.currentIndexChanged.connect(self.CycloneSerialPortChanged)
+        self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
+        self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
+        self.cbDemoJMComPort.activated[str].connect(self.DemoJMSerialPortChanged)
+
+        self.lblStatus.setText('Ready...')
+
     # ****************************************************************************************************
     def error_display_popup(self, title, message):
         print('error display')
@@ -683,6 +722,9 @@ def main():
     app = QApplication(sys.argv)
     form = MainWindow()
     form.show()
+    gui_thread = threading.Thread(None,form.populate_defaults)
+    gui_thread.start()
+    form.lblStatus.setText('Ready...')
     sys.exit(app.exec_())
 
 
