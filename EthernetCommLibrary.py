@@ -677,6 +677,7 @@ class EthComLib(object):
             print('login data-' + str(data))
             sc.send(b'$wv,g\r\n')
             data = sc.recv(100)
+            print('recv data-' + str(data))
             data = data.decode().split(',')[2]
             print('return data->' + str(data))
             self.lblStatus.setText('Webpage version is ' + str(data))
