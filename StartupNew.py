@@ -16,7 +16,7 @@ except ImportError:
 from PyQt5.QtWidgets import *
 # my libraries
 from QT_Project import mainwindow_auto as mw
-from QT_Project import popup_auto as pw
+from QT_Project import popupSlot_auto as pw
 from PyQt5.QtCore import pyqtSignal
 import SerialBarCodeModbusLibrary as ml
 import ProgrammersLibrary as pl
@@ -24,7 +24,7 @@ import EthernetCommLibrary as el
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QComboBox
 from PyQt5.QtGui import QIcon
 
 
@@ -35,7 +35,7 @@ global Testing
 class FileDialog(QWidget):
     def __init__(self):
         super().__init__()
-        self.title = 'PyQt5 file dialogs - pythonspot.com'
+        self.title = 'Browse for file....'
         self.left = 10
         self.top = 10
         self.width = 640
@@ -72,6 +72,24 @@ class FileDialog(QWidget):
                                                   "All Files (*);;Text Files (*.txt)", options=options)
         if fileName:
             print(fileName)
+# ****************************************************************************************************
+class popupCombo(QMainWindow, pw.Ui_MainWindow):
+
+    def __init__(self):
+        super().__init__()
+        self.title = 'Please select file type...'
+        self.left = 200
+        self.top = 200
+        self.width = 200
+        self.height = 100
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.cmbFileData.addItem(self, 'wifi')
+        self.setGeometry(self.left, self.top, self.width, self.height)
+
+
 
 # ****************************************************************************************************
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
@@ -103,7 +121,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteSerialNumber.clicked.connect(self.button_serialnumberwrite)
         self.pbUploadFile.clicked.connect(self.button_uploadfile)
         self.pbWriteScript.clicked.connect(self.button_scriptwrite)
-        self.pbWifiVersion.clicked.connect(self.button_wifiversion)
+        self.pbWebPageVersion.clicked.connect(self.button_webpageversion)
         self.pbSetupWIFI.clicked.connect(self.button_setupwifi)
         self.pbRescanSerialPorts.clicked.connect(self.button_populatedefaults)
 
@@ -391,10 +409,16 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_uploadfile(self):
-        self.lblStatus.setText("Uploading file...")
+        self.cb = popupCombo()
+        #self.cb.cmbFile.addItem(self,'wifi')
+        self.cb.show()
+
+    # ****************************************************************************************************
+    def comboonactivated(self,text):
+        self.lblStatus.setText('Uploading filetype ' + text)
         time.sleep(1)
-        print("Uploading file...")
-        gui_thread = threading.Thread(None, self.uploadfile_command('wifi'))
+        print("Uploading filetype " + str(text))
+        gui_thread = threading.Thread(None, self.uploadfile_command(text))
         gui_thread.start()
 
     # ****************************************************************************************************
@@ -425,18 +449,16 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         return
 
     # ****************************************************************************************************
-    def button_wifiversion(self):
-        name = self.sender()
-        print(name)
+    def button_webpageversion(self):
         self.lblStatus.setText("Getting webpage version...")
         time.sleep(1)
         print("Getting webpage version...")
-        gui_thread = threading.Thread(None, self.wifiversion_command)
+        gui_thread = threading.Thread(None, self.webpageversion_command)
         gui_thread.start()
 
     # ****************************************************************************************************
-    def wifiversion_command(self):
-        ret = el.EthComLib.wifiversion_read(self, ip_address)
+    def webpageversion_command(self):
+        ret = el.EthComLib.webpageversion_read(self, ip_address)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))

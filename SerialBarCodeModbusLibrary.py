@@ -38,7 +38,7 @@ class SCML(object):
             self.lblStatus.setText('Found ->' + str(p.device))
             devices.append(p.device)
             try:
-                if p.description.find('RS485') >= 0:
+                if p.description.find('RS485') >= 0 or p.hwid.find('0403:6001')>=0:
                     port_modbus = p.device
             except AttributeError:
                 pass

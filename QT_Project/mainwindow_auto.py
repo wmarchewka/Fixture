@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file 'MAINWINDOW.UI'
 #
 # Created by: PyQt5 UI code generator 5.8.2
 #
@@ -167,12 +167,12 @@ class Ui_MainWindow(object):
         font.setPointSize(11)
         self.pbWriteScript.setFont(font)
         self.pbWriteScript.setObjectName("pbWriteScript")
-        self.pbWifiVersion = QtWidgets.QPushButton(self.centralWidget)
-        self.pbWifiVersion.setGeometry(QtCore.QRect(150, 320, 131, 23))
+        self.pbWebPageVersion = QtWidgets.QPushButton(self.centralWidget)
+        self.pbWebPageVersion.setGeometry(QtCore.QRect(150, 320, 131, 23))
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.pbWifiVersion.setFont(font)
-        self.pbWifiVersion.setObjectName("pbWifiVersion")
+        self.pbWebPageVersion.setFont(font)
+        self.pbWebPageVersion.setObjectName("pbWebPageVersion")
         self.pbSetupWIFI = QtWidgets.QPushButton(self.centralWidget)
         self.pbSetupWIFI.setGeometry(QtCore.QRect(290, 320, 131, 23))
         font = QtGui.QFont()
@@ -202,7 +202,7 @@ class Ui_MainWindow(object):
         self.lblCurrentSerialNumber.setObjectName("lblCurrentSerialNumber")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1024, 22))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1024, 21))
         self.menuBar.setObjectName("menuBar")
         MainWindow.setMenuBar(self.menuBar)
         self.mainToolBar = QtWidgets.QToolBar(MainWindow)
@@ -242,7 +242,7 @@ class Ui_MainWindow(object):
         self.pbWriteSerialNumber.setText(_translate("MainWindow", "SERIAL NUMBER"))
         self.pbUploadFile.setText(_translate("MainWindow", "UPLOAD FILE"))
         self.pbWriteScript.setText(_translate("MainWindow", "WRITE SCRIPT"))
-        self.pbWifiVersion.setText(_translate("MainWindow", "WIFI VERSION"))
+        self.pbWebPageVersion.setText(_translate("MainWindow", "WEB  VERSION"))
         self.pbSetupWIFI.setText(_translate("MainWindow", "SETUP WIFI"))
         self.pbDefaultsStore.setText(_translate("MainWindow", "STORE DEFAULTS"))
 

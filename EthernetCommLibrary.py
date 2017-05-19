@@ -660,7 +660,7 @@ class EthComLib(object):
 
 
     #******************************************************************************************
-    def wifiversion_read(self, ip_address):
+    def webpageversion_read(self, ip_address):
         try:
             #TODO this needs finished
             port = 23
@@ -680,8 +680,13 @@ class EthComLib(object):
             print('recv data-' + str(data))
             data = data.decode().split(',')[2]
             print('return data->' + str(data))
-            self.lblStatus.setText('Webpage version is ' + str(data))
-            return True, 'Webpage version is ' + str(data)
+            if not data:
+                self.lblStatus.setText('Webpage not installed.')
+                return True, 'Webpage not installed'
+            else:
+                self.lblStatus.setText('Webpage version is ' + str(data))
+                return True, 'Webpage version is ' + str(data)
+
 
         except OSError as err:
             print(err)
@@ -751,7 +756,7 @@ def main():
         ret = EthComLib.wifi_setup(ip_add, mac_add)
 
     if module == "B":
-        ret = EthComLib.wifiversion_read(ip_add)
+        ret = EthComLib.webpageversion_read(ip_add)
 
     if module == "C":
         ret = EthComLib.script_write(ip_add,path)

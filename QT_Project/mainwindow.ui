@@ -500,7 +500,7 @@
      <string>WRITE SCRIPT</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pbWifiVersion">
+   <widget class="QPushButton" name="pbWebPageVersion">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -515,7 +515,7 @@
      </font>
     </property>
     <property name="text">
-     <string>WIFI VERSION</string>
+     <string>WEB  VERSION</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbSetupWIFI">
@@ -597,7 +597,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
