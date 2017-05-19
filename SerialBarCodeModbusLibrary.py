@@ -4,6 +4,7 @@ import sys
 
 import minimalmodbus
 import serial
+import serial.tools.list_ports
 import FileConfigurationLibrary as fl
 
 class SCML(object):
@@ -12,39 +13,65 @@ class SCML(object):
         pass
     #******************************************************************************************
     def collectSerialPorts(self):
-        """ Lists serial port names
-                    :raises EnvironmentError:
-                On unsupported or unknown platforms
-            :returns:
-                A list of the serial ports available on the system
-        """
-        if sys.platform.startswith('win'):
-            ports = ['COM%s' % (i + 1) for i in range(256)]
-        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-            # this excludes your current terminal "/dev/tty"
-            ports = glob.glob('/dev/tty[A-Za-z]*')
-        elif sys.platform.startswith('darwin'):
-            ports = glob.glob('/dev/tty.*')
-        else:
-            raise EnvironmentError('Unsupported platform')
-            print("Searching for serial ports...")
-        settings = []
-        for port in ports:
+
+        port_modbus = ''
+        port_tfp3 = ''
+        port_cyclone = ''
+        port_scanner = ''
+        port_demojm = ''
+        ports = list(serial.tools.list_ports.comports())
+        devices = []
+        for p in ports:
+            print('-----------------------------------------')
+            print(p)
+            print('description->' + str(p.description))
+            print('devicestr(' + str(p.device))
+            print('hwidstr(' + str(p.hwid))
+            print('interfacestr(' + str(p.interface))
+            print('locationstr(' + str(p.location))
+            print('maufacturerstr(' + str(p.manufacturer))
+            print('namestr(' + str(p.name))
+            print('pidstr(' + str(p.pid))
+            print('product->' + str(p.product))
+            print('serial number->' + str(p.serial_number))
+            print('vid->' + str(p.vid))
+            self.lblStatus.setText('Found ->' + str(p.device))
+            devices.append(p.device)
             try:
-                s = serial.Serial(port)
-                #st = s.get_settings()
-                s.close()
-                settings.append(port)
-                print('Found->' + port)
-                self.lblStatus.setText('Found->' + port)
-                time.sleep(1)
-            except (OSError, serial.SerialException) as err:
-                s.close()
+                if p.description.find('RS485') >= 0:
+                    port_modbus = p.device
+            except AttributeError:
                 pass
-        settings.append('none')
+
+            try:
+                if p.description.find('MAXQ') >= 0:
+                    port_tfp3 = p.device
+            except AttributeError:
+                pass
+
+            try:
+                if p.manufacturer.find('Honeywell') >= 0:
+                    port_scanner = p.device
+            except AttributeError:
+                pass
+
+            try:
+                if p.description.find('USB-Serial Controller') >= 0:
+                    if p.manufacturer.find('Prolific') >= 0:
+                        port_cyclone = p.device
+            except AttributeError:
+                pass
+
+            try:
+                if p.description.find('USB-Serial Controller') >= 0:
+                    if p.manufacturer.find('Prolific') >= 0:
+                        port_demojm = p.device
+            except AttributeError:
+                pass
+
         self.lblStatus.setText('Serial scan complete...')
         print('Serial scan complete...')
-        return True, settings
+        return True, devices, port_modbus, port_tfp3, port_scanner, port_cyclone, port_demojm
 
     #******************************************************************************************
     def MajorBoardType(self,p_number, board_type, config_cal):

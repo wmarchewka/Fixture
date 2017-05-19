@@ -628,8 +628,28 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         time.sleep(1)
         # read serial port list OS and populate comboboxes
         ret = ml.SCML.collectSerialPorts(self)  # run serial port routine
+        print('Status->' + str(ret[0]))
+        print('List->' + str(ret[1]))
+        print('modbus port->' + str(ret[2]))
+        print('tfp3 port->' + str(ret[3]))
+        print('scanner port->' + str(ret[4]))
+        print('cyclone port' + str(ret[5]))
+        print('demojm port' + str(ret[6]))
+
         if ret[0]:
             serial_ports_list = ret[1]
+
+            tfp3_serial_port = ret[3]
+            fl.configfileWrite('TFP3', 'COM_PORT',tfp3_serial_port)
+            scanner_serial_port = ret[4]
+            fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
+            cyclone_serial_port = ret[5]
+            fl.configfileWrite('CYCLONE', 'COM_PORT', cyclone_serial_port)
+            modbus_serial_port = ret[2]
+            fl.configfileWrite('MODBUS', 'COM_PORT', modbus_serial_port)
+            demojm_serial_port = ret[6]
+            fl.configfileWrite('DEMOJM', 'COM_PORT', demojm_serial_port)
+
             self.cbTFP3ComPort.addItems(serial_ports_list)
             self.cbScannerComPort.addItems(serial_ports_list)
             self.cbCycloneComPort.addItems(serial_ports_list)
