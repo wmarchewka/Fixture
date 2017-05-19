@@ -75,19 +75,21 @@ class FileDialog(QWidget):
 # ****************************************************************************************************
 class popupCombo(QMainWindow, pw.Ui_MainWindow):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super(popupCombo, self).__init__(parent)
+        self.setupUi(self)
         self.title = 'Please select file type...'
         self.left = 200
         self.top = 200
         self.width = 200
         self.height = 100
-        self.initUI()
 
     def initUI(self):
-        self.setWindowTitle(self.title)
-        self.cmbFileData.addItem(self, 'wifi')
-        self.setGeometry(self.left, self.top, self.width, self.height)
+        pass
+        #self.show()
+        #self.setWindowTitle(self.title)
+        #self.cmbFileData.clear()
+        #self.setGeometry(self.left, self.top, self.width, self.height)
 
 
 
@@ -409,9 +411,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_uploadfile(self):
-        self.cb = popupCombo()
-        #self.cb.cmbFile.addItem(self,'wifi')
-        self.cb.show()
+        window = popupCombo(self)
+        window.show()
 
     # ****************************************************************************************************
     def comboonactivated(self,text):
@@ -768,6 +769,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 def main():
     app = QApplication(sys.argv)
     form = MainWindow()
+
     form.show()
     gui_thread = threading.Thread(None,form.populate_defaults)
     gui_thread.start()
