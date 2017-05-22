@@ -75,22 +75,31 @@ class FileDialog(QWidget):
 # ****************************************************************************************************
 class popupCombo(QMainWindow, pw.Ui_MainWindow):
 
-    def __init__(self, parent=None):
-        super(popupCombo, self).__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.setupUi(self)
         self.title = 'Please select file type...'
         self.left = 200
         self.top = 200
         self.width = 200
         self.height = 100
+        self.initUI()
 
     def initUI(self):
-        pass
-        #self.show()
-        #self.setWindowTitle(self.title)
-        #self.cmbFileData.clear()
-        #self.setGeometry(self.left, self.top, self.width, self.height)
+        self.comboBox.currentIndexChanged.connect(self.comboonactivated)
+        #self.comboBox.addItem('wifi')
+        #self.comboBox.addItem('meter')
+        #self.comboBox.addItem('webpage')
+        #self.comboBox.addItem('firmware')
 
+    def comboonactivated(self):
+        print(self)
+        index = self.currentIndex()
+        self.lblStatus.setText('Uploading filetype ' + index)
+        time.sleep(1)
+        print("Uploading filetype " + str(index))
+        gui_thread = threading.Thread(None, self.uploadfile_command(index))
+        gui_thread.start()
 
 
 # ****************************************************************************************************
@@ -140,6 +149,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         # check serial event thread
         #self.check_serial_event()
+
+        #popupWindow = popupCombo()
 
     # ****************************************************************************************************
     def check_serial_event(self):
@@ -411,19 +422,17 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_uploadfile(self):
-        window = popupCombo(self)
-        window.show()
+        popupWindow = popupCombo(self)
+        popupWindow.show()
+        print(self)
 
     # ****************************************************************************************************
-    def comboonactivated(self,text):
-        self.lblStatus.setText('Uploading filetype ' + text)
-        time.sleep(1)
-        print("Uploading filetype " + str(text))
-        gui_thread = threading.Thread(None, self.uploadfile_command(text))
-        gui_thread.start()
+
+
 
     # ****************************************************************************************************
     def uploadfile_command(self, slot):
+
         ret = el.EthComLib.fileupload(self, ip_address, slot)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
@@ -769,7 +778,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 def main():
     app = QApplication(sys.argv)
     form = MainWindow()
-
     form.show()
     gui_thread = threading.Thread(None,form.populate_defaults)
     gui_thread.start()
