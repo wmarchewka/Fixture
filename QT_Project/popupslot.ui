@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>240</height>
+    <width>310</width>
+    <height>151</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,13 +24,26 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="pbgobutton">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>70</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SEND</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>320</width>
+     <width>310</width>
      <height>21</height>
     </rect>
    </property>

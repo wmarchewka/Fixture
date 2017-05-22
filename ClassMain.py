@@ -1,12 +1,6 @@
 # native libraries
 import threading
-import sys
-import base64
-import os
-import socket
-import telnetlib
 import time
-# other libraries
 import serial
 
 try:
@@ -14,9 +8,7 @@ try:
 except ImportError:
     import FakeRPi.GPIO as gp
 from PyQt5.QtWidgets import *
-# my libraries
 from QT_Project import mainwindow_auto as mw
-from QT_Project import popupSlot_auto as pw
 from PyQt5.QtCore import pyqtSignal
 import SerialBarCodeModbusLibrary as ml
 import ProgrammersLibrary as pl
@@ -24,100 +16,13 @@ import EthernetCommLibrary as el
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QComboBox
-from PyQt5.QtGui import QIcon
-
+from PyQt5.QtWidgets import QApplication, QInputDialog
 
 global demojm_serial_port
 global Testing
 
-# ****************************************************************************************************
-class FileDialog(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.title = 'Browse for file....'
-        self.left = 10
-        self.top = 10
-        self.width = 640
-        self.height = 480
-        self.initUI()
-
-    def initUI(self):
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
-        self.openFileNameDialog()
-        self.show()
-
-    def openFileNameDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
-                                                  "All Files (*);;Python Files (*.py)", options=options)
-        if fileName:
-            return fileName
-            print(fileName)
-
-    def openFileNamesDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
-                                                "All Files (*);;Python Files (*.py)", options=options)
-        if files:
-            print(files)
-
-    def saveFileDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getSaveFileName(self, "QFileDialog.getSaveFileName()", "",
-                                                  "All Files (*);;Text Files (*.txt)", options=options)
-        if fileName:
-            print(fileName)
-
-# ****************************************************************************************************
-class popupCombo(QMainWindow, pw.Ui_MainWindow):
-
-    changedValue = pyqtSignal('QString')
-
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-        self.title = 'Please select file type...'
-        self.left = 200
-        self.top = 200
-        self.width = 200
-        self.height = 100
-        self.index = 0
-        self.indexstr = ''
-        self.initUI()
 
 
-    def initUI(self):
-        self.comboBox.addItem('wifi')
-        self.comboBox.addItem('meter')
-        self.comboBox.addItem('web')
-        self.comboBox.addItem('firmware')
-        self.comboBox.currentIndexChanged.connect(self.comboonactivated)
-        self.pbgobutton.clicked.connect(self.gobutton)
-        self.comboBox.setCurrentIndex(1)
-        self.comboBox.setCurrentIndex(0)
-
-    def comboonactivated(self):
-        self.indexstr = self.comboBox.currentText()
-        self.index = self.comboBox.currentIndex()
-
-
-    def gobutton(self):
-        print("Uploading filetype " + str(self.indexstr))
-        self.comboBox.setCurrentIndex(self.index)
-
-        self.changedValue.emit(self.indexstr)
-        self.close()
-        #mw=MainWindow()
-        #mw.upload_interrim(self.indexstr)
-        #gui_thread = threading.Thread(None, MainWindow().uploadfile_command(self.indexstr))
-        #gui_thread.start()
-
-    # ****************************************************************************************************
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
     global DemoJM_Serialport
     serialtrigger = pyqtSignal(bytes)

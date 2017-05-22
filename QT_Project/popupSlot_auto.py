@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'popupSlot.ui'
+# Form implementation generated from reading ui file 'popupslot.ui'
 #
 # Created by: PyQt5 UI code generator 5.8.2
 #
@@ -11,15 +11,18 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(320, 240)
+        MainWindow.resize(310, 151)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(50, 30, 191, 22))
         self.comboBox.setObjectName("comboBox")
+        self.pbgobutton = QtWidgets.QPushButton(self.centralwidget)
+        self.pbgobutton.setGeometry(QtCore.QRect(200, 70, 75, 23))
+        self.pbgobutton.setObjectName("pbgobutton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 320, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 310, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -32,4 +35,5 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.pbgobutton.setText(_translate("MainWindow", "SEND"))
 

@@ -17,6 +17,10 @@ class EthComLib(object):
         print('EthComLib class is initializing')
         osname = sl.supportLibrary.getOsPlatform(self)
 
+    # ******************************************************************************************
+    def waittest(self):
+        time.sleep(10)
+
     #******************************************************************************************
     def pinguut(self, ip_address, numpings=1):
         pingcount = 0
