@@ -13,8 +13,9 @@ def main():
     #form.show()
     mc = MainWindow()
     pc = popupCombo()
+    mc.make_connection(pc)
     mc.show()
-    pc.show()
+    #pc.show()
 
     #gui_thread = threading.Thread(None,form.populate_defaults)
     #gui_thread.start()

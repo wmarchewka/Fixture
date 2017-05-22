@@ -8,7 +8,7 @@ class popupCombo(QMainWindow, pw.Ui_MainWindow):
     changedValue = pyqtSignal('QString')
 
     def __init__(self):
-        super().__init__()
+        super(popupCombo, self).__init__()
         self.setupUi(self)
         self.title = 'Please select file type...'
         self.left = 200
@@ -18,7 +18,6 @@ class popupCombo(QMainWindow, pw.Ui_MainWindow):
         self.index = 0
         self.indexstr = ''
         self.initUI()
-
 
     def initUI(self):
         self.comboBox.addItem('wifi')
@@ -38,9 +37,8 @@ class popupCombo(QMainWindow, pw.Ui_MainWindow):
     def gobutton(self):
         print("Uploading filetype " + str(self.indexstr))
         self.comboBox.setCurrentIndex(self.index)
-
         self.changedValue.emit(self.indexstr)
-        self.close()
+        #self.close()
         #mw=MainWindow()
         #mw.upload_interrim(self.indexstr)
         #gui_thread = threading.Thread(None, MainWindow().uploadfile_command(self.indexstr))
