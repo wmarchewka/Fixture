@@ -19,8 +19,12 @@ class EthComLib(object):
 
     # ******************************************************************************************
     def waittest(self):
-        time.sleep(10)
-
+        timecounter = 0
+        while timecounter < 10:
+            time.sleep(1)
+            timecounter = timecounter + 1
+            self.lblStatus.setText('Time counter ' + str(timecounter))
+        return True, timecounter
     #******************************************************************************************
     def pinguut(self, ip_address, numpings=1):
         pingcount = 0
