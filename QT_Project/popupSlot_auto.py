@@ -17,9 +17,6 @@ class Ui_MainWindow(object):
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(50, 30, 191, 22))
         self.comboBox.setObjectName("comboBox")
-        self.pbgobutton = QtWidgets.QPushButton(self.centralwidget)
-        self.pbgobutton.setGeometry(QtCore.QRect(200, 70, 75, 23))
-        self.pbgobutton.setObjectName("pbgobutton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 310, 21))
@@ -35,5 +32,4 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pbgobutton.setText(_translate("MainWindow", "SEND"))
 

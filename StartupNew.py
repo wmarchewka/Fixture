@@ -1,14 +1,6 @@
-# native libraries
 import threading
-import sys
-import base64
-import os
-import socket
-import telnetlib
 import time
-# other libraries
 import serial
-
 try:
     import RPi.GPIO as gp
 except ImportError:
@@ -25,8 +17,6 @@ import FileConfigurationLibrary as fl
 import SupportLibrary as sl
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QComboBox
-from PyQt5.QtGui import QIcon
-
 
 global demojm_serial_port
 global Testing
@@ -90,32 +80,14 @@ class popupCombo(QMainWindow, pw.Ui_MainWindow):
         self.indexstr = ''
         self.initUI()
 
-
     def initUI(self):
         self.comboBox.addItem('wifi')
         self.comboBox.addItem('meter')
         self.comboBox.addItem('web')
         self.comboBox.addItem('firmware')
-        self.comboBox.currentIndexChanged.connect(self.comboonactivated)
-        self.pbgobutton.clicked.connect(self.gobutton)
         self.comboBox.setCurrentIndex(1)
         self.comboBox.setCurrentIndex(0)
 
-    def comboonactivated(self):
-        self.indexstr = self.comboBox.currentText()
-        self.index = self.comboBox.currentIndex()
-
-
-    def gobutton(self):
-        print("Uploading filetype " + str(self.indexstr))
-        self.comboBox.setCurrentIndex(self.index)
-
-        self.changedValue.emit(self.indexstr)
-        self.close()
-        #mw=MainWindow()
-        #mw.upload_interrim(self.indexstr)
-        #gui_thread = threading.Thread(None, MainWindow().uploadfile_command(self.indexstr))
-        #gui_thread.start()
 
     # ****************************************************************************************************
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
@@ -439,36 +411,31 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_uploadfile(self):
-        self.popupWindow = popupCombo()
-        self.make_connection(popupCombo)
-        self.popupWindow.show()
-        print('buton uploadfile over')
+        #self.popupWindow = popupCombo()
+        #self.make_connection(self.popupWindow.comboBox)
+        #self.popupWindow.show()
+        self.lblStatus.setText("Uploading file...")
+        gui_thread = threading.Thread(None, self.uploadfile_command, kwargs={'slot':'web'})
+        gui_thread.start()
     # ****************************************************************************************************
-    #@pyqtSlot('QString')
-    def get_slider_value(self, val):
-        print(val)
-
-    # ****************************************************************************************************
-    def make_connection(self, slider_object):
-        slider_object.changedVal.connect(self.get_slider_value)
-    # ****************************************************************************************************
-    def upload_interrim(self, slot):
-        pass
-        #self.lblStatus.setText('Test')
-        #gui_thread = threading.Thread(None, self.uploadfile_command(slot))
-        #gui_thread.start()
+    def make_connection(self, popup_combo_object):
+        popup_combo_object.activated[str].connect(self.upload_file_interim)
 
     # ****************************************************************************************************
     def uploadfile_command(self, slot):
-        self.lblStatus.setText('Upload ' + str(slot))
+        #slot = 'web'
+        #mw = MainWindow()
+        self.lblStatus.setText('Uploading ' + str(slot))
+        print('Upload ' + str(slot))
         #ret = el.EthComLib.fileupload(self, ip_address, slot)
         ret = el.EthComLib.waittest(self)
-        #print('Returned value ' + str(ret[1]))
-        #print('Returned value ' + str(ret[0]))
-        #MainWindow.lblStatus.setText(str(ret[1]))
+        print('Returned value ' + str(ret[1]))
+        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText('Returned Value ' + str(ret[1]))
 
     # ****************************************************************************************************
     def button_scriptwrite(self):
+        #TODO: crashehes if file is not selected
         path = FileDialog.openFileNameDialog(self)
         print('filename' + str(path))
         if path != '':
@@ -497,7 +464,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def webpageversion_command(self):
-        ret = el.EthComLib.webpageversion_read(self, ip_address)
+        ret = el.EthComLib.waittest(self)
+        #ret = el.EthComLib.webpageversion_read(self, ip_address)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
