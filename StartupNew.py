@@ -341,12 +341,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def button_modbusinit(self):
         self.lblStatus.setText("Setting Modbus init...")
         print("Setting Modbus init...")
-        global modbus_serial_port
-        if modbus_serial_port != '':
-            gui_thread = threading.Thread(None, self.modbusinit_command)
-            gui_thread.start()
-        else:
-            self.lblStatus.setText('Please select modbus serial port')
+        gui_thread = threading.Thread(None, self.modbusinit_command)
+        gui_thread.start()
 
     # ****************************************************************************************************
     def modbusinit_command(self):
@@ -514,11 +510,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global tfp3_serial_port
         self.lblStatus.setText("TFP3 programming...")
         print('Starting TFP3 programmer on port ' + tfp3_serial_port)
-        if tfp3_serial_port != '':
-            gui_thread = threading.Thread(None, self.tftp3_command)
-            gui_thread.start()
-        else:
-            self.lblStatus.setText('Please select TFP3 serial port')
+        gui_thread = threading.Thread(None, self.tftp3_command)
+        gui_thread.start()
+
 
     # ****************************************************************************************************
     def tftp3_command(self):
@@ -545,12 +539,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def button_scanner(self):
         print("Pressed Scanner button...")
-        global scanner_serial_port
-        if scanner_serial_port != '':
-            gui_thread = threading.Thread(None, self.scanner_command, None)
-            gui_thread.start()
-        else:
-            self.lblStatus.setText('Please select scanner serial port')
+        gui_thread = threading.Thread(None, self.scanner_command, None)
+        gui_thread.start()
+
     # ****************************************************************************************************
     def scanner_command(self):
         simulate = True
