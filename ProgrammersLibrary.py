@@ -9,6 +9,11 @@ cyclone_recv2 = b'hP&E,14,Universal_PEMBC0F62,none,0,0,Dec 12 2016,9.80,Rev. A,0
 #******************************************************************************************
 def CycloneProgram(self, port):
         # open com port wait for error
+
+        if port ==  '':
+            self.lblStatus.setText('Please select Cyclone serial port')
+            return False, 'Please select Cyclone serial port'
+
         try:
             print('Looking for Cyclone programmer...')
             self.lblStatus.setText('Looking for Cyclone programmer...')
@@ -68,6 +73,11 @@ def CycloneProgram(self, port):
 
 # ******************************************************************************************
 def TFP3Program(self, port):
+
+    if port == '':
+        self.lblStatus.setText('Please select TFP3 serial port')
+        return False, 'Please select TFP3 serial port'
+
     try:
         print('Looking for TFP3 programmer on port' + port)
         self.lblStatus.setText('Looking for TFP3 programmer on port' + port)

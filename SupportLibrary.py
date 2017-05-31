@@ -1,16 +1,15 @@
-# used to get the OS
-import sys
 try:
     import RPi.GPIO as GPIO
 except ImportError:
     import FakeRPi.GPIO as GPIO
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication
+
 
 
 class supportLibrary():
+
     def __init__(self):
         super().__init__()
     gpio_powerrelay = 7
@@ -48,5 +47,5 @@ class supportLibrary():
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = App()
+    ex = app()
     sys.exit(app.exec_())

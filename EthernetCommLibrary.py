@@ -13,9 +13,9 @@ import SupportLibrary as sl
 
 class EthComLib(object):
 
-    def __init__(self):
+    def __init__(self, osname):
         print('EthComLib class is initializing')
-        osname = sl.supportLibrary.getOsPlatform(self)
+        self.osname = sl.supportLibrary.getOsPlatform(self)
 
     # ******************************************************************************************
     def waittest(self):
@@ -34,11 +34,12 @@ class EthComLib(object):
         while True:
             print("pinging UUT at ip " + ip_address +' count ' +  str(pingcount))
             self.lblStatus.setText("pinging UUT at ip " + ip_address +' count ' +  str(pingcount))
-            if sl.getOsPlatform() =='Linux':
+            os_platform = sl.supportLibrary.getOsPlatform(self)
+            if os_platform =='Linux':
                 data = ('ping '+ ip_address + ' -w 1000 -c 1')  # set ping timeout to 1000ms
-            elif sl.getOsPlatform() =='Windows':
+            elif os_platform =='Windows':
                 data = ('ping '+ ip_address + ' -w 1000 -n 1')
-            elif sl.getOsPlatform() == 'OSX':
+            elif os_platform == 'OSX':
                 data = ('ping ' + ip_address + ' -W 1000 -c 1')
             response = os.system(data)              #default ping takes 3 secs to respond
             print(response)
@@ -290,22 +291,45 @@ class EthComLib(object):
     #******************************************************************************************
     def modbus_init(self, ip_address):
 
-        #TODO need to finsih this
-        # print("Setting modbus defaults")
-        PORT = 23
-        TIMEOUT = 5
         self.lblStatus.setText('Writing Modbus settings')
-        tn = telnetlib.Telnet(host=ip_address, port=PORT, timeout=TIMEOUT)
-        tn.write(b'$login,factory,factory\n')
-        tn.write(b'$modbd,s,19200\n')
-        tn.write(b'$modp,s,1\n')
-        tn.write(b'$modst,s,1\n')
-        tn.write(b'$reboot\n')
-        tn.write(b'\r')
-        tempdata = tn.read_all().decode('ascii')
-        print(tempdata)
-        tn.close()
-        return True,tempdata
+
+        try:
+            #TODO need to finsih this
+            # print("Setting modbus defaults")
+            PORT = 23
+            TIMEOUT = 5
+            #self.lblStatus.setText('Writing Modbus settings')
+            tn = telnetlib.Telnet(host=ip_address, port=PORT, timeout=TIMEOUT)
+            tn.write(b'$login,factory,factory\n')
+            tn.write(b'$modbd,s,19200\n')
+            tn.write(b'$modp,s,1\n')
+            tn.write(b'$modst,s,1\n')
+            tn.write(b'$reboot\n')
+            tn.write(b'\r')
+            tempdata = tn.read_all().decode('ascii')
+            print(tempdata)
+            tn.close()
+            return True, tempdata
+
+        except TimeoutError as err:
+            print(err)
+            return False, err
+
+        except Exception as err:
+            print(err)
+            return False, err
+
+        except OSError as err:
+            print(err)
+            return False, err
+
+        except IOError as err:
+            print(err)
+            return False, err
+
+        except ValueError as err:
+            print(err)
+            return False , err
     #******************************************************************************************
     def pcr_write(self, ip_address):
         try:

@@ -105,6 +105,10 @@ class SCML(object):
 
         print(simulate)
 
+        if port ==  '':
+            self.lblStatus.setText('Please select Barcode serial port')
+            return False, 'Please select Barcode serial port'
+
         while count < max:
             try:
                 print('Looking for barcode scanner...')  # check which port was really used
@@ -122,12 +126,12 @@ class SCML(object):
                 self.lblCurrentSerialNumber.setText(line)
 
             except OSError as err:
-                print(err)
+                print('OSError ' + str(err))
                 self.lblStatus.setText(err)
                 return False, err
 
             except Exception as err:
-                print(err)
+                print('Exceptopn ' + str(err))
                 self.lblStatus.setText(err)
                 return False, err
 
@@ -228,10 +232,14 @@ class SCML(object):
         return False,('Failed to scan')
 
     #******************************************************************************************
-    def mbComm(comport, address, register):
+    def mbComm(self, port, address, register):
+
+        if port ==  '':
+            self.lblStatus.setText('Please select Modbus serial port')
+            return False, 'Please select Modbus serial port'
 
         try:
-            uut = minimalmodbus.Instrument(comport, address)
+            uut = minimalmodbus.Instrument(port, address)
             uut.debug = False
             uut.serial.timeout = 2.0
             uut.serial.bytesize = 8
@@ -250,17 +258,25 @@ class SCML(object):
             uut.serial.close
             return True, "Success"
 
+        except TimeoutError as err:
+            print(err)
+            return False, err
+
+        except Exception as err:
+            print(err)
+            return False, err
+
         except OSError as err:
             print(err)
             return False, err
 
-        except IOError as err1:
-            print(err1)
-            return False, err1
+        except IOError as err:
+            print(err)
+            return False, err
 
-        except ValueError as err2:
-            print(err2)
-            return False , err2
+        except ValueError as err:
+            print(err)
+            return False , err
 
 #******************************************************************************************
 def main():

@@ -18,6 +18,11 @@ import SupportLibrary as sl
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QComboBox
 
+global tfp3_serial_port
+global scanner_serial_port
+global cyclone_serial_port
+global modbus_serial_port
+global DemoJM_Serialport
 global demojm_serial_port
 global Testing
 
@@ -336,8 +341,12 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def button_modbusinit(self):
         self.lblStatus.setText("Setting Modbus init...")
         print("Setting Modbus init...")
-        gui_thread = threading.Thread(None, self.modbusinit_command)
-        gui_thread.start()
+        global modbus_serial_port
+        if modbus_serial_port != '':
+            gui_thread = threading.Thread(None, self.modbusinit_command)
+            gui_thread.start()
+        else:
+            self.lblStatus.setText('Please select modbus serial port')
 
     # ****************************************************************************************************
     def modbusinit_command(self):
@@ -411,24 +420,27 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_uploadfile(self):
-        #self.popupWindow = popupCombo()
-        #self.make_connection(self.popupWindow.comboBox)
-        #self.popupWindow.show()
-        self.lblStatus.setText("Uploading file...")
-        gui_thread = threading.Thread(None, self.uploadfile_command, kwargs={'slot':'web'})
-        gui_thread.start()
+        self.popupWindow = popupCombo()
+        self.make_connection(self.popupWindow.comboBox)
+        self.popupWindow.show()
+
     # ****************************************************************************************************
     def make_connection(self, popup_combo_object):
         popup_combo_object.activated[str].connect(self.upload_file_interim)
 
     # ****************************************************************************************************
+    def upload_file_interim(self, slot):
+        self.popupWindow.close()
+        print("Uploading to slot " + str(slot))
+        gui_thread = threading.Thread(None, self.uploadfile_command, kwargs={'slot':slot})
+        gui_thread.start()
+
+    # ****************************************************************************************************
     def uploadfile_command(self, slot):
-        #slot = 'web'
-        #mw = MainWindow()
         self.lblStatus.setText('Uploading ' + str(slot))
         print('Upload ' + str(slot))
-        #ret = el.EthComLib.fileupload(self, ip_address, slot)
-        ret = el.EthComLib.waittest(self)
+        ret = el.EthComLib.fileupload(self, ip_address, slot)
+        #ret = el.EthComLib.waittest(self)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText('Returned Value ' + str(ret[1]))
@@ -437,8 +449,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def button_scriptwrite(self):
         #TODO: crashehes if file is not selected
         path = FileDialog.openFileNameDialog(self)
-        print('filename' + str(path))
-        if path != '':
+        print('filename ' + str(path))
+        if path is not None:
             gui_thread = threading.Thread(None, self.scriptwrite_command(path))
             gui_thread.start()
 
@@ -499,10 +511,14 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_tfp3(self):
+        global tfp3_serial_port
         self.lblStatus.setText("TFP3 programming...")
         print('Starting TFP3 programmer on port ' + tfp3_serial_port)
-        gui_thread = threading.Thread(None, self.tftp3_command)
-        gui_thread.start()
+        if tfp3_serial_port != '':
+            gui_thread = threading.Thread(None, self.tftp3_command)
+            gui_thread.start()
+        else:
+            self.lblStatus.setText('Please select TFP3 serial port')
 
     # ****************************************************************************************************
     def tftp3_command(self):
@@ -529,13 +545,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def button_scanner(self):
         print("Pressed Scanner button...")
-        gui_thread = threading.Thread(None, self.scanner_command, None)
-        gui_thread.start()
-
+        global scanner_serial_port
+        if scanner_serial_port != '':
+            gui_thread = threading.Thread(None, self.scanner_command, None)
+            gui_thread.start()
+        else:
+            self.lblStatus.setText('Please select scanner serial port')
     # ****************************************************************************************************
     def scanner_command(self):
         simulate = True
-        global scanner_serial_port
         ret = ml.SCML.ScanBarcode(self, simulate, scanner_serial_port, 5)
         print('Returned value ' + str(ret[0]))
 
@@ -554,9 +572,16 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def button_ping(self):
         print('Pressed ping button')
+
         gui_thread = threading.Thread(None, self.ping_command)
         gui_thread.start()
 
+    # ****************************************************************************************************
+    def ping_command(self):
+        self.lblStatus.setText("Ping test running...")
+        ret = el.EthComLib.pinguut(self, ip_address, 5)
+        print('Returned value ' + str(ret[0]))
+        pass
     # ****************************************************************************************************
     def button_populatedefaults(self):
         print('Pressed repopulate serial ports')
@@ -576,12 +601,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         gui_thread = threading.Thread(None, self.populate_defaults)
         gui_thread.start()
-
-    # ****************************************************************************************************
-    def ping_command(self):
-        self.lblStatus.setText("Ping test running...")
-        ret = el.EthComLib.pinguut(self, ip_address, 5)
-        print('Returned value ' + str(ret[0]))
 
     # ****************************************************************************************************
     def tfp3SerialPortChanged(self):
