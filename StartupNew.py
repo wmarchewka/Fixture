@@ -6,7 +6,6 @@ try:
 except ImportError:
     import FakeRPi.GPIO as gp
 from PyQt5.QtWidgets import *
-# my libraries
 from QT_Project import mainwindow_auto as mw
 from QT_Project import popupSlot_auto as pw
 from PyQt5.QtCore import pyqtSignal
@@ -16,7 +15,7 @@ import EthernetCommLibrary as el
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QComboBox
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog
 
 global tfp3_serial_port
 global scanner_serial_port
@@ -141,10 +140,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         # check serial event thread
         #self.check_serial_event()
-
-        #popupWindow = popupCombo()
-
-
 
     # ****************************************************************************************************
     def check_serial_event(self):
@@ -390,7 +385,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print("Setting device serial number...")
         oldserialnumber = self.readserialnumber_command()
         if oldserialnumber[0]:
-            serialnumber, okPressed = QInputDialog.getInt(self, "Get integer", "Enter serial number:", int(oldserialnumber[1]), 0, 100, 1)
+            serialnumber, okPressed = QInputDialog.getText(self, 'Serial Number Entry', 'Old Serial Number -> ' + str(oldserialnumber[1]),QLineEdit.Normal)
             if okPressed:
                 print(serialnumber)
                 gui_thread = threading.Thread(None, self.writeserialnumber_command(ip_address, serialnumber))
@@ -398,7 +393,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             else:
                 self.lblStatus.setText("Setting device serial number canceled. ..")
                 print("Setting device serial number canceled. ..")
-                self.error_display_popup('Error Title','Error Message')
+                #self.error_display_popup('Error Title','Error Message')
 
     # ****************************************************************************************************
     def writeserialnumber_command(self, ip_address, serialnumber):
@@ -504,6 +499,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lblStatus.setText("Getting voltages...")
         ret = el.EthComLib.voltage_read(self, ip_address)
         print('Returned value ' + str(ret[1]))
+        self.lblStatus.setText(str(ret[1]))
+
 
     # ****************************************************************************************************
     def button_tfp3(self):
@@ -666,7 +663,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         time.sleep(1)
         # read serial port list OS and populate comboboxes
-        ret = ml.SCML.collectSerialPorts(self)  # run serial port routine
+        ret = ml.SCML.collectSerialPorts()  # run serial port routine
         print('Status->' + str(ret[0]))
         print('List->' + str(ret[1]))
         print('modbus port->' + str(ret[2]))

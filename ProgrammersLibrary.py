@@ -19,7 +19,7 @@ def CycloneProgram(self, port):
             self.lblStatus.setText('Looking for Cyclone programmer...')
             time.sleep(1)
             ser = serial.Serial(port, 115200, timeout=1)
-            ser.open()
+            #ser.open()
         except:
             print('Cyclone programmer not found...')
             self.lblStatus.setText('Cyclone programmer not found...')

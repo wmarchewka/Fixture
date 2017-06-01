@@ -142,6 +142,7 @@ class EthComLib(object):
             self.lblStatus.setText("Getting voltages from " + ip_address)
             tn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             conn = ip_address, 23
+            tn.settimeout(4)
             tn.connect(conn)
             tn.send(b"\n")
             tempdata = tn.recv(100)
@@ -205,13 +206,13 @@ class EthComLib(object):
                 data =  ("Voltages acquired from " + ip_address + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(voltageB) + '  L3: ' +str(voltageC))
                 self.lblStatus.setText(data)
                 #TODO need to log this data in log
-                return True,tempdata
+                return True, data
 
         except OSError as err:
              tn.close
              print(err)
              return False, err
-        except:
+        except Exception as err:
              tn.close
              return False, 'General Error'
 
@@ -393,6 +394,7 @@ class EthComLib(object):
             print('senddata-> '+ senddata)
             sc.send(senddata.encode('utf-8'))
             data = sc.recv(100)
+            sc.close()
             print(data.decode().split(',')[2].find('OK'))
             if data.decode().split(',')[2].find('OK'):
                 print('Device Serial number set to ' + str(serialnumber))
@@ -403,6 +405,13 @@ class EthComLib(object):
                 self.lblStatus.setText("Device Serial not set")
                 return False, "Device Serial not set"
 
+        except TimeoutError as err:
+            print(err)
+            return False, err
+
+        except Exception as err:
+            print(err)
+            return False, err
 
         except OSError as err:
             print(err)
