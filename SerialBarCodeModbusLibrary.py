@@ -16,82 +16,74 @@ class SCML(object):
     @property
     def collectSerialPorts(self):
 
-        try:
-            port_modbus = ''
-            port_tfp3 = ''
-            port_cyclone = ''
-            port_scanner = ''
-            port_demojm = ''
-            ports = list(serial.tools.list_ports.comports())
-            devices = []
-            for p in ports:
-                print('-----------------------------------------')
-                print(p)
-                print('description->' + str(p.description))
-                print('devicestr(' + str(p.device))
-                print('hwidstr(' + str(p.hwid))
-                print('interfacestr(' + str(p.interface))
-                print('locationstr(' + str(p.location))
-                print('maufacturerstr(' + str(p.manufacturer))
-                print('namestr(' + str(p.name))
-                print('pidstr(' + str(p.pid))
-                print('product->' + str(p.product))
-                print('serial number->' + str(p.serial_number))
-                print('vid->' + str(p.vid))
-                self.lblStatus.setText('Found ->' + str(p.device))
-                devices.append(p.device)
+        port_modbus = ''
+        port_tfp3 = ''
+        port_cyclone = ''
+        port_scanner = ''
+        port_demojm = ''
+        ports = list(serial.tools.list_ports.comports())
+        devices = []
+        for p in ports:
+            print('-----------------------------------------')
+            print(p)
+            print('description->' + str(p.description))
+            print('devicestr(' + str(p.device))
+            print('hwidstr(' + str(p.hwid))
+            print('interfacestr(' + str(p.interface))
+            print('locationstr(' + str(p.location))
+            print('maufacturerstr(' + str(p.manufacturer))
+            print('namestr(' + str(p.name))
+            print('pidstr(' + str(p.pid))
+            print('product->' + str(p.product))
+            print('serial number->' + str(p.serial_number))
+            print('vid->' + str(p.vid))
+            self.lblStatus.setText('Found ->' + str(p.device))
+            devices.append(p.device)
 
-                try:
-                    if p.description.find('RS485') >= 0 or p.hwid.find('0403:6001') >= 0:
-                        port_modbus = p.device
-                except AttributeError as err:
-                    return False, err
-                except Exception as err:
-                    return False, err
+            # try:
+            #     if p.description.find('RS485') >= 0 or p.hwid.find('0403:6001') >= 0:
+            #         port_modbus = p.device
+            # except AttributeError as err:
+            #     pass
+            #     # return False, err
+            #
+            # try:
+            #     if p.description.find('MAXQ') >= 0:
+            #         port_tfp3 = p.device
+            # except AttributeError as err:
+            #     pass
+            #     # return False, err
+            #
+            # try:
+            #     if p.manufacturer.find('Honeywell') >= 0:
+            #         port_scanner = p.device
+            # except AttributeError as err:
+            #     pass
+            #     # return False, err
+            #
+            # try:
+            #     if p.description.find('USB-Serial Controller') >= 0:
+            #         if p.manufacturer.find('Prolific') >= 0:
+            #             port_cyclone = p.device
+            #     if p.serial_number.find('FT0DICBKA') >= 0:
+            #         port_cyclone = p.device
+            # except AttributeError as err:
+            #     pass
+            #     # return False, err
+            #
+            # try:
+            #     if p.description.find('USB-Serial Controller') >= 0:
+            #         if p.manufacturer.find('Prolific') >= 0:
+            #             port_demojm = p.device
+            # except AttributeError as err:
+            #     pass
+            #     # return False, err
 
-                try:
-                    if p.description.find('MAXQ') >= 0:
-                        port_tfp3 = p.device
-                except AttributeError as err:
-                    return False, err
-                except Exception as err:
-                    return False, err
-
-                try:
-                    if p.manufacturer.find('Honeywell') >= 0:
-                        port_scanner = p.device
-                except AttributeError as err:
-                    return False, err
-                except Exception as err:
-                    return False, err
-
-                try:
-                    if p.description.find('USB-Serial Controller') >= 0:
-                        if p.manufacturer.find('Prolific') >= 0:
-                            port_cyclone = p.device
-                    if p.serial_number.find('FT0DICBKA') >= 0:
-                        port_cyclone = p.device
-                except AttributeError as err:
-                    return False, err
-                except Exception as err:
-                    return False, err
-
-                try:
-                    if p.description.find('USB-Serial Controller') >= 0:
-                        if p.manufacturer.find('Prolific') >= 0:
-                            port_demojm = p.device
-                except AttributeError as err:
-                    return False, err
-
-                except Exception as err:
-                    return False, err
 
             self.lblStatus.setText('Serial scan complete...')
             print('Serial scan complete...')
             return True, devices, port_modbus, port_tfp3, port_scanner, port_cyclone, port_demojm
 
-        except Exception as err:
-            return False, err
 
             # ******************************************************************************************
 
