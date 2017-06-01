@@ -40,52 +40,50 @@ class SCML(object):
             self.lblStatus.setText('Found ->' + str(p.device))
             devices.append(p.device)
 
-            # try:
-            #     if p.description.find('RS485') >= 0 or p.hwid.find('0403:6001') >= 0:
-            #         port_modbus = p.device
-            # except AttributeError as err:
-            #     pass
-            #     # return False, err
-            #
-            # try:
-            #     if p.description.find('MAXQ') >= 0:
-            #         port_tfp3 = p.device
-            # except AttributeError as err:
-            #     pass
-            #     # return False, err
-            #
-            # try:
-            #     if p.manufacturer.find('Honeywell') >= 0:
-            #         port_scanner = p.device
-            # except AttributeError as err:
-            #     pass
-            #     # return False, err
-            #
-            # try:
-            #     if p.description.find('USB-Serial Controller') >= 0:
-            #         if p.manufacturer.find('Prolific') >= 0:
-            #             port_cyclone = p.device
-            #     if p.serial_number.find('FT0DICBKA') >= 0:
-            #         port_cyclone = p.device
-            # except AttributeError as err:
-            #     pass
-            #     # return False, err
-            #
-            # try:
-            #     if p.description.find('USB-Serial Controller') >= 0:
-            #         if p.manufacturer.find('Prolific') >= 0:
-            #             port_demojm = p.device
-            # except AttributeError as err:
-            #     pass
-            #     # return False, err
+            try:
+                if p.description.find('RS485') >= 0 or p.hwid.find('0403:6001') >= 0:
+                    port_modbus = p.device
+            except AttributeError as err:
+                pass
+                # return False, err
+
+            try:
+                if p.description.find('MAXQ') >= 0:
+                    port_tfp3 = p.device
+            except AttributeError as err:
+                pass
+                # return False, err
+
+            try:
+                if p.manufacturer.find('Honeywell') >= 0:
+                    port_scanner = p.device
+            except AttributeError as err:
+                pass
+                # return False, err
+
+            try:
+                if p.description.find('USB-Serial Controller') >= 0:
+                    if p.manufacturer.find('Prolific') >= 0:
+                        port_cyclone = p.device
+                if p.serial_number.find('FT0DICBKA') >= 0:
+                    port_cyclone = p.device
+            except AttributeError as err:
+                pass
+                # return False, err
+
+            try:
+                if p.description.find('USB-Serial Controller') >= 0:
+                    if p.manufacturer.find('Prolific') >= 0:
+                        port_demojm = p.device
+            except AttributeError as err:
+                pass
+                # return False, err
+        self.lblStatus.setText('Serial scan complete...')
+        print('Serial scan complete...')
+        return True, devices, port_modbus, port_tfp3, port_scanner, port_cyclone, port_demojm
 
 
-            self.lblStatus.setText('Serial scan complete...')
-            print('Serial scan complete...')
-            return True, devices, port_modbus, port_tfp3, port_scanner, port_cyclone, port_demojm
-
-
-            # ******************************************************************************************
+    # ******************************************************************************************
 
 
 def MajorBoardType(self, p_number, board_type, config_cal):
