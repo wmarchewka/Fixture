@@ -7,6 +7,7 @@ import time
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
 
+
 #TODO make sure to come up with a way to get ip address from config file
 #TODO make sure all exception hndling is done and the same
 #TODO make sure all testing and data log is the same
@@ -505,7 +506,7 @@ class EthComLib(object):
         #    return False, err
 
     #******************************************************************************************
-    def wifi_mac_write(self, ip_address):
+    def wifi_mac_write(self, ip_address, auto_inc):
         try:
             port = 23
             print('Setting wireless LAN MAC ' + ip_address)
@@ -515,36 +516,65 @@ class EthComLib(object):
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
-            sc.write(b'$login,factory,factory\r\n')
+            sc.send(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.write(b'$wlanmac,G\r\n')
+            sc.send(b'$wlanmac,G\r\n')
             old_mac = sc.recv(100)
             old_mac = old_mac.decode().split(',')[2]
             print('old_mac -> ' + old_mac)
             old_mac = str(old_mac)
-            new_mac = old_mac
-            print('new_mac -> ' + new_mac)
-            self.lblStatus.setText('Old MAC : ' + str(old_mac) + '     New MAC : ' + str(new_mac))
-            se = '$wlanmac,S,' + new_mac + str('\r\n')
-            sc.write(se.encode())
-            data = sc.recv(100)
-            print('data->' + str(data))
-            result = data.decode().split(',')[3].find('OK')
-            print('result->' + str(result))
-            if result > 0:
-                print('Wireless lan mac not set')
-                self.lblStatus.setText('WIFI MAC not set')
-                return False, "WIFI MAC not set"
+            new_mac = EthComLib.get_next_mac(self)
+            if new_mac[0]:
+                new_mac = new_mac[1]
+                print('new_mac -> ' + new_mac)
+                self.lblStatus.setText('Old MAC : ' + str(old_mac) + '     New MAC : ' + str(new_mac))
+                se = '$wlanmac,S,' + new_mac + str('\r\n')
+                sc.write(se.encode())
+                data = sc.recv(100)
+                print('data->' + str(data))
+                result = data.decode().split(',')[3].find('OK')
+                print('result->' + str(result))
+                if result > 0:
+                    print('Wireless lan mac not set')
+                    self.lblStatus.setText('WIFI MAC not set')
+                    return False, "WIFI MAC not set"
+                else:
+                    print('WIFI mac successfully set')
+                    self.lblStatus.setText('WIFI mac successfully set')
+                    return True, 'WIFI MAC successfully set'
             else:
-                print('WIFI mac successfully set')
-                self.lblStatus.setText('WIFI mac successfully set')
-                return True, 'WIFI MAC successfully set'
+                return False, 'Out of Mac adresses.  Please call UEC'
+
 
         except OSError as err:
             print(err)
             return False, err
-
+    # ******************************************************************************************
+    def get_next_mac(self):
+        next_mac = fl.configfileRead('MAC_ADDRESS', 'next_mac')
+        max_mac = fl.configfileRead('MAC_ADDRESS', 'max_mac')
+        next_mac_parts = next_mac.split(':')
+        max_mac_parts = max_mac.split(':')
+        hex_next_mac = next_mac_parts[0] + next_mac_parts[1] + next_mac_parts[2]
+        hex_next_mac = hex_next_mac + next_mac_parts[3] + next_mac_parts[4] + next_mac_parts[5]
+        hex_max_mac = max_mac_parts[0] + next_mac_parts[1] + next_mac_parts[2]
+        hex_max_mac = hex_max_mac + max_mac_parts[3] + next_mac_parts[4] + next_mac_parts[5]
+        print('hex next mac '+ hex_next_mac)
+        print('hex max mac '+ hex_max_mac)
+        hex_next_mac = hex(int(hex_next_mac, 16) + 1)
+        hex_max_mac = hex(int(hex_max_mac, 16))
+        print('hex next mac ' + hex_next_mac)
+        if hex_next_mac >= hex_max_mac:
+            return False, "Out of Mac addresses"
+        else:
+            #hex_next_mac = hex(hex_next_mac)
+            t = iter(hex_next_mac)
+            x = ':'.join(a+b for a,b in zip(t,t))
+            x=x[3:]
+            print(x)
+            fl.configfileWrite('MAC_ADDRESS', 'next_mac', x)
+            return True, str(x)
     #******************************************************************************************
     def file_size(fname):
         import os
@@ -734,13 +764,12 @@ class EthComLib(object):
             return False, err
 
     #******************************************************************************************
-    def wifi_setup(self, ip_address, new_mac):
+    def wifi_setup(self, ip_address):
         try:
             #TODO enusre this is able to set wifi ssid and other things needed
             port = 23
             print('Starting WIFI Configuration ' + ip_address)
             self.lblStatus.setText('Starting WIFI Configuration ' + ip_address)
-
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
             conn = ip_address, port

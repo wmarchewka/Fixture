@@ -124,7 +124,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbUploadFile.clicked.connect(self.button_uploadfile)
         self.pbWriteScript.clicked.connect(self.button_scriptwrite)
         self.pbWebPageVersion.clicked.connect(self.button_webpageversion)
-        self.pbSetupWIFI.clicked.connect(self.button_setupwifi)
+        self.pbSetupWIFI.clicked.connect(self.button_wifisetup)
         self.pbRescanSerialPorts.clicked.connect(self.button_populatedefaults)
 
         # setup serial test input change signals
@@ -327,7 +327,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def wifimac_command(self):
         time.sleep(1)
-        ret = el.EthComLib.wifi_mac_write(self, ip_address)
+        auto_inc = True
+        new_mac = '58:2f:42:26:20:98'
+        ret = el.EthComLib.wifi_mac_write(self, ip_address, auto_inc, new_mac)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
@@ -467,21 +469,21 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def webpageversion_command(self):
-        ret = el.EthComLib.waittest(self)
-        #ret = el.EthComLib.webpageversion_read(self, ip_address)
+        #ret = el.EthComLib.waittest(self)
+        ret = el.EthComLib.webpageversion_read(self, ip_address)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
-    def button_setupwifi(self):
+    def button_wifisetup(self):
         self.lblStatus.setText("Setting up WIFI...")
         time.sleep(1)
-        print("Getting webpage version...")
-        gui_thread = threading.Thread(None, self.setupwifi_command)
+        print("Setting up WIFI...")
+        gui_thread = threading.Thread(None, self.wifisetup_command)
         gui_thread.start()
     # ****************************************************************************************************
-    def setupwifi_command(self):
+    def wifisetup_command(self):
         ret = el.EthComLib.wifi_setup(self, ip_address)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))

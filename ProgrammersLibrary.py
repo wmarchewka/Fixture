@@ -18,8 +18,13 @@ def CycloneProgram(self, port):
             print('Looking for Cyclone programmer...')
             self.lblStatus.setText('Looking for Cyclone programmer...')
             time.sleep(1)
-            ser = serial.Serial(port, 115200, timeout=1)
-            #ser.open()
+            ser = serial.Serial()#(port, 115200, timeout=1)
+            ser.setRTS(False)           #needed to ensure the DTR or RTS line doesnt reset programmer on startup
+            ser.setDTR(False)
+            ser.baudrate = 115200
+            ser.port = port
+            ser.timeout = 1
+            ser.open()
         except:
             print('Cyclone programmer not found...')
             self.lblStatus.setText('Cyclone programmer not found...')
