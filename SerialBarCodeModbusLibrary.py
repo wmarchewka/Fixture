@@ -250,7 +250,7 @@ def mbComm(self, port, address, register):
         uut.debug = False
         uut.serial.timeout = 2.0
         uut.serial.bytesize = 8
-        uut.serial.parity = minimalmodbus.serial.PARITY_NONE
+        uut.serial.parity = minimalmodbus.serial.PARITY_EVEN
         uut.serial.baudrate = 19200
         uut.serial.stopbits = 1
         uut.mode = minimalmodbus.MODE_RTU

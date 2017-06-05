@@ -333,6 +333,22 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
+    # ****************************************************************************************************
+    def button_modbusreadregister(self):
+        self.lblStatus.setText("Reading Modbus register...")
+        print("Reading Modbus register...")
+        gui_thread = threading.Thread(None, self.modbusreadregister_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def modbusreadregister_command(self):
+        time.sleep(1)
+        address = 1
+        register = 19   # frequency
+        ret = el.EthComLib.mbcomm(self, modbus_serial_port, address, register )
+        print('Returned value ' + str(ret[1]))
+        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_modbusinit(self):
