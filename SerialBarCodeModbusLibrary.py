@@ -16,10 +16,15 @@ class SCML(object):
     def collectSerialPorts(self):
 
         port_modbus = ''
+        port_modbus_description = ''
         port_tfp3 = ''
+        port_tfp3_description = ''
         port_cyclone = ''
+        port_cyclone_description = ''
         port_scanner = ''
+        port_scanner_description = ''
         port_demojm = ''
+        port_demojm_description = ''
         ports = list(serial.tools.list_ports.comports())
         devices = []
         for p in ports:
@@ -42,28 +47,30 @@ class SCML(object):
             try:
                 if fl.configfileRead('MODBUS','COM_DESCRIPTION') == 'None':
                     if p.description.find('RS485') >= 0 or p.hwid.find('0403:6001') >= 0:
-                        #port_modbus = p.device
-                        port_modbus = p.description
-                        fl.configfileWrite('MODBUS','COM_PORT', p.device)
-                        fl.configfileWrite('MODBUS', 'COM_DESCRIPTION', p.description)
+                        port_modbus = p.device
+                        port_modbus_description = p.description
+                        fl.configfileWrite('MODBUS','COM_PORT', port_modbus)
+                        fl.configfileWrite('MODBUS', 'COM_DESCRIPTION', port_modbus_description)
             except AttributeError as err:
                 pass
 
             try:
                 if fl.configfileRead('TFP3','COM_DESCRIPTION') == 'None':
                     if p.description.find('Maxim') >= 0:
-                        port_tfp3 = p.description
-                        fl.configfileWrite('TFP3','COM_PORT', p.device)
-                        fl.configfileWrite('TFP3', 'COM_DESCRIPTION', p.description)
+                        port_tfp3 = p.device
+                        port_tfp3_description = p.description
+                        fl.configfileWrite('TFP3','COM_PORT', port_tfp3)
+                        fl.configfileWrite('TFP3', 'COM_DESCRIPTION', port_tfp3_description)
             except AttributeError as err:
                 pass
 
             try:
                 if fl.configfileRead('SCANNER','COM_DESCRIPTION') == 'None':
                     if p.manufacturer.find('Honeywell') >= 0:
-                        port_scanner = p.description
-                        fl.configfileWrite('SCANNER', 'COM_PORT', p.device)
-                        fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', p.description)
+                        port_scanner = p.device
+                        port_scanner_description = p.description
+                        fl.configfileWrite('SCANNER', 'COM_PORT', port_scanner)
+                        fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', port_scanner_description)
             except AttributeError as err:
                 pass
 
@@ -71,13 +78,15 @@ class SCML(object):
                 if fl.configfileRead('CYCLONE', 'COM_DESCRIPTION') == 'None':
                     if p.description.find('USB-Serial Controller') >= 0:
                         if p.manufacturer.find('Prolific') >= 0:
-                            port_cyclone = p.description
-                            fl.configfileWrite('CYCLONE', 'COM_PORT', p.device)
-                            fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', p.description)
+                            port_cyclone = p.device
+                            port_cyclone_description = p.description
+                            fl.configfileWrite('CYCLONE', 'COM_PORT', port_cyclone)
+                            fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', port_cyclone_description)
                     if p.serial_number.find('FT0DICBKA') >= 0:
-                        port_cyclone = p.description
-                        fl.configfileWrite('CYCLONE','COM_PORT', p.device)
-                        fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', p.description)
+                        port_cyclone = p.device
+                        port_cyclone_description = p.description
+                        fl.configfileWrite('CYCLONE','COM_PORT', port_cyclone)
+                        fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', port_cyclone_description)
             except AttributeError as err:
                 pass
 
@@ -85,14 +94,19 @@ class SCML(object):
                 if fl.configfileRead('DEMOJM', 'COM_DESCRIPTION') == 'None':
                     if p.description.find('USB-Serial Controller') >= 0:
                         if p.manufacturer.find('Prolific') >= 0:
-                            port_demojm = p.description
-                            fl.configfileWrite('DEMOJM', 'COM_PORT', p.device)
-                            fl.configfileWrite('DEMOJM', 'COM_DESCRIPTION', p.description)
+                            port_demojm = p.device
+                            port_demojm_description = p.description
+                            fl.configfileWrite('DEMOJM', 'COM_PORT', port_demojm)
+                            fl.configfileWrite('DEMOJM', 'COM_DESCRIPTION', port_demojm_description)
             except AttributeError as err:
                 pass
         self.lblStatus.setText('Serial scan complete...')
         print('Serial scan complete...')
-        return True, devices, port_modbus, port_tfp3, port_scanner, port_cyclone, port_demojm
+        return True, devices, port_modbus, port_modbus_description, \
+               port_tfp3, port_tfp3_description, \
+               port_cyclone, port_cyclone_description, \
+                port_scanner, port_scanner_description, \
+                port_demojm, port_demojm_description
 
      # ******************************************************************************************
     def MajorBoardType(self, p_number, board_type, config_cal):
@@ -126,7 +140,7 @@ class SCML(object):
 
         print(simulate)
 
-        if port == '':
+        if port == 'None':
             self.lblStatus.setText('Please select Barcode serial port')
             return False, 'Please select Barcode serial port'
 

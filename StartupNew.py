@@ -581,7 +581,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def scanner_command(self):
-        simulate = True
+        simulate = False
+        scanner_serial_port = fl.configfileRead("SCANNER", 'com_port')
         ret = ml.SCML.ScanBarcode(self, simulate, scanner_serial_port, 5)
         print('Returned value ' + str(ret[0]))
 
@@ -643,7 +644,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global scanner_serial_port
         print('Scanner serial port changed....')
         scanner_serial_port = self.cbScannerComPort.currentText()
+        #TODO FIX THIS SO IT CAN WORK AND WRITE CORRECT INFO BASED ON PICK FROM LIST
         fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', scanner_serial_port)
+        fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
         print('Scanner port changed to ' + scanner_serial_port)
 
     # ****************************************************************************************************
@@ -709,10 +712,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         if ret[0] is True:
             print('List->' + str(ret[1]))
             print('modbus port->' + str(ret[2]))
-            print('tfp3 port->' + str(ret[3]))
-            print('scanner port->' + str(ret[4]))
-            print('cyclone port' + str(ret[5]))
-            print('demojm port' + str(ret[6]))
+            print('modbus port description->' + str(ret[3]))
+            print('tfp3 port->' + str(ret[4]))
+            print('tfp3 port description->' + str(ret[5]))
+            print('scanner port->' + str(ret[6]))
+            print('scanner port description->' + str(ret[7]))
+            print('cyclone port' + str(ret[8]))
+            print('cyclone port description' + str(ret[9]))
+            print('demojm port' + str(ret[10]))
+            print('demojm port description' + str(ret[11]))
 
             if ret[1]:
                 serial_ports_list = ret[1]
