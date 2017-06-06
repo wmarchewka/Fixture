@@ -96,6 +96,7 @@ def configfileWriteDefaults():
         config.set('SCANNER', 'COM_PORT', 'COM1')
         config.add_section('CYCLONE')
         config.set('CYCLONE', 'COM_PORT', 'COM1')
+        config.set('CYCLONE', 'COM_DESCRIPTION', 'DESCRIPTION')
         config.add_section('TFP3')
         config.set('TFP3', 'COM_PORT', 'COM1')
         config.add_section('MODBUS')
@@ -187,7 +188,7 @@ def configfileRead(section,key):
 
 #******************************************************************************************
 def main():
-    pass
+    configfileWriteDefaults()
 
 if __name__ == '__main__':
     main()

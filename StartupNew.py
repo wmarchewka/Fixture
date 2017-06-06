@@ -148,6 +148,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Starting serial receive thread')
         self.lblStatus.setText('Starting serial receive thread')
         global DemoJM_Serialport
+        DemoJM_Serialport = fl.configfileRead('DEMOJM','com_port')
         serial_thread = threading.Timer(1, self.check_serial_event)
         try:
             if DemoJM_Serialport.isOpen():
@@ -250,6 +251,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print(bData)
         strData = bData.decode('utf-8')
         global DemoJM_Serialport
+        DemoJM_Serialport = fl.configfileRead('DEMOJM','com_port')
         DemoJM_Serialport.write(bData + b'\r')
         self.txtSerialData.appendPlainText(strData)
         print('incoming serial data->' + strData)
@@ -363,7 +365,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def modbusread_command(self):
         time.sleep(1)
         address = 1
-        register = 490   #
+        register = 490
+        modbus_serial_port = fl.configfileRead('MODBUS','com_port')
         ret = ml.SCML.mbComm(self, modbus_serial_port, address, register )
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
@@ -537,7 +540,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Returned value ' + str(ret[1]))
         self.lblStatus.setText(str(ret[1]))
 
-
     # ****************************************************************************************************
     def button_tfp3(self):
         global tfp3_serial_port
@@ -550,6 +552,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def tftp3_command(self):
         self.lblStatus.setText("Programming TFP3 !")
+        tfp3_serial_port = fl.configfileRead('TFP3','com_port')
         ret = pl.TFP3Program(self, tfp3_serial_port)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
@@ -564,6 +567,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def cyclone_command(self):
         self.lblStatus.setText("Programming cyclone !")
+        cyclone_serial_port = fl.configfileRead('CYCLONE','com_port')
         ret = pl.CycloneProgram(self, cyclone_serial_port)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
@@ -631,7 +635,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global tfp3_serial_port
         print('TFP3 serial port changed....')
         tfp3_serial_port = self.cbTFP3ComPort.currentText()
-        fl.configfileWrite('TFP3', 'COM_PORT', tfp3_serial_port)
+        fl.configfileWrite('TFP3', 'COM_DESCRIPTION', tfp3_serial_port)
         print('TFP3 port changed to  ' + tfp3_serial_port)
 
     # ****************************************************************************************************
@@ -639,7 +643,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global scanner_serial_port
         print('Scanner serial port changed....')
         scanner_serial_port = self.cbScannerComPort.currentText()
-        fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
+        fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', scanner_serial_port)
         print('Scanner port changed to ' + scanner_serial_port)
 
     # ****************************************************************************************************
@@ -647,7 +651,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global cyclone_serial_port
         print('Cyclone serial port changed....')
         cyclone_serial_port = self.cbCycloneComPort.currentText()
-        fl.configfileWrite('CYCLONE', 'COM_PORT', cyclone_serial_port)
+        fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', cyclone_serial_port)
         print('Cyclone port changed to ' + cyclone_serial_port)
 
     # ****************************************************************************************************
@@ -655,7 +659,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global modbus_serial_port
         print('Modbus serial port changed....')
         modbus_serial_port = self.cbModbusComPort.currentText()
-        fl.configfileWrite('MODBUS', 'COM_PORT', modbus_serial_port)
+        fl.configfileWrite('MODBUS', 'COM_DESCRIPTION', modbus_serial_port)
         print('Modbus port changed to ' + modbus_serial_port)
 
     # ****************************************************************************************************
@@ -667,6 +671,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('DemoJM port changed to ' + demojm_serial_port)
         global DemoJM_Serialport
         try:
+            demojm_serial_port = fl.configfileRead('DEMOJM', 'com_port')
             DemoJM_Serialport = serial.Serial(demojm_serial_port, baudrate=115200, timeout=10,
                                               parity=serial.PARITY_NONE,
                                               stopbits=serial.STOPBITS_ONE,
@@ -709,29 +714,33 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             print('cyclone port' + str(ret[5]))
             print('demojm port' + str(ret[6]))
 
-            if ret[0]:
+            if ret[1]:
                 serial_ports_list = ret[1]
+            # if ret[3]:
+            #     tfp3_serial_port = ret[3]
+            #     fl.configfileWrite('TFP3', 'COM_PORT',tfp3_serial_port)
+            # if ret[4]:
+            #     scanner_serial_port = ret[4]
+            #     fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
+            # if ret[5]:
+            #     cyclone_serial_port = ret[5]
+            #     fl.configfileWrite('CYCLONE', 'COM_PORT', cyclone_serial_port)
+            # if ret[2]:
+            #     modbus_serial_port = ret[2]
+            #     fl.configfileWrite('MODBUS', 'COM_PORT', modbus_serial_port)
+            # if ret[6]:
+            #     demojm_serial_port = ret[6]
+            #     fl.configfileWrite('DEMOJM', 'COM_PORT', demojm_serial_port)
 
-                tfp3_serial_port = ret[3]
-                fl.configfileWrite('TFP3', 'COM_PORT',tfp3_serial_port)
-                scanner_serial_port = ret[4]
-                fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
-                cyclone_serial_port = ret[5]
-                fl.configfileWrite('CYCLONE', 'COM_PORT', cyclone_serial_port)
-                modbus_serial_port = ret[2]
-                fl.configfileWrite('MODBUS', 'COM_PORT', modbus_serial_port)
-                demojm_serial_port = ret[6]
-                fl.configfileWrite('DEMOJM', 'COM_PORT', demojm_serial_port)
-
-                self.cbTFP3ComPort.addItems(serial_ports_list)
-                self.cbScannerComPort.addItems(serial_ports_list)
-                self.cbCycloneComPort.addItems(serial_ports_list)
-                self.cbModbusComPort.addItems(serial_ports_list)
-                self.cbDemoJMComPort.addItems(serial_ports_list)
-            else:
-                print('Error getting serial port list')
-                self.lblStatus.setText('Error getting serial port list')
-                time.sleep(2)
+            self.cbTFP3ComPort.addItems(serial_ports_list)
+            self.cbScannerComPort.addItems(serial_ports_list)
+            self.cbCycloneComPort.addItems(serial_ports_list)
+            self.cbModbusComPort.addItems(serial_ports_list)
+            self.cbDemoJMComPort.addItems(serial_ports_list)
+        else:
+            print('Error getting serial port list')
+            self.lblStatus.setText('Error getting serial port list')
+            time.sleep(2)
 
     # ****************************************************************************************************
     def populate_defaults(self):
@@ -756,7 +765,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         ip_address = fl.configfileRead('TELNET', 'ip_address')
 
-        tfp3_serial_port = fl.configfileRead('TFP3', 'COM_PORT')
+        tfp3_serial_port = fl.configfileRead('TFP3', 'COM_DESCRIPTION')
         index = self.cbTFP3ComPort.findText(tfp3_serial_port)
         if index >= 0:
             self.cbTFP3ComPort.setCurrentIndex(index)
@@ -764,7 +773,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             index = self.cbTFP3ComPort.findText('none')
             self.cbTFP3ComPort.setCurrentIndex(index)
 
-        scanner_serial_port = fl.configfileRead('SCANNER', 'COM_PORT')
+        scanner_serial_port = fl.configfileRead('SCANNER', 'COM_DESCRIPTION')
         index = self.cbScannerComPort.findText(scanner_serial_port)
         if index >= 0:
             self.cbScannerComPort.setCurrentIndex(index)
@@ -772,7 +781,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             index = self.cbScannerComPort.findText('none')
             self.cbScannerComPort.setCurrentIndex(index)
 
-        cyclone_serial_port = fl.configfileRead('CYCLONE', 'COM_PORT')
+        cyclone_serial_port = fl.configfileRead('CYCLONE', 'COM_DESCRIPTION')
         index = self.cbCycloneComPort.findText(cyclone_serial_port)
         if index >= 0:
             self.cbCycloneComPort.setCurrentIndex(index)
@@ -780,7 +789,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             index = self.cbCycloneComPort.findText('none')
             self.cbCycloneComPort.setCurrentIndex(index)
 
-        modbus_serial_port = fl.configfileRead('MODBUS', 'COM_PORT')
+        modbus_serial_port = fl.configfileRead('MODBUS', 'COM_DESCRIPTION')
         index = self.cbModbusComPort.findText(modbus_serial_port)
         if index >= 0:
             self.cbModbusComPort.setCurrentIndex(index)
@@ -788,7 +797,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             index = self.cbModbusComPort.findText('none')
             self.cbModbusComPort.setCurrentIndex(index)
 
-        demojm_serial_port = fl.configfileRead('DEMOJM', 'COM_PORT')
+        demojm_serial_port = fl.configfileRead('DEMOJM', 'COM_DESCRIPTION')
         index = self.cbDemoJMComPort.findText(demojm_serial_port)
         if index >= 0:
             self.cbDemoJMComPort.setCurrentIndex(index)

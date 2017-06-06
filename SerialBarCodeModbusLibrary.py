@@ -37,45 +37,57 @@ class SCML(object):
             print('serial number->' + str(p.serial_number))
             print('vid->' + str(p.vid))
             self.lblStatus.setText('Found ->' + str(p.device))
-            devices.append(p.device)
+            devices.append(p.description)
 
             try:
-                if p.description.find('RS485') >= 0 or p.hwid.find('0403:6001') >= 0:
-                    port_modbus = p.device
-                    fl.configfileWrite('MODBUS','com_port', port_modbus)
+                if fl.configfileRead('MODBUS','COM_DESCRIPTION') == 'None':
+                    if p.description.find('RS485') >= 0 or p.hwid.find('0403:6001') >= 0:
+                        #port_modbus = p.device
+                        port_modbus = p.description
+                        fl.configfileWrite('MODBUS','COM_PORT', p.device)
+                        fl.configfileWrite('MODBUS', 'COM_DESCRIPTION', p.description)
             except AttributeError as err:
                 pass
 
             try:
-                if p.description.find('MAXQ') >= 0:
-                    port_tfp3 = p.device
-                    fl.configfileWrite('TFP3','com_port', port_modbus)
+                if fl.configfileRead('TFP3','COM_DESCRIPTION') == 'None':
+                    if p.description.find('Maxim') >= 0:
+                        port_tfp3 = p.description
+                        fl.configfileWrite('TFP3','COM_PORT', p.device)
+                        fl.configfileWrite('TFP3', 'COM_DESCRIPTION', p.description)
             except AttributeError as err:
                 pass
 
             try:
-                if p.manufacturer.find('Honeywell') >= 0:
-                    port_scanner = p.device
-                    fl.configfileWrite('SCANNER','com_port', port_modbus)
+                if fl.configfileRead('SCANNER','COM_DESCRIPTION') == 'None':
+                    if p.manufacturer.find('Honeywell') >= 0:
+                        port_scanner = p.description
+                        fl.configfileWrite('SCANNER', 'COM_PORT', p.device)
+                        fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', p.description)
             except AttributeError as err:
                 pass
 
             try:
-                if p.description.find('USB-Serial Controller') >= 0:
-                    if p.manufacturer.find('Prolific') >= 0:
-                        port_cyclone = p.device
-                        fl.configfileWrite('CYCLONE', 'com_port', port_modbus)
-                if p.serial_number.find('FT0DICBKA') >= 0:
-                    port_cyclone = p.device
-                    fl.configfileWrite('CYCLONE','com_port', port_modbus)
+                if fl.configfileRead('CYCLONE', 'COM_DESCRIPTION') == 'None':
+                    if p.description.find('USB-Serial Controller') >= 0:
+                        if p.manufacturer.find('Prolific') >= 0:
+                            port_cyclone = p.description
+                            fl.configfileWrite('CYCLONE', 'COM_PORT', p.device)
+                            fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', p.description)
+                    if p.serial_number.find('FT0DICBKA') >= 0:
+                        port_cyclone = p.description
+                        fl.configfileWrite('CYCLONE','COM_PORT', p.device)
+                        fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', p.description)
             except AttributeError as err:
                 pass
 
             try:
-                if p.description.find('USB-Serial Controller') >= 0:
-                    if p.manufacturer.find('Prolific') >= 0:
-                        port_demojm = p.device
-                        fl.configfileWrite('DEMOJM', 'com_port', port_modbus)
+                if fl.configfileRead('DEMOJM', 'COM_DESCRIPTION') == 'None':
+                    if p.description.find('USB-Serial Controller') >= 0:
+                        if p.manufacturer.find('Prolific') >= 0:
+                            port_demojm = p.description
+                            fl.configfileWrite('DEMOJM', 'COM_PORT', p.device)
+                            fl.configfileWrite('DEMOJM', 'COM_DESCRIPTION', p.description)
             except AttributeError as err:
                 pass
         self.lblStatus.setText('Serial scan complete...')
