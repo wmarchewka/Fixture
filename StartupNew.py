@@ -117,7 +117,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbResetTest.clicked.connect(self.button_reset)
         self.pbWriteLanMac.clicked.connect(self.button_lanmac)
         self.pbWriteWifiMac.clicked.connect(self.button_wifimac)
+        self.pbManualWifiMac.clicked.connect(self.button_wifimanualmac)
         self.pbModbusInit.clicked.connect(self.button_modbusinit)
+        self.pbModbusRead.clicked.connect(self.button_modbusread)
         self.pbDefaultsStore.clicked.connect(self.button_defaultsstore)
         self.pbSetPCR.clicked.connect(self.button_setpcr)
         self.pbWriteSerialNumber.clicked.connect(self.button_serialnumberwrite)
@@ -318,6 +320,23 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
+    def button_wifimanualmac(self):
+        self.lblStatus.setText("Setting WIFI MAC...")
+        print("Setting WIFI MAC...")
+        gui_thread = threading.Thread(None, self.wifimac_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def wifimanualmac_command(self):
+        time.sleep(1)
+        auto_inc = False
+        new_mac = '58:2f:42:26:20:98'
+        ret = el.EthComLib.wifi_mac_write(self, ip_address, auto_inc, new_mac)
+        print('Returned value ' + str(ret[1]))
+        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText(str(ret[1]))
+
+    # ****************************************************************************************************
     def button_wifimac(self):
         self.lblStatus.setText("Setting WIFI MAC...")
         print("Setting WIFI MAC...")
@@ -327,29 +346,28 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def wifimac_command(self):
         time.sleep(1)
-        auto_inc = True
+        auto_inc = False
         new_mac = '58:2f:42:26:20:98'
         ret = el.EthComLib.wifi_mac_write(self, ip_address, auto_inc, new_mac)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
     # ****************************************************************************************************
-    def button_modbusreadregister(self):
+    def button_modbusread(self):
         self.lblStatus.setText("Reading Modbus register...")
         print("Reading Modbus register...")
-        gui_thread = threading.Thread(None, self.modbusreadregister_command)
+        gui_thread = threading.Thread(None, self.modbusread_command)
         gui_thread.start()
 
     # ****************************************************************************************************
-    def modbusreadregister_command(self):
+    def modbusread_command(self):
         time.sleep(1)
         address = 1
-        register = 19   # frequency
-        ret = el.EthComLib.mbcomm(self, modbus_serial_port, address, register )
+        register = 490   #
+        ret = ml.SCML.mbComm(self, modbus_serial_port, address, register )
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
-
     # ****************************************************************************************************
     def button_modbusinit(self):
         self.lblStatus.setText("Setting Modbus init...")

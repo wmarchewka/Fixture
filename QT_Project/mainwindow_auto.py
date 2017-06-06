@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MAINWINDOW.UI'
+# Form implementation generated from reading ui file 'mainwindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.8.2
 #
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.pbSetPCR.setFont(font)
         self.pbSetPCR.setObjectName("pbSetPCR")
         self.pbWriteSerialNumber = QtWidgets.QPushButton(self.centralWidget)
-        self.pbWriteSerialNumber.setGeometry(QtCore.QRect(290, 290, 131, 23))
+        self.pbWriteSerialNumber.setGeometry(QtCore.QRect(290, 320, 131, 23))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.pbWriteSerialNumber.setFont(font)
@@ -162,7 +162,7 @@ class Ui_MainWindow(object):
         self.pbUploadFile.setFont(font)
         self.pbUploadFile.setObjectName("pbUploadFile")
         self.pbWriteScript = QtWidgets.QPushButton(self.centralWidget)
-        self.pbWriteScript.setGeometry(QtCore.QRect(10, 320, 131, 23))
+        self.pbWriteScript.setGeometry(QtCore.QRect(10, 350, 131, 23))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.pbWriteScript.setFont(font)
@@ -174,7 +174,7 @@ class Ui_MainWindow(object):
         self.pbWebPageVersion.setFont(font)
         self.pbWebPageVersion.setObjectName("pbWebPageVersion")
         self.pbSetupWIFI = QtWidgets.QPushButton(self.centralWidget)
-        self.pbSetupWIFI.setGeometry(QtCore.QRect(290, 320, 131, 23))
+        self.pbSetupWIFI.setGeometry(QtCore.QRect(290, 350, 131, 23))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.pbSetupWIFI.setFont(font)
@@ -200,9 +200,21 @@ class Ui_MainWindow(object):
         self.lblCurrentSerialNumber.setText("")
         self.lblCurrentSerialNumber.setAlignment(QtCore.Qt.AlignCenter)
         self.lblCurrentSerialNumber.setObjectName("lblCurrentSerialNumber")
+        self.pbManualWifiMac = QtWidgets.QPushButton(self.centralWidget)
+        self.pbManualWifiMac.setGeometry(QtCore.QRect(290, 290, 131, 23))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.pbManualWifiMac.setFont(font)
+        self.pbManualWifiMac.setObjectName("pbManualWifiMac")
+        self.pbModbusRead = QtWidgets.QPushButton(self.centralWidget)
+        self.pbModbusRead.setGeometry(QtCore.QRect(10, 320, 131, 23))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.pbModbusRead.setFont(font)
+        self.pbModbusRead.setObjectName("pbModbusRead")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1024, 21))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1024, 22))
         self.menuBar.setObjectName("menuBar")
         MainWindow.setMenuBar(self.menuBar)
         self.mainToolBar = QtWidgets.QToolBar(MainWindow)
@@ -236,7 +248,7 @@ class Ui_MainWindow(object):
         self.pbTelnetGetVoltages.setText(_translate("MainWindow", "GET VOLTAGES"))
         self.pbResetTest.setText(_translate("MainWindow", "RESET TEST"))
         self.pbWriteLanMac.setText(_translate("MainWindow", "WRITE LAN MAC"))
-        self.pbWriteWifiMac.setText(_translate("MainWindow", "WRITE WIFI MAC"))
+        self.pbWriteWifiMac.setText(_translate("MainWindow", "NEXT WIFI MAC"))
         self.pbModbusInit.setText(_translate("MainWindow", "MODBUS INIT"))
         self.pbSetPCR.setText(_translate("MainWindow", "SET PCR"))
         self.pbWriteSerialNumber.setText(_translate("MainWindow", "SERIAL NUMBER"))
@@ -245,4 +257,6 @@ class Ui_MainWindow(object):
         self.pbWebPageVersion.setText(_translate("MainWindow", "WEB  VERSION"))
         self.pbSetupWIFI.setText(_translate("MainWindow", "SETUP WIFI"))
         self.pbDefaultsStore.setText(_translate("MainWindow", "STORE DEFAULTS"))
+        self.pbManualWifiMac.setText(_translate("MainWindow", "MANUAL WIFI MAC"))
+        self.pbModbusRead.setText(_translate("MainWindow", "MODBUS READ"))
 

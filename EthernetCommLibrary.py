@@ -506,7 +506,7 @@ class EthComLib(object):
         #    return False, err
 
     #******************************************************************************************
-    def wifi_mac_write(self, ip_address, auto_inc):
+    def wifi_mac_write(self, ip_address, auto_inc, manual_mac):
         try:
             port = 23
             print('Setting wireless LAN MAC ' + ip_address)
@@ -524,27 +524,32 @@ class EthComLib(object):
             old_mac = old_mac.decode().split(',')[2]
             print('old_mac -> ' + old_mac)
             old_mac = str(old_mac)
-            new_mac = EthComLib.get_next_mac(self)
-            if new_mac[0]:
-                new_mac = new_mac[1]
-                print('new_mac -> ' + new_mac)
-                self.lblStatus.setText('Old MAC : ' + str(old_mac) + '     New MAC : ' + str(new_mac))
-                se = '$wlanmac,S,' + new_mac + str('\r\n')
-                sc.write(se.encode())
-                data = sc.recv(100)
-                print('data->' + str(data))
-                result = data.decode().split(',')[3].find('OK')
-                print('result->' + str(result))
-                if result > 0:
-                    print('Wireless lan mac not set')
-                    self.lblStatus.setText('WIFI MAC not set')
-                    return False, "WIFI MAC not set"
+            if auto_inc:
+                new_mac = EthComLib.get_next_mac(self)
+                if new_mac[0]:
+                    new_mac = new_mac[1]
                 else:
-                    print('WIFI mac successfully set')
-                    self.lblStatus.setText('WIFI mac successfully set')
-                    return True, 'WIFI MAC successfully set'
+                    return False, 'Out of Mac adresses.  Please call UEC'
             else:
-                return False, 'Out of Mac adresses.  Please call UEC'
+                new_mac = manual_mac
+            print('new_mac -> ' + new_mac)
+            self.lblStatus.setText('Old MAC : ' + str(old_mac) + '     New MAC : ' + str(new_mac))
+            se = '$wlanmac,S,' + new_mac + str('\r\n')
+            sc.write(se.encode())
+            data = sc.recv(100)
+            print('data->' + str(data))
+            result = data.decode().split(',')[3].find('OK')
+            print('result->' + str(result))
+            if result > 0:
+                print('Wireless lan mac not set')
+                self.lblStatus.setText('WIFI MAC not set')
+                return False, "WIFI MAC not set"
+            else:
+                print('WIFI mac successfully set')
+                self.lblStatus.setText('WIFI mac successfully set')
+                return True, 'WIFI MAC successfully set'
+
+
 
 
         except OSError as err:
