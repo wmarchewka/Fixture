@@ -24,6 +24,7 @@ global modbus_serial_port
 global DemoJM_Serialport
 global demojm_serial_port
 global Testing
+global serial_ports_description
 
 # ****************************************************************************************************
 class FileDialog(QWidget):
@@ -636,7 +637,10 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global tfp3_serial_port
         print('TFP3 serial port changed....')
         tfp3_serial_port = self.cbTFP3ComPort.currentText()
+        index = self.cbScannerComPort.currentIndex()
+        port = serial_ports_descriptions[index]
         fl.configfileWrite('TFP3', 'COM_DESCRIPTION', tfp3_serial_port)
+        fl.configfileWrite('TFP3', 'COM_PORT', port)
         print('TFP3 port changed to  ' + tfp3_serial_port)
 
     # ****************************************************************************************************
@@ -644,9 +648,11 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global scanner_serial_port
         print('Scanner serial port changed....')
         scanner_serial_port = self.cbScannerComPort.currentText()
+        index = self.cbScannerComPort.currentIndex()
+        port = serial_ports_descriptions[index]
         #TODO FIX THIS SO IT CAN WORK AND WRITE CORRECT INFO BASED ON PICK FROM LIST
         fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', scanner_serial_port)
-        fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
+        fl.configfileWrite('SCANNER', 'COM_PORT', port)
         print('Scanner port changed to ' + scanner_serial_port)
 
     # ****************************************************************************************************
@@ -654,7 +660,10 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global cyclone_serial_port
         print('Cyclone serial port changed....')
         cyclone_serial_port = self.cbCycloneComPort.currentText()
+        index = self.cbScannerComPort.currentIndex()
+        port = serial_ports_descriptions[index]
         fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', cyclone_serial_port)
+        fl.configfileWrite('CYCLONE', 'COM_PORT',  port)
         print('Cyclone port changed to ' + cyclone_serial_port)
 
     # ****************************************************************************************************
@@ -662,7 +671,10 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global modbus_serial_port
         print('Modbus serial port changed....')
         modbus_serial_port = self.cbModbusComPort.currentText()
+        index = self.cbScannerComPort.currentIndex()
+        port = serial_ports_descriptions[index]
         fl.configfileWrite('MODBUS', 'COM_DESCRIPTION', modbus_serial_port)
+        fl.configfileWrite('MODBUS', 'COM_PORT', port)
         print('Modbus port changed to ' + modbus_serial_port)
 
     # ****************************************************************************************************
@@ -670,7 +682,10 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global demojm_serial_port
         print('DEMOJM serial port changed....')
         demojm_serial_port = self.cbDemoJMComPort.currentText()
-        fl.configfileWrite('DEMOJM', 'COM_PORT', demojm_serial_port)
+        index = self.cbScannerComPort.currentIndex()
+        port = serial_ports_descriptions[index]
+        fl.configfileWrite('DEMOJM', 'COM_DESCRIPTION', demojm_serial_port)
+        fl.configfileWrite('DEMOJM', 'COM_PORT', port)
         print('DemoJM port changed to ' + demojm_serial_port)
         global DemoJM_Serialport
         try:
@@ -701,6 +716,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global modbus_serial_port
         global demojm_serial_port
         global DemoJM_Serialport
+        global serial_ports_descriptions
+        global serial_ports_list
 
         self.lblStatus.setText("Searching for serial ports...")
         print("Searching for serial ports...")
@@ -711,34 +728,20 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         if ret[0] is True:
             print('List->' + str(ret[1]))
-            print('modbus port->' + str(ret[2]))
-            print('modbus port description->' + str(ret[3]))
-            print('tfp3 port->' + str(ret[4]))
-            print('tfp3 port description->' + str(ret[5]))
-            print('scanner port->' + str(ret[6]))
-            print('scanner port description->' + str(ret[7]))
-            print('cyclone port' + str(ret[8]))
-            print('cyclone port description' + str(ret[9]))
-            print('demojm port' + str(ret[10]))
-            print('demojm port description' + str(ret[11]))
+            print('modbus port->' + str(ret[3]))
+            print('modbus port description->' + str(ret[4]))
+            print('tfp3 port->' + str(ret[5]))
+            print('tfp3 port description->' + str(ret[6]))
+            print('scanner port->' + str(ret[7]))
+            print('scanner port description->' + str(ret[8]))
+            print('cyclone port' + str(ret[9]))
+            print('cyclone port description' + str(ret[10]))
+            print('demojm port' + str(ret[11]))
+            print('demojm port description' + str(ret[12]))
 
             if ret[1]:
                 serial_ports_list = ret[1]
-            # if ret[3]:
-            #     tfp3_serial_port = ret[3]
-            #     fl.configfileWrite('TFP3', 'COM_PORT',tfp3_serial_port)
-            # if ret[4]:
-            #     scanner_serial_port = ret[4]
-            #     fl.configfileWrite('SCANNER', 'COM_PORT', scanner_serial_port)
-            # if ret[5]:
-            #     cyclone_serial_port = ret[5]
-            #     fl.configfileWrite('CYCLONE', 'COM_PORT', cyclone_serial_port)
-            # if ret[2]:
-            #     modbus_serial_port = ret[2]
-            #     fl.configfileWrite('MODBUS', 'COM_PORT', modbus_serial_port)
-            # if ret[6]:
-            #     demojm_serial_port = ret[6]
-            #     fl.configfileWrite('DEMOJM', 'COM_PORT', demojm_serial_port)
+                serial_ports_descriptions = ret[2]
 
             self.cbTFP3ComPort.addItems(serial_ports_list)
             self.cbScannerComPort.addItems(serial_ports_list)

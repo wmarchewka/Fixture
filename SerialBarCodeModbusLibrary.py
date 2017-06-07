@@ -27,6 +27,7 @@ class SCML(object):
         port_demojm_description = ''
         ports = list(serial.tools.list_ports.comports())
         devices = []
+        device_descriptions = []
         for p in ports:
             print('-----------------------------------------')
             print(p)
@@ -43,6 +44,7 @@ class SCML(object):
             print('vid->' + str(p.vid))
             self.lblStatus.setText('Found ->' + str(p.device))
             devices.append(p.description)
+            device_descriptions.append(p.device)
 
             try:
                 if fl.configfileRead('MODBUS','COM_DESCRIPTION') == 'None':
@@ -100,9 +102,10 @@ class SCML(object):
                             fl.configfileWrite('DEMOJM', 'COM_DESCRIPTION', port_demojm_description)
             except AttributeError as err:
                 pass
+        devices.append("None")
         self.lblStatus.setText('Serial scan complete...')
         print('Serial scan complete...')
-        return True, devices, port_modbus, port_modbus_description, \
+        return True, devices, device_descriptions, port_modbus, port_modbus_description, \
                port_tfp3, port_tfp3_description, \
                port_cyclone, port_cyclone_description, \
                 port_scanner, port_scanner_description, \
