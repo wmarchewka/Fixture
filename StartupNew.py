@@ -127,7 +127,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbWriteSerialNumber.clicked.connect(self.button_serialnumberwrite)
         self.pbUploadFile.clicked.connect(self.button_uploadfile)
         self.pbWriteScript.clicked.connect(self.button_scriptwrite)
-        self.pbWebPageVersion.clicked.connect(self.button_webpageversion)
+        self.pbWifiVersion.clicked.connect(self.button_wifiversion)
+        self.pbWebpageVersion.clicked.connect(self.button_webpageversion)
         self.pbSetupWIFI.clicked.connect(self.button_wifisetup)
         self.pbRescanSerialPorts.clicked.connect(self.button_populatedefaults)
 
@@ -497,12 +498,11 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
         return
-
     # ****************************************************************************************************
     def button_webpageversion(self):
-        self.lblStatus.setText("Getting webpage version...")
+        self.lblStatus.setText("Getting Webpage version...")
         time.sleep(1)
-        print("Getting webpage version...")
+        print("Getting Webpage version...")
         gui_thread = threading.Thread(None, self.webpageversion_command)
         gui_thread.start()
 
@@ -510,6 +510,22 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def webpageversion_command(self):
         #ret = el.EthComLib.waittest(self)
         ret = el.EthComLib.webpageversion_read(self, ip_address)
+        print('Returned value ' + str(ret[1]))
+        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText(str(ret[1]))
+
+    # ****************************************************************************************************
+    def button_wifiversion(self):
+        self.lblStatus.setText("Getting WIFI version...")
+        time.sleep(1)
+        print("Getting WIFI version...")
+        gui_thread = threading.Thread(None, self.wifiversion_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def wifiversion_command(self):
+        #ret = el.EthComLib.waittest(self)
+        ret = el.EthComLib.wifiversion_read(self, ip_address)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
@@ -570,7 +586,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def cyclone_command(self):
         self.lblStatus.setText("Programming cyclone !")
         cyclone_serial_port = fl.configfileRead('CYCLONE','com_port')
-        ret = pl.CycloneProgram(self, cyclone_serial_port)
+        image = 3
+        ret = pl.CycloneProgram(self, cyclone_serial_port, image)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
@@ -639,7 +656,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('TFP3 serial port changed....')
         tfp3_serial_port = self.cbTFP3ComPort.currentText()
         index = self.cbScannerComPort.currentIndex()
-        port = serial_ports_descriptions[index]
+        port = serial_ports_list[index]
         fl.configfileWrite('TFP3', 'COM_DESCRIPTION', tfp3_serial_port)
         fl.configfileWrite('TFP3', 'COM_PORT', port)
         print('TFP3 port changed to  ' + tfp3_serial_port)
@@ -650,7 +667,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Scanner serial port changed....')
         scanner_serial_port = self.cbScannerComPort.currentText()
         index = self.cbScannerComPort.currentIndex()
-        port = serial_ports_descriptions[index]
+        port = serial_ports_list[index]
         fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', scanner_serial_port)
         fl.configfileWrite('SCANNER', 'COM_PORT', port)
         print('Scanner port changed to ' + scanner_serial_port)
@@ -661,7 +678,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Cyclone serial port changed....')
         cyclone_serial_port = self.cbCycloneComPort.currentText()
         index = self.cbScannerComPort.currentIndex()
-        port = serial_ports_descriptions[index]
+        port = serial_ports_list[index]
         fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', cyclone_serial_port)
         fl.configfileWrite('CYCLONE', 'COM_PORT',  port)
         print('Cyclone port changed to ' + cyclone_serial_port)
@@ -672,7 +689,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('Modbus serial port changed....')
         modbus_serial_port = self.cbModbusComPort.currentText()
         index = self.cbScannerComPort.currentIndex()
-        port = serial_ports_descriptions[index]
+        port = serial_ports_list[index]
         fl.configfileWrite('MODBUS', 'COM_DESCRIPTION', modbus_serial_port)
         fl.configfileWrite('MODBUS', 'COM_PORT', port)
         print('Modbus port changed to ' + modbus_serial_port)
@@ -683,7 +700,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         print('DEMOJM serial port changed....')
         demojm_serial_port = self.cbDemoJMComPort.currentText()
         index = self.cbScannerComPort.currentIndex()
-        port = serial_ports_descriptions[index]
+        port = serial_ports_list[index]
         fl.configfileWrite('DEMOJM', 'COM_DESCRIPTION', demojm_serial_port)
         fl.configfileWrite('DEMOJM', 'COM_PORT', port)
         print('DemoJM port changed to ' + demojm_serial_port)

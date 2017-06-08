@@ -3,6 +3,7 @@ import os
 import socket
 import telnetlib
 import time
+import requests
 
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
@@ -424,7 +425,7 @@ class EthComLib(object):
             #TODO this needs finished
             port = 23
             print('Reading serial number from ' + ip_address)
-            self.lblStatus.setText('Writing serial number from ' + ip_address)
+            self.lblStatus.setText('Reading serial number from ' + ip_address)
 
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(3)
@@ -442,11 +443,19 @@ class EthComLib(object):
             serialnumber = data.decode().split(',')[2]
             print('return data->' + str(data))
             if result:
-                print('Device serial number not set...')
-                return False, 'Device serial not set'
+                print('Error retrieving device serial number...')
+                return False, 'Error retrieving device serial number'
             else:
                 print('Device serial ' +  str(serialnumber))
                 return True, serialnumber
+
+        except TimeoutError as err:
+            print(err)
+            return False, err
+
+        except Exception as err:
+            print(err)
+            return False, str(err) + ' retreiving serial number...'
 
         except OSError as err:
             print(err)
@@ -733,17 +742,44 @@ class EthComLib(object):
             self.lblStatus.setText('Uploading script failed. ' + str(err))
             return False, err
 
+# ******************************************************************************************
+    def webpageversion_read(self, ip_address):
+        try:
+            # TODO this needs finished
+            port = 80
+            print('Checking Webpage version...')
+            self.lblStatus.setText('Checking Webpage version...')
 
+            r = requests.get('http://192.168.1.99/devinfo.html')
+            print(r.text)
+            data = r.text
+            founddata = data.find('Firmware Version:')
+            if founddata != -1:
+                version = data[founddata+18:founddata + 34]
+                print(founddata)
+
+            if not data:
+                self.lblStatus.setText('Webpage not installed.')
+                return True, 'Webpage not installed'
+            else:
+                self.lblStatus.setText('Webpage version is ' + version)
+                return True, 'Webpage version is ' + version
+
+
+        except OSError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
     #******************************************************************************************
-    def webpageversion_read(self, ip_address):
+    def wifiversion_read(self, ip_address):
         try:
             #TODO this needs finished
             port = 23
-            print('Checking webpage version...')
-            self.lblStatus.setText('Checking webpage version...')
+            print('Checking WIFI version...')
+            self.lblStatus.setText('Checking WIFI version...')
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sc.settimeout(5)
+            sc.settimeout(3)
             conn = ip_address, port
             sc.connect(conn)
             sc.send(b'\r\n')
@@ -757,11 +793,11 @@ class EthComLib(object):
             data = data.decode().split(',')[2]
             print('return data->' + str(data))
             if not data:
-                self.lblStatus.setText('Webpage not installed.')
-                return True, 'Webpage not installed'
+                self.lblStatus.setText('WIFI not installed.')
+                return True, 'WIFI not installed'
             else:
-                self.lblStatus.setText('Webpage version is ' + str(data))
-                return True, 'Webpage version is ' + str(data)
+                self.lblStatus.setText('WIFI version is ' + str(data))
+                return True, 'WIFI version is ' + str(data)
 
 
         except OSError as err:
@@ -831,7 +867,7 @@ def main():
         ret = EthComLib.wifi_setup(ip_add, mac_add)
 
     if module == "B":
-        ret = EthComLib.webpageversion_read(ip_add)
+        ret = EthComLib.wifiversion_read(ip_add)
 
     if module == "C":
         ret = EthComLib.script_write(ip_add,path)

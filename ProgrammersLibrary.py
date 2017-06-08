@@ -7,8 +7,10 @@ cyclone_recv1 = b'jP&E,14,Universal_PEMBC0F62,none,0,0,Dec 12 2016,9.80,Rev. A,0
 cyclone_recv2 = b'hP&E,14,Universal_PEMBC0F62,none,0,0,Dec 12 2016,9.80,Rev. A,00:0d:01:bc:0f:62,0,1,K70FN1M0_EMMC,Generic,'
 
 #******************************************************************************************
-def CycloneProgram(self, port):
+def CycloneProgram(self, port, image):
         # open com port wait for error
+        #image selects what image in the programmer to select
+        #if image =0 then select whatever is defaulted in the programmer
 
         if port ==  '':
             self.lblStatus.setText('Please select Cyclone serial port')
@@ -41,8 +43,18 @@ def CycloneProgram(self, port):
         print('RECV->' + str(line))
         if line == cyclone_recv1 or cyclone_recv2:
             print('RECV->' + str(line))
-            print('Found Cyclone programmer')
-            self.lblStatus.setText('Found Cyclone programmer')
+            if image==1:
+                ser.write(b'\x04\x18\x1c\x01\x5f')  # command to select iamge 1
+            if image==2:
+                ser.write(b'\x04\x18\x1c\x02\x56')  # command to select iamge 2
+            if image==3:
+                ser.write(b'\x04\x18\x1c\x03\x51')  # command to select iamge 3
+            if image==4:
+                ser.write(b'\x04\x18\x1c\x04\x44')  # command to select iamge 4
+            line = ser.readline()
+            print('RECV->' + str(line))
+            print('Cyclone programming Image ' +  str(image))
+            self.lblStatus.setText('Cyclone programming Image ' +  str(image))
             ser.write(b'\x03\x18\x41\x3f')  # command to start programming
             print('SEND->\\x03\\x18\\x41\\x3f')
             line = ser.read(2)  # Check for new line and CR     # response should be 01 ee
