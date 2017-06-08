@@ -24,7 +24,8 @@ global modbus_serial_port
 global DemoJM_Serialport
 global demojm_serial_port
 global Testing
-global serial_ports_description
+global serial_ports_descriptions
+global serial_ports_list
 
 # ****************************************************************************************************
 class FileDialog(QWidget):
@@ -650,7 +651,6 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         scanner_serial_port = self.cbScannerComPort.currentText()
         index = self.cbScannerComPort.currentIndex()
         port = serial_ports_descriptions[index]
-        #TODO FIX THIS SO IT CAN WORK AND WRITE CORRECT INFO BASED ON PICK FROM LIST
         fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', scanner_serial_port)
         fl.configfileWrite('SCANNER', 'COM_PORT', port)
         print('Scanner port changed to ' + scanner_serial_port)
@@ -741,13 +741,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
             if ret[1]:
                 serial_ports_list = ret[1]
+                print('ports->' + str(serial_ports_list))
                 serial_ports_descriptions = ret[2]
+                print('description->' + str(serial_ports_descriptions))
 
-            self.cbTFP3ComPort.addItems(serial_ports_list)
-            self.cbScannerComPort.addItems(serial_ports_list)
-            self.cbCycloneComPort.addItems(serial_ports_list)
-            self.cbModbusComPort.addItems(serial_ports_list)
-            self.cbDemoJMComPort.addItems(serial_ports_list)
+            self.cbTFP3ComPort.addItems(serial_ports_descriptions)
+            self.cbScannerComPort.addItems(serial_ports_descriptions)
+            self.cbCycloneComPort.addItems(serial_ports_descriptions)
+            self.cbModbusComPort.addItems(serial_ports_descriptions)
+            self.cbDemoJMComPort.addItems(serial_ports_descriptions)
         else:
             print('Error getting serial port list')
             self.lblStatus.setText('Error getting serial port list')

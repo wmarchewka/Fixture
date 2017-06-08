@@ -162,6 +162,7 @@ def configfileWriteDefaults():
 #******************************************************************************************
 def configfileWrite(section,key,value):
 
+    value = str(value)
     config = configparser.RawConfigParser()
     config.read('configuration.cfg')
     print('Writing to config->Section:' + section + 'Key:' + key + ' Value: ' + value)

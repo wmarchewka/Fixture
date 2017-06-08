@@ -43,8 +43,8 @@ class SCML(object):
             print('serial number->' + str(p.serial_number))
             print('vid->' + str(p.vid))
             self.lblStatus.setText('Found ->' + str(p.device))
-            devices.append(p.description)
-            device_descriptions.append(p.device)
+            devices.append(p.device)
+            device_descriptions.append(p.description)
 
             try:
                 if fl.configfileRead('MODBUS','COM_DESCRIPTION') == 'None':
@@ -103,6 +103,7 @@ class SCML(object):
             except AttributeError as err:
                 pass
         devices.append("None")
+        device_descriptions.append("None")
         self.lblStatus.setText('Serial scan complete...')
         print('Serial scan complete...')
         return True, devices, device_descriptions, port_modbus, port_modbus_description, \
