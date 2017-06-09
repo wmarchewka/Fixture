@@ -96,40 +96,60 @@ def TFP3Program(self, port):
         return False, 'Please select TFP3 serial port'
 
     try:
+
         print('Looking for TFP3 programmer on port' + port)
         self.lblStatus.setText('Looking for TFP3 programmer on port' + port)
-        se =  serial.Serial(port, 115200, timeout=5)
-        se.write(b'P\r\n')
-        print('Writing P to programmer')
-        x = se.read_until(terminator = b'Programming')
-        print(x)
-        if x != b'P\r\r\nProgramming':
-            print('Did not find TFP3 programmer')
-            self.lblStatus.setText('Did not find TFP3 programmer')
-            return False,'Did not find TFP3 programmer'
-        else:
+        se = serial.Serial(port, 115200, timeout=5)
+        print('se->' + str(se))
+        print('Need to reset the programmer')
+        se.write(b'z\r\n')
+        print('Reseeting programmer')
+        self.lblStatus.setText('Resetting programmer')
+        se.close()
+        time.sleep(1)
+        se.open()
+        time.sleep(3)
+        y = se.readall()
+        z = str(y).find('Silergy flash programmer')
+        print(y)
+        if (z > -1):
             print('TFP3 programmer found')
-            self.lblStatus.setText('TFP3 programmer found')
-            while True:
-                time.sleep(0.001)
-                n = se.inWaiting()
-                if n:
-                    data = se.read(n)
-                    print(data)
-                    if data.find(b'Timeout') > -1:
-                        print('TIMEOUT')
-                        self.lblStatus.setText('TFP3 timeout programming')
-                        return False,'TFP3 timeout programming'
-                    elif data.find(b'successful') > -1:
-                        print('TFP3 program success')
-                        self.lblStatus.setText('TFP3 program success')
-                        return True, 'TFP3 program success'
+            time.sleep(1)
+            se.write(b'p\r\n')
+            x = se.read_all()
+            print("x->" +  str(x))
+            # if x == b'Command Timeout\r\n':
+            #     se.close()
+            #     print('Command timeout. Did not find UUT')
+            #     self.lblStatus.setText('Command timeout. Did not find UUT')
+            #     return False, 'Command timeout. Did not find UUT'
+            # else:
+            #     print('TFP3 programmer found')
+            #     self.lblStatus.setText('TFP3 programmer found')
+            #     time.sleep(1)
+            #     while True:
+            #         time.sleep(0.001)
+            #         n = se.inWaiting()
+            #         if n:
+            #             data = se.read(n)
+            #             print(data)
+            #             if data.find(b'Command Timeout') > -1:
+            #                 print('UUT not found.  Timed out')
+            #                 self.lblStatus.setText('UUT not found. Timed out')
+            #                 return False, 'UUT not found.  TFP3 timeout programming'
+            #             elif data.find(b'successful') > -1:
+            #                 print('TFP3 program success')
+            #                 self.lblStatus.setText('TFP3 program success')
+            #                 return True, 'TFP3 program success'
 
+        else:
+            se.close()
+            return False, 'Error'
     except:
-        return False,'Serial port error'
+        #se.close()
         self.lblStatus.setText('Serial port error')
         print('Serial port error')
-
+        return False, 'Serial port error'
 #******************************************************************************************
 def main():
 

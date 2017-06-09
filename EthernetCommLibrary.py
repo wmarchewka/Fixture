@@ -29,7 +29,7 @@ class EthComLib(object):
         return True, timecounter
     #******************************************************************************************
     def pinguut(self, ip_address, numpings=1):
-        pingcount = 0
+        pingcount = 1
 
         #ip_address = fl.configfileRead('TELNET', "ip_address")
 
@@ -55,6 +55,55 @@ class EthComLib(object):
                 pingcount = pingcount + 1
                 if pingcount > numpings:
                     return False, ip_address + ' is down!'
+
+# ******************************************************************************************
+    def rebootunit_check(self, ip_address):
+
+        timecounter = 0
+
+        try:
+            host = ip_address
+            port = 23
+            print('Rebooting unit ' + host)
+            sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sc.settimeout(2)
+            conn = host, port
+            sc.connect(conn)
+            data = sc.recv(100)
+            print(data)
+            sc.send(b'$login,factory,factory\r\n')
+            data = sc.recv(100)
+            print(data)
+            sc.send(b'$reboot\r\n')
+            data = sc.recv(100)
+            print(data)
+            if str(data).find('OK') > -1:
+                print("Reboot command accepted please wait.")
+                self.lblStatus.setText('Reboot command accepted please wait.')
+                time.sleep(5)
+                while True:
+                    val = EthComLib.pinguut(self, ip_address, 1)
+                    print('val->' + str(val))
+                    if val[0] == True:
+                        print("Successfully reset...")
+                        update = ('Successfully reset...')
+                        self.lblStatus.setText(update)
+                        return True, "Successfully reset..."
+                    else:
+                        timecounter = timecounter + 1
+                        print('Waiting for unit to respond ' + str(timecounter) + ' seconds')
+                        update = ('Waiting for unit to respond ' + str(timecounter) + ' seconds')
+                        self.lblStatus.setText(update)
+                        time.sleep(1.0)
+                        if timecounter > 10:
+                            print('Timeout waiting for unit to respond...')
+                            update = ('Timeout waiting for unit to respond...')
+                            self.lblStatus.setText(update)
+                            return False, 'Timeout waiting for unit to respond...'
+
+        except Exception as err:
+            print(err)
+            return False, err#'Unit did not respond to reboot command...'
 
     #******************************************************************************************
     def reset_button_check(self, ip_address):

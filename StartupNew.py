@@ -117,6 +117,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbProgCyclone.clicked.connect(self.button_cyclone)
         self.pbProgTFP3.clicked.connect(self.button_tfp3)
         self.pbResetTest.clicked.connect(self.button_reset)
+        self.pbRebootUnit.clicked.connect(self.button_rebootunit)
         self.pbWriteLanMac.clicked.connect(self.button_lanmac)
         self.pbWriteWifiMac.clicked.connect(self.button_wifimac)
         self.pbManualWifiMac.clicked.connect(self.button_wifimanualmac)
@@ -292,6 +293,22 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             MainWindow.adc(self)
         elif ((strData == 'W') or (strData == 'w')):
             MainWindow.all_outputs_toggle()
+
+    # ****************************************************************************************************
+    def button_rebootunit(self):
+        self.lblStatus.setText("Rebooting unit...")
+        print("Rebooting unit...")
+        gui_thread = threading.Thread(None, self.rebootunit_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def rebootunit_command(self):
+        self.lblStatus.setText("Rebooting Unit...")
+        time.sleep(1)
+        ret = el.EthComLib.rebootunit_check(self, ip_address)
+        print('Returned value ' + str(ret[1]))
+        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_reset(self):
