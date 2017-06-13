@@ -275,7 +275,10 @@ class SCML(object):
         return False, ('Failed to scan')
 
     # ******************************************************************************************
-    def mbComm(self, port, address, register):
+    def mbComm(self, port, address, register, type, num_of_regs):
+
+        #type 1 = int 2 = float  3 = ascii
+
         if port == '':
             self.lblStatus.setText('Please select Modbus serial port')
             return False, 'Please select Modbus serial port'
@@ -284,7 +287,7 @@ class SCML(object):
             address = fl.configfileRead('MODBUS','slave_address')
             address= int(address)
             uut = minimalmodbus.Instrument(port, address)
-            uut.debug = False
+            uut.debug = True
             timeout = int(fl.configfileRead('MODBUS','time_out'))
             uut.serial.timeout = timeout / 1000
             uut.serial.bytesize = int(fl.configfileRead('MODBUS','data_bits'))
@@ -299,15 +302,19 @@ class SCML(object):
             uut.serial.stopbits = int(fl.configfileRead('MODBUS','stop_bits'))
             uut.mode = minimalmodbus.MODE_RTU
             uut.close_port_after_each_call = False
-            count = 0
-            while count < 1:
-                # value = uut.read_register(register, 1, 4)     #register, number of decimals
-                value = uut.read_float(register)  # register, number of decimals
-                print('Value->' + str(value))
-                time.sleep(0.200)
-                count = count + 1
+            if type == 1:
+                value = uut.read_registers(register, num_of_regs , 4 )  # register, number of decimals
+                return_value = value
+            if type == 2:
+                value = uut.read_float(register, 4, num_of_regs)  # register, number of decimals
+                return_value = round(value,2)
+            if type == 3:
+                value = uut.read_string(register, 4, num_of_regs)
+                return_value = value
+            print('Value->' + str(value))
+
             uut.serial.close
-            return True, round(value,2)
+            return True, return_value
 
         except TimeoutError as err:
             print(err)

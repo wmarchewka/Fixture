@@ -385,9 +385,11 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def modbusread_command(self):
         time.sleep(1)
         address = 1
-        register = 490
+        num_of_regs = 3
+        register = 345
+        type = 3   #1 = int  2 = float 3 = ascii
         modbus_serial_port = fl.configfileRead('MODBUS','com_port')
-        ret = ml.SCML.mbComm(self, modbus_serial_port, address, register )
+        ret = ml.SCML.mbComm(self, modbus_serial_port, address, register, type, num_of_regs )
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
