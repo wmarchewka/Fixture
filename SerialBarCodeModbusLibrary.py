@@ -275,7 +275,7 @@ class SCML(object):
         return False, ('Failed to scan')
 
     # ******************************************************************************************
-    def mbComm(self, port, address, register, type, num_of_regs):
+    def mbComm(self, port, address, register, type, num_of_regs, write, writevalue):
 
         #type 0 = int 1 = float  2 = ascii
 
@@ -302,19 +302,34 @@ class SCML(object):
             uut.serial.stopbits = int(fl.configfileRead('MODBUS','stop_bits'))
             uut.mode = minimalmodbus.MODE_RTU
             uut.close_port_after_each_call = False
-            if type == 0:
-                value = uut.read_registers(register, num_of_regs , 4 )  
-                return_value = value
-            if type == 1:
-                value = uut.read_float(register, 3, num_of_regs)
-                return_value = round(value,2)
-            if type == 2:
-                value = uut.read_string(register, 4, num_of_regs)
-                return_value = value
-            print('Value->' + str(value))
+            if not write:
+                if type == 0:
+                    value = uut.read_registers(register, num_of_regs , 4 )
+                    return_value = value
+                if type == 1:
+                    value = uut.read_float(register, num_of_regs, 4)
+                    return_value = round(value,2)
+                if type == 2:
+                    value = uut.read_string(register, num_of_regs, 4)
+                    return_value = value
+                print('Value->' + str(value))
+                uut.serial.close
+                return True, return_value
+            elif write:
+                #first write Modbus acess code to register 2047 decimal
+                #Admin:2570
+                #Factory:3855
+                uut.write_register(2047, 0)
+                if type == 0:
+                    uut.write_registers(register, num_of_regs, int(writevalue))
+                    return True, ""
+                if type == 1:
+                    uut.write_float(register, float(writevalue), num_of_regs)
+                    return True, ""
+                if type == 2:
+                    uut.write_string(register, str(writevalue), num_of_regs)
+                    return True, ""
 
-            uut.serial.close
-            return True, return_value
 
         except TimeoutError as err:
             print(err)

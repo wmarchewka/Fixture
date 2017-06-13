@@ -93,8 +93,10 @@ class popupModbus(QMainWindow, pmb.Ui_MainWindow):
         self.cmbMBRegisterType.addItem('Text')
         self.cmbMBRegisterType.setCurrentIndex(1)
         self.cmbMBRegisterType.setCurrentIndex(2)
-        self.txtMBNumberRegisters.setText('3')
-        self.txtMBRegister.setText('345')
+        self.txtMBValueToWrite.setText("Walter")
+        self.chkWrite.setChecked(True)
+        self.txtMBNumberRegisters.setText('10')
+        self.txtMBRegister.setText('320')
         self.txtMBUnitAccress.setText('1')
 # ****************************************************************************************************
 class popupCombo(QMainWindow, pw.Ui_MainWindow):
@@ -411,14 +413,11 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.popupModbusWindow.show()
 
     # ****************************************************************************************************
-    def modbusread_command(self, address, num_of_regs, register, type):
+    def modbusread_command(self, address, num_of_regs, register, type, write, valuetowrite):
         time.sleep(1)
-        #address = 1
-        #num_of_regs = 3
-        #register = 345
         #type = 3   #0 = int  1 = float 2 = ascii
         modbus_serial_port = fl.configfileRead('MODBUS','com_port')
-        ret = ml.SCML.mbComm(self, modbus_serial_port, address, register, type, num_of_regs )
+        ret = ml.SCML.mbComm(self, modbus_serial_port, address, register, type, num_of_regs, write, valuetowrite)
         print('Returned value ' + str(ret[1]))
         print('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
@@ -520,8 +519,10 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         reg = int(self.popupModbusWindow.txtMBRegister.toPlainText())
         addr = int(self.popupModbusWindow.txtMBUnitAccress.toPlainText())
         type = int(self.popupModbusWindow.cmbMBRegisterType.currentIndex())
+        write = self.popupModbusWindow.chkWrite.isChecked()
+        valuetowrite = self.popupModbusWindow.txtMBValueToWrite.toPlainText()
         self.popupModbusWindow.close()
-        gui_thread = threading.Thread(None, self.modbusread_command(addr, numreg, reg, type))
+        gui_thread = threading.Thread(None, self.modbusread_command(addr, numreg, reg, type, write, valuetowrite))
         gui_thread.start()
 
     # ****************************************************************************************************
