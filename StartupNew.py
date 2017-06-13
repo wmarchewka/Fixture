@@ -674,7 +674,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global tfp3_serial_port
         print('TFP3 serial port changed....')
         tfp3_serial_port = self.cbTFP3ComPort.currentText()
-        index = self.cbScannerComPort.currentIndex()
+        index = self.cbTFP3ComPort.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('TFP3', 'COM_DESCRIPTION', tfp3_serial_port)
         fl.configfileWrite('TFP3', 'COM_PORT', port)
@@ -696,7 +696,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global cyclone_serial_port
         print('Cyclone serial port changed....')
         cyclone_serial_port = self.cbCycloneComPort.currentText()
-        index = self.cbScannerComPort.currentIndex()
+        index = self.cbCycloneComPort.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', cyclone_serial_port)
         fl.configfileWrite('CYCLONE', 'COM_PORT',  port)
@@ -707,7 +707,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global modbus_serial_port
         print('Modbus serial port changed....')
         modbus_serial_port = self.cbModbusComPort.currentText()
-        index = self.cbScannerComPort.currentIndex()
+        index = self.cbModbusComPort.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('MODBUS', 'COM_DESCRIPTION', modbus_serial_port)
         fl.configfileWrite('MODBUS', 'COM_PORT', port)
@@ -718,7 +718,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global demojm_serial_port
         print('DEMOJM serial port changed....')
         demojm_serial_port = self.cbDemoJMComPort.currentText()
-        index = self.cbScannerComPort.currentIndex()
+        index = self.DemoJM_Serialport.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('DEMOJM', 'COM_DESCRIPTION', demojm_serial_port)
         fl.configfileWrite('DEMOJM', 'COM_PORT', port)
