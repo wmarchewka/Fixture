@@ -8,6 +8,7 @@ except ImportError:
 from PyQt5.QtWidgets import *
 from QT_Project import mainwindow_auto as mw
 from QT_Project import popupSlot_auto as pw
+from QT_Project import popupModbus_auto as pmb
 from PyQt5.QtCore import pyqtSignal
 import SerialBarCodeModbusLibrary as ml
 import ProgrammersLibrary as pl
@@ -69,6 +70,32 @@ class FileDialog(QWidget):
         if fileName:
             print(fileName)
 
+        # ****************************************************************************************************
+class popupModbus(QMainWindow, pmb.Ui_MainWindow):
+
+    mbSendButton = pyqtSignal('int')
+
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.title = 'Modbus read...'
+        self.left = 200
+        self.top = 200
+        self.width = 200
+        self.height = 100
+        self.index = 0
+        self.indexstr = ''
+        self.initUI()
+
+    def initUI(self):
+        self.cmbMBRegisterType.addItem('Integer')
+        self.cmbMBRegisterType.addItem('Float')
+        self.cmbMBRegisterType.addItem('Text')
+        self.cmbMBRegisterType.setCurrentIndex(1)
+        self.cmbMBRegisterType.setCurrentIndex(2)
+        self.txtMBNumberRegisters.setText('3')
+        self.txtMBRegister.setText('345')
+        self.txtMBUnitAccress.setText('1')
 # ****************************************************************************************************
 class popupCombo(QMainWindow, pw.Ui_MainWindow):
 
@@ -378,16 +405,18 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def button_modbusread(self):
         self.lblStatus.setText("Reading Modbus register...")
         print("Reading Modbus register...")
-        gui_thread = threading.Thread(None, self.modbusread_command)
-        gui_thread.start()
+        #TODO need to finish popup window for modbus entry
+        self.popupModbusWindow = popupModbus()
+        self.mbPushButton_connection(self.popupModbusWindow.pbSendButton)
+        self.popupModbusWindow.show()
 
     # ****************************************************************************************************
-    def modbusread_command(self):
+    def modbusread_command(self, address, num_of_regs, register, type):
         time.sleep(1)
-        address = 1
-        num_of_regs = 3
-        register = 345
-        type = 3   #1 = int  2 = float 3 = ascii
+        #address = 1
+        #num_of_regs = 3
+        #register = 345
+        #type = 3   #0 = int  1 = float 2 = ascii
         modbus_serial_port = fl.configfileRead('MODBUS','com_port')
         ret = ml.SCML.mbComm(self, modbus_serial_port, address, register, type, num_of_regs )
         print('Returned value ' + str(ret[1]))
@@ -476,9 +505,24 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.make_connection(self.popupWindow.comboBox)
         self.popupWindow.show()
 
+   # ****************************************************************************************************
+    def mbPushButton_connection(self, button_object):
+        # TODO need to finish popup window for mobus
+        button_object.clicked.connect(self.mbSendButton_Interim)
+        pass
     # ****************************************************************************************************
     def make_connection(self, popup_combo_object):
         popup_combo_object.activated[str].connect(self.upload_file_interim)
+
+    # ****************************************************************************************************
+    def mbSendButton_Interim(self, button_object):
+        numreg = int(self.popupModbusWindow.txtMBNumberRegisters.toPlainText())
+        reg = int(self.popupModbusWindow.txtMBRegister.toPlainText())
+        addr = int(self.popupModbusWindow.txtMBUnitAccress.toPlainText())
+        type = int(self.popupModbusWindow.cmbMBRegisterType.currentIndex())
+        self.popupModbusWindow.close()
+        gui_thread = threading.Thread(None, self.modbusread_command(addr, numreg, reg, type))
+        gui_thread.start()
 
     # ****************************************************************************************************
     def upload_file_interim(self, slot):

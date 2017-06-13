@@ -29,4 +29,5 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui \
-    popupslot.ui
+    popupslot.ui \
+    popupmodbus.ui

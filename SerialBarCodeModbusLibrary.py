@@ -277,7 +277,7 @@ class SCML(object):
     # ******************************************************************************************
     def mbComm(self, port, address, register, type, num_of_regs):
 
-        #type 1 = int 2 = float  3 = ascii
+        #type 0 = int 1 = float  2 = ascii
 
         if port == '':
             self.lblStatus.setText('Please select Modbus serial port')
@@ -302,13 +302,13 @@ class SCML(object):
             uut.serial.stopbits = int(fl.configfileRead('MODBUS','stop_bits'))
             uut.mode = minimalmodbus.MODE_RTU
             uut.close_port_after_each_call = False
-            if type == 1:
-                value = uut.read_registers(register, num_of_regs , 4 )  # register, number of decimals
+            if type == 0:
+                value = uut.read_registers(register, num_of_regs , 4 )  
                 return_value = value
-            if type == 2:
-                value = uut.read_float(register, 4, num_of_regs)  # register, number of decimals
+            if type == 1:
+                value = uut.read_float(register, 3, num_of_regs)
                 return_value = round(value,2)
-            if type == 3:
+            if type == 2:
                 value = uut.read_string(register, 4, num_of_regs)
                 return_value = value
             print('Value->' + str(value))
