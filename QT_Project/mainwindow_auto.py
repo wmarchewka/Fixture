@@ -270,7 +270,7 @@ class Ui_MainWindow(object):
         self.pbSetupWIFI.setText(_translate("MainWindow", "SETUP WIFI"))
         self.pbDefaultsStore.setText(_translate("MainWindow", "STORE DEFAULTS"))
         self.pbManualWifiMac.setText(_translate("MainWindow", "MANUAL WIFI MAC"))
-        self.pbModbusRead.setText(_translate("MainWindow", "MODBUS READ"))
+        self.pbModbusRead.setText(_translate("MainWindow", "MODBUS R/W"))
         self.pbWebpageVersion.setText(_translate("MainWindow", "WEBPAGE  VERSION"))
         self.pbRebootUnit.setText(_translate("MainWindow", "REBOOT UNIT"))
 

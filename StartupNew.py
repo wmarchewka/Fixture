@@ -93,11 +93,11 @@ class popupModbus(QMainWindow, pmb.Ui_MainWindow):
         self.cmbMBRegisterType.addItem('Text')
         self.cmbMBRegisterType.setCurrentIndex(1)
         self.cmbMBRegisterType.setCurrentIndex(2)
-        self.txtMBValueToWrite.setText("Walter")
-        self.chkWrite.setChecked(True)
-        self.txtMBNumberRegisters.setText('10')
-        self.txtMBRegister.setText('320')
-        self.txtMBUnitAccress.setText('1')
+        self.txtMBValueToWrite.setText("")
+        self.chkWrite.setChecked(False)
+        self.txtMBNumberRegisters.setText('3')
+        self.txtMBRegister.setText('345')
+        self.txtMBUnitAddress.setText('1')
 # ****************************************************************************************************
 class popupCombo(QMainWindow, pw.Ui_MainWindow):
 
@@ -517,7 +517,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def mbSendButton_Interim(self, button_object):
         numreg = int(self.popupModbusWindow.txtMBNumberRegisters.toPlainText())
         reg = int(self.popupModbusWindow.txtMBRegister.toPlainText())
-        addr = int(self.popupModbusWindow.txtMBUnitAccress.toPlainText())
+        addr = int(self.popupModbusWindow.txtMBUnitAddress.toPlainText())
         type = int(self.popupModbusWindow.cmbMBRegisterType.currentIndex())
         write = self.popupModbusWindow.chkWrite.isChecked()
         valuetowrite = self.popupModbusWindow.txtMBValueToWrite.toPlainText()

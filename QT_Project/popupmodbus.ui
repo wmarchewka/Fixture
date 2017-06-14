@@ -83,7 +83,7 @@
      <string>Register Type</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="txtMBUnitAccress">
+   <widget class="QTextEdit" name="txtMBUnitAddress">
     <property name="geometry">
      <rect>
       <x>20</x>

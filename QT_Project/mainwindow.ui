@@ -623,7 +623,7 @@
      </font>
     </property>
     <property name="text">
-     <string>MODBUS READ</string>
+     <string>MODBUS R/W</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbWebpageVersion">
