@@ -147,13 +147,14 @@ class SCML(object):
         if port == 'None':
             self.lblStatus.setText('Please select Barcode serial port')
             return False, 'Please select Barcode serial port'
-
+        print('Looking for barcode scanner...')
+        time.sleep(1)
+        self.lblStatus.setText('Looking for barcode scanner...')
+        ser = serial.Serial(port, 115200, timeout=1)
+        print('Found barcode scanner on port ' + ser.name)
+        self.lblStatus.setText('Found barcode scanner on port ' + ser.name)
         while count < max:
             try:
-                print('Looking for barcode scanner...')
-                self.lblStatus.setText('Looking for barcode scanner...')
-                ser = serial.Serial(port, 115200, timeout=1)
-                print('Found barcode scanner on port ' + ser.name)
                 ser.write(b'\x16T\r')  # write trigger
                 print('Sending trigger  \x16T\r')
                 # TODO: make sure this isnt blocking and contains enough characters read
@@ -180,7 +181,6 @@ class SCML(object):
                     print('Failed to scan. Retrying ' + str(count))
                     self.lblStatus.setText('Failed to scan. Retrying ' + str(count))
                     time.sleep(0.5)
-                    ser.close()
                 else:
                     ser.close()
                     print('Data returned from scanner')
@@ -271,6 +271,7 @@ class SCML(object):
                 self.lblStatus.setText(err)
                 return False, err
 
+        ser.close()
         self.lblStatus.setText('Failed to scan')
         return False, ('Failed to scan')
 
