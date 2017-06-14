@@ -162,6 +162,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.pbSetupWIFI.clicked.connect(self.button_wifisetup)
         self.pbRescanSerialPorts.clicked.connect(self.button_populatedefaults)
 
+
         # setup serial test input change signals
         self.lnSerialTest.textChanged.connect(self.SerialTest)
 
@@ -175,6 +176,11 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         # check serial event thread
         #self.check_serial_event()
+
+    # ****************************************************************************************************
+    def disable_all_buttons(self):
+        self.pbPowerOn.setDisabled()
+
 
     # ****************************************************************************************************
     def check_serial_event(self):
@@ -619,7 +625,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def voltages_command(self):
         self.lblStatus.setText("Getting voltages...")
         ret = el.EthComLib.voltage_read(self, ip_address)
-        print('Returned value ' + str(ret[1]))
+        print(str(ret[1]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
@@ -671,20 +677,20 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def button_buttontest(self):
-        print("Pressed reset button")
+        print("Pressed button test button")
         gui_thread = threading.Thread(None, self.buttonttest_command, None)
         gui_thread.start()
 
     # ****************************************************************************************************
     def buttonttest_command(self):
-        self.lblStatus.setText("Reset test running...")
-        ret = el.EthComLib.m40_buttontest(self)
-        print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText("Button test running...")
+        ret = el.EthComLib.m40_buttontest(self, ip_address)
+        print('Returned value ' + str(ret[1]))
+        self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_ping(self):
         print('Pressed ping button')
-
         gui_thread = threading.Thread(None, self.ping_command)
         gui_thread.start()
 
@@ -692,8 +698,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def ping_command(self):
         self.lblStatus.setText("Ping test running...")
         ret = el.EthComLib.pinguut(self, ip_address, 5)
-        print('Returned value ' + str(ret[0]))
-        pass
+        print('Returned value ' + str(ret[1]))
+        self.lblStatus.setText(str(ret[1]))
+
     # ****************************************************************************************************
     def button_populatedefaults(self):
         print('Pressed repopulate serial ports')

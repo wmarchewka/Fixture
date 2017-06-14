@@ -207,8 +207,7 @@ class EthComLib(object):
             tempdata = ''
             if slip_err >=0:
                 print('SLIP driver error')
-                self.lblStatus.setText('Failed to get voltages.  SLIP Error')
-                return False, 'Failed to get voltages.  SLIP Error'
+                return False, 'FAIL \n Failed to get voltages. \n  SLIP Driver Error'
             else:
                 tn.close()
                 PORT = 23
@@ -240,7 +239,7 @@ class EthComLib(object):
                 tn.write(b"\r")
                 tempdata = tn.read_all()
                 print(tempdata)
-                #tn.close()
+                tn.close()
                 tempdata = str(tempdata)
                 tempdata = tempdata.split(',')
                 voltageA = float(tempdata[tempdata.index('U0007') + 1]) / 1000
@@ -254,8 +253,7 @@ class EthComLib(object):
                 currentCneg = float(tempdata[tempdata.index('U0058') + 1]) / 1000
                 print(voltageA,voltageB,voltageC)
                 print(currentA,currentAneg,currentB,currentBneg,currentC,currentCneg)
-                data =  ("Voltages acquired from " + ip_address + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(voltageB) + '  L3: ' +str(voltageC))
-                self.lblStatus.setText(data)
+                data =  ("PASS! \n Voltages acquired from " + ip_address + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(voltageB) + '  L3: ' +str(voltageC))
                 #TODO need to log this data in log
                 return True, data
 
@@ -265,15 +263,14 @@ class EthComLib(object):
              return False, err
         except Exception as err:
              tn.close
-             return False, 'General Error'
+             return False, err
 
 
 #******************************************************************************************
     def m40_buttontest(self,ip_address):
         try:
-            #host = "192.168.1.99"
+
             port = 23
-            #HOST = '10.0.0.210'
             print('Starting button test on ' + ip_address)
             self.lblStatus.setText('Starting button test on ' + ip_address)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -287,26 +284,27 @@ class EthComLib(object):
             #tn.write(b'$login,factory,factory\n')
             #tn.write(b"$bts,s,0\n")
             #tn.write(b"$bts,G\n\r")
-            sc.write(b'$login,factory,factory\r\n')
+            sc.send(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            sc.write(b'$bts,s,0\r\n')
+            sc.send(b'$bts,s,0\r\n')
             data = sc.recv(100)
             print(data)
-            sc.write(b'$bts,G\r\n')
+            sc.send(b'$bts,G\r\n')
             data = sc.recv(100)
             print(data)
             t = 0
             p = ''
             while True:
-                sc.write(b'$bts,G\r\n')
+                sc.send(b'$bts,G\r\n')
                 data = sc.recv(100)
                 print(data)
                 time.sleep(1)
                 t = t + 1
                 print ('t ' + str(t))
                 if t == 25:
-                    break
+                    print("User failed to start button test")
+                    return False, "User failed to start button test"
                 d = str(data).split(',')
                 d = d[2]
                 if p != d:
@@ -315,20 +313,28 @@ class EthComLib(object):
                 print( d.encode('ascii') )
                 if d == '1':
                     print('Press Button 1')
-                    self.lblStatus.setText('Press Button 1')
+                    self.lblStatus.setText('Press Button 1.  ' + str(24 - t) + ' seconds remain')
                     r = 1
                 if d == '2':
                     print('press button 2')
                     self.lblStatus.setText('Press Button 2')
+                    self.lblStatus.setText('Press Button 1.  ' + str(24 - t) + ' seconds remain')
+
                 if d == '3':
                     print('press button 3')
                     self.lblStatus.setText('Press Button 3')
+                    self.lblStatus.setText('Press Button 1.  ' + str(24 - t) + ' seconds remain')
+
                 if d == '4':
                     print('press button 4')
                     self.lblStatus.setText('Press Button 4')
+                    self.lblStatus.setText('Press Button 1.  ' + str(24 - t) + ' seconds remain')
+
                 if d == '5':
                     print('Unit passed button test')
                     self.lblStatus.setText('Unit passed button test')
+                    self.lblStatus.setText('Press Button 1.  ' + str(25 - t) + ' seconds remain')
+
                     sc.close
                     return True,"Unit passed Button Test"
             print("timeout")
@@ -857,7 +863,16 @@ class EthComLib(object):
     def wifi_setup(self, ip_address):
         try:
             #TODO enusre this is able to set wifi ssid and other things needed
-            port = 23
+            #1. ensure wlan mac address is set
+            #2. check wifi version  $wv
+            #3. set $wlanprg to 1 to accept the new file upload
+            #4. use file upload to upload the new version
+            #5. reboot
+            #6. check version again make sure equal to 0x00000000.
+            #7. reboot.
+
+
+            # port = 23
             print('Starting WIFI Configuration ' + ip_address)
             self.lblStatus.setText('Starting WIFI Configuration ' + ip_address)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

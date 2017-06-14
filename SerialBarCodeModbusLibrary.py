@@ -150,7 +150,7 @@ class SCML(object):
 
         while count < max:
             try:
-                print('Looking for barcode scanner...')  # check which port was really used
+                print('Looking for barcode scanner...')
                 self.lblStatus.setText('Looking for barcode scanner...')
                 ser = serial.Serial(port, 115200, timeout=1)
                 print('Found barcode scanner on port ' + ser.name)
