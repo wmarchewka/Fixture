@@ -42,7 +42,7 @@ def logfileWriteDefaults():
         config.set('BOARD', 'build_date', '')
         config.set('BOARD', 'serial_number', '')
         config.set('BOARD', 'firmware', '')
-        config.set('BOARD', 'board_major_type', '')
+        config.set('BOARD', 'major_board_type', '')
         config.set('BOARD', 'mac_address', '')
         config.set('BOARD', 'k60_firmware_version', '')
         config.set('BOARD', 'web_page_firmware_version', '')
