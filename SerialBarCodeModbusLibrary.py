@@ -58,7 +58,7 @@ class SCML(object):
 
             try:
                 if fl.configfileRead('TFP3','COM_DESCRIPTION') == 'None':
-                    if p.description.find('Maxim') >= 0:
+                    if p.description.find('MAXQ') >= 0:
                         port_tfp3 = p.device
                         port_tfp3_description = p.description
                         fl.configfileWrite('TFP3','COM_PORT', port_tfp3)

@@ -358,10 +358,19 @@ class EthComLib(object):
             TIMEOUT = 5
             #self.lblStatus.setText('Writing Modbus settings')
             tn = telnetlib.Telnet(host=ip_address, port=PORT, timeout=TIMEOUT)
+            modbus_baudrate = fl.configfileRead('MODBUS', 'baud_rate')
+            modbus_parity = fl.configfileRead('MODBUS', 'parity')
+            modbus_stopbits = fl.configfileRead('MODBUS', 'stop_bits')
+            if modbus_parity == 'EVEN':
+                parity = '0'
+            if modbus_parity == 'ODD':
+                parity = '1'
+            if modbus_parity == 'NONE':
+                parity = '2'
             tn.write(b'$login,factory,factory\n')
-            tn.write(b'$modbd,s,19200\n')
-            tn.write(b'$modp,s,1\n')
-            tn.write(b'$modst,s,1\n')
+            tn.write(b'$modbd,s,'+ modbus_baudrate.encode('utf-8') + b'\n')
+            tn.write(b'$modp,s,' + parity.encode('utf-8') + b'\n')
+            tn.write(b'$modst,s,' + modbus_stopbits.encode('utf-8') + b'\n')
             tn.write(b'$reboot\n')
             tn.write(b'\r')
             tempdata = tn.read_all().decode('ascii')

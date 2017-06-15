@@ -91,7 +91,7 @@ def CycloneProgram(self, port, image):
 # ******************************************************************************************
 def TFP3Program(self, port):
 
-    if port == '':
+    if port == '' or port == "None":
         self.lblStatus.setText('Please select TFP3 serial port')
         return False, 'Please select TFP3 serial port'
 
@@ -103,10 +103,10 @@ def TFP3Program(self, port):
         print('se->' + str(se))
         print('Need to reset the programmer')
         se.write(b'z\r\n')
-        print('Reseeting programmer')
+        print('Resetting programmer')
         self.lblStatus.setText('Resetting programmer')
         se.close()
-        time.sleep(1)
+        time.sleep(3)
         se.open()
         time.sleep(3)
         y = se.readall()
@@ -114,10 +114,11 @@ def TFP3Program(self, port):
         print(y)
         if (z > -1):
             print('TFP3 programmer found')
-            time.sleep(1)
+            time.sleep(2)
             se.write(b'p\r\n')
             x = se.read_all()
             print("x->" +  str(x))
+            se.close()
             # if x == b'Command Timeout\r\n':
             #     se.close()
             #     print('Command timeout. Did not find UUT')
@@ -144,12 +145,13 @@ def TFP3Program(self, port):
 
         else:
             se.close()
+            print("String not found Error")
             return False, 'Error'
-    except:
-        #se.close()
-        self.lblStatus.setText('Serial port error')
-        print('Serial port error')
-        return False, 'Serial port error'
+    except Exception as err:
+        se.close()
+        self.lblStatus.setText(err)
+        print(err)
+        return False, err
 #******************************************************************************************
 def main():
 
