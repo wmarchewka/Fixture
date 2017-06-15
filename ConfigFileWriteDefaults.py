@@ -73,12 +73,15 @@ def configfileWriteDefaults():
         config.set('UUT', 'PART_NUMBER', '')
         config.set('UUT', 'BOARD', '')
         config.set('UUT', 'CONFIG_CAL', '')
-        config.set('UUT', 'DONT_KNOW', '')
+        config.set('UUT', 'UNKNOWN', '')
         config.set('UUT', 'REVISION', '')
+        config.set('UUT', 'SOLDER_TYPE', '')
         config.set('UUT', 'BUILD_DATE', '')
         config.set('UUT', 'SERIAL_NUMBER', '')
         config.set('UUT', 'MAJOR_BOARD_TYPE', '')
         config.set('UUT', 'BOARD_VOLTAGE', '')
+        config.set('UUT', 'FIRMWARE', '')
+        config.set('UUT', 'BOARD_NAME', '')
 
         with open('master_configuration.cfg', 'w') as configfile:
             config.write(configfile)
@@ -87,6 +90,7 @@ def configfileWriteDefaults():
 
     except Exception as err:
         print(err)
+
 
 
 #******************************************************************************************

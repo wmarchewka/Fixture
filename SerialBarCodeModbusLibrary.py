@@ -1,20 +1,16 @@
-import glob
 import time
-import sys
-
+import os
 import minimalmodbus
 import serial
 import serial.tools.list_ports
 import FileConfigurationLibrary as fl
 
-
+# ******************************************************************************************
 class SCML(object):
     def __init__(self):
         pass
 
-# ******************************************************************************************
     def collectSerialPorts(self):
-
         port_modbus = ''
         port_modbus_description = ''
         port_tfp3 = ''
@@ -114,23 +110,45 @@ class SCML(object):
 
      # ******************************************************************************************
     def MajorBoardType(self, p_number, board_type, config_cal):
-        global major_board_type
-        global board_voltage
-        global unknown
-        global revision
-        global build_date
-        global serial_number
-        global partnumber
+
+        #TODO: need to finish this
         print('MAJOR BOARD TYPE')
+        fn = os.path.dirname(__file__)
+        fn = str(fn) + str('/SupportFiles/Board_Part_numbers.txt')
+        print(fn)
+        searchstring = p_number + '-' + board_type
+        searchstring = searchstring[1:10]
+        print('Searching for ' + searchstring)
+        with open(fn) as board_name_table:
+            for line in board_name_table:
+                print('line read->' + line)
+                found = line.find(searchstring,1)
+                if found == -1:
+                    print('Not Found')
+                else:
+                    print('Found ->' + str(line))
+                    line = line.split('\t')
+                    print('line 0->' + line[0], 'line 1->' + line[1])
+                    board_name = line[1]
+        major_board_type = 'unknown'
+        board_voltage = 'unknown'
         if p_number == 'P22276' or 'R22276':
             if board_type == '156':
                 major_board_type = 'M40'
                 if config_cal == '102':
                     board_voltage = 'HIGH'
-
+            return major_board_type, board_voltage, board_name
+            if board_type == '198':
+                major_board_type = 'M50'
+                if config_cal == '201':
+                    board_voltage = 'HIGH'
+            return major_board_type, board_voltage, board_name
+        else:
+            return major_board_type, board_voltage, board_name
     # ******************************************************************************************
     def ScanBarcode(self, simulate, port, max):
-        global major_board_type
+
+        major_board_type = ''
         global board_voltage
         global p_number
         global board_type
@@ -158,7 +176,7 @@ class SCML(object):
                 ser.write(b'\x16T\r')  # write trigger
                 print('Sending trigger  \x16T\r')
                 # TODO: make sure this isnt blocking and contains enough characters read
-                line = ser.read(30)  # check for return data
+                line = ser.read(38)  # check for return data
                 ser.write(b'\x16U\r')  # send off trigger
                 line = line.decode('ascii')
                 print(line)
@@ -177,28 +195,42 @@ class SCML(object):
 
             try:
                 if not line:
-                    count = count + 1
                     print('Failed to scan. Retrying ' + str(count))
                     self.lblStatus.setText('Failed to scan. Retrying ' + str(count))
-                    time.sleep(0.5)
+                    time.sleep(1.0)
+                    count = count + 1
                 else:
                     ser.close()
                     print('Data returned from scanner')
                     nodashes = str(line).split('-')
-                    print(nodashes)
-                    spaces = nodashes[3]
-                    nospaces = spaces.split()
-                    print(nospaces)
+                    print("No dashes->" + str(nodashes))
                     p_number = nodashes[0]
                     board_type = nodashes[1]
                     config_cal = nodashes[2]
-                    unknown = nospaces[0]
-                    revision = nospaces[1]
-                    build_date = nospaces[2]
-                    serial_number = nospaces[3]
-                    partnumber = p_number + '-' + board_type + '-' + config_cal + '-' + unknown + '-' + revision + '-' + build_date + '-' + serial_number
+                    unknown = nodashes[3]
+                    revision = nodashes[4]
+                    solder_type = nodashes[5]
+                    build_date = nodashes[6]
+                    serial_number = nodashes[7]
+                    firmware = nodashes[8]
+
+                    print('P Number     ->' + str(p_number))
+                    print('Board Type   ->' + str(board_type))
+                    print('Config Cal   ->' + str(config_cal))
+                    print('Unknown      ->' + str(unknown))
+                    print('Revision     ->' + str(revision))
+                    print('Solder Type  ->' + str(solder_type))
+                    print('Build Date   ->' + str(build_date))
+                    print('Serial number->' + str(serial_number))
+                    print('Firmware     ->' + str(firmware))
+                    partnumber = p_number + '-' + board_type + '-' + config_cal + '-' + \
+                                 unknown + '-' + revision + '-' + solder_type + '-' + build_date + '-' + \
+                                 serial_number + '-'  + firmware
                     filename = partnumber + '.txt'
-                    SCML.MajorBoardType(p_number, board_type, config_cal)
+                    ret_value = SCML.MajorBoardType(self, p_number, board_type, config_cal)
+                    major_board_type = ret_value[0]
+                    board_voltage = ret_value[1]
+                    board_name = ret_value[2]
                     print('Filename ' + filename)
                     fl.configfileWrite('UUT', 'PART_NUMBER', partnumber)
                     fl.configfileWrite('UUT', 'P_NUMBER', p_number)
@@ -206,20 +238,25 @@ class SCML(object):
                     fl.configfileWrite('UUT', 'CONFIG_CAL', config_cal)
                     fl.configfileWrite('UUT', 'UNKNOWN', unknown)
                     fl.configfileWrite('UUT', 'REVISION', revision)
+                    fl.configfileWrite('UUT', 'SOLDER_TYPE', solder_type)
                     fl.configfileWrite('UUT', 'BUILD_DATE', build_date)
                     fl.configfileWrite('UUT', 'SERIAL_NUMBER', serial_number)
                     fl.configfileWrite('UUT', 'MAJOR_BOARD_TYPE', major_board_type)
                     fl.configfileWrite('UUT', 'BOARD_VOLTAGE', board_voltage)
+                    fl.configfileWrite('UUT', 'BOARD_NAME', board_name)
 
                     fl.logfileWrite(filename, 'BOARD', 'part_number', filename)
                     fl.logfileWrite(filename, 'BOARD', 'p_number', p_number)
-                    fl.logfileWrite(filename, 'BOARD', 'board type', board_type)
-                    fl.logfileWrite(filename, 'BOARD', 'config calibration', config_cal)
+                    fl.logfileWrite(filename, 'BOARD', 'board_type', board_type)
+                    fl.logfileWrite(filename, 'BOARD', 'config_cal', config_cal)
                     fl.logfileWrite(filename, 'BOARD', 'unknown', unknown)
                     fl.logfileWrite(filename, 'BOARD', 'revision', revision)
-                    fl.logfileWrite(filename, 'BOARD', 'build data', build_date)
+                    fl.logfileWrite(filename, 'BOARD', 'solder_type', solder_type)
+                    fl.logfileWrite(filename, 'BOARD', 'build_date', build_date)
                     fl.logfileWrite(filename, 'BOARD', 'serial_number', serial_number)
                     fl.logfileWrite(filename, 'BOARD', 'board_major_type', major_board_type)
+                    fl.logfileWrite(filename, 'UUT', 'board_voltage', board_voltage)
+                    fl.logfileWrite(filename, 'UUT', 'board_name', board_name)
                     fl.logfileWrite(filename, 'BOARD', 'k60_firmware_version',
                                     fl.configfileRead('M40_FIRMWARE', 'm40_k60_firmware_version'))
                     fl.logfileWrite(filename, 'BOARD', 'web_page_version',
@@ -230,7 +267,7 @@ class SCML(object):
                                     fl.configfileRead('M40_FIRMWARE', 'm40_meter_ic_firmware_version'))
                     fl.logfileWrite(filename, 'TEST_DATE_TIME', 'test_time', time.strftime('%H:%M:%S'))
                     fl.logfileWrite(filename, 'TEST_DATE_TIME', 'test_date', time.strftime('%d:%m:%Y'))
-                    #
+
                     print('UUT', 'PART_NUMBER', partnumber)
                     print('UUT', 'P_NUMBER', p_number)
                     print('UUT', 'BOARD', board_type)
@@ -247,8 +284,12 @@ class SCML(object):
                     print('BOARD', 'config calibration', config_cal)
                     print('BOARD', 'unknown', unknown)
                     print('BOARD', 'revision', revision)
-                    print('BOARD', 'build data', build_date)
+                    print('BOARD', 'solder_type', solder_type)
+                    print('BOARD', 'build date', build_date)
                     print('BOARD', 'serial_number', serial_number)
+                    print('BOARD', 'board_major_type', major_board_type)
+                    print('BOARD', 'board_voltage', board_voltage)
+                    print('BOARD', 'board_name', board_name)
                     print('BOARD', 'k60_firmware_version',
                           fl.configfileRead('M40_FIRMWARE', 'm40_k60_firmware_version'))
                     print('BOARD', 'web_page_version',
@@ -258,8 +299,12 @@ class SCML(object):
                     print('BOARD', 'wifi_firmware_version',
                           fl.configfileRead('M40_FIRMWARE', 'm40_meter_ic_firmware_version'))
                     print('TEST_DATE_TIME', 'test_time', time.strftime('%H:%M:%S'))
-                    print('TEST_DATE_TIME', 'test_date', time.strftime('%d:%m:%Y'))
+                    print('TEST_DATE_TIME', 'test_date', time.strftime('%m:%d:%Y'))
                     return True, str(line)
+
+            except IndexError as err:
+                print(err)
+                return False, "Barcode improperly formatted"
 
             except OSError as err:
                 print(err)

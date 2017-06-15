@@ -674,6 +674,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         scanner_serial_port = fl.configfileRead("SCANNER", 'com_port')
         ret = ml.SCML.ScanBarcode(self, simulate, scanner_serial_port, 5)
         print('Returned value ' + str(ret[0]))
+        self.lblStatus.setText(str(ret[1]))
+
 
     # ****************************************************************************************************
     def button_buttontest(self):
@@ -871,7 +873,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         if index >= 0:
             self.cbTFP3ComPort.setCurrentIndex(index)
         else:
-            index = self.cbTFP3ComPort.findText('none')
+            index = self.cbTFP3ComPort.findText('None')
             self.cbTFP3ComPort.setCurrentIndex(index)
 
         scanner_serial_port = fl.configfileRead('SCANNER', 'COM_DESCRIPTION')
@@ -879,7 +881,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         if index >= 0:
             self.cbScannerComPort.setCurrentIndex(index)
         else:
-            index = self.cbScannerComPort.findText('none')
+            index = self.cbScannerComPort.findText('None')
             self.cbScannerComPort.setCurrentIndex(index)
 
         cyclone_serial_port = fl.configfileRead('CYCLONE', 'COM_DESCRIPTION')
@@ -887,7 +889,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         if index >= 0:
             self.cbCycloneComPort.setCurrentIndex(index)
         else:
-            index = self.cbCycloneComPort.findText('none')
+            index = self.cbCycloneComPort.findText('None')
             self.cbCycloneComPort.setCurrentIndex(index)
 
         modbus_serial_port = fl.configfileRead('MODBUS', 'COM_DESCRIPTION')
@@ -895,7 +897,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         if index >= 0:
             self.cbModbusComPort.setCurrentIndex(index)
         else:
-            index = self.cbModbusComPort.findText('none')
+            index = self.cbModbusComPort.findText('None')
             self.cbModbusComPort.setCurrentIndex(index)
 
         demojm_serial_port = fl.configfileRead('DEMOJM', 'COM_DESCRIPTION')
@@ -903,7 +905,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         if index >= 0:
             self.cbDemoJMComPort.setCurrentIndex(index)
         else:
-            index = self.cbDemoJMComPort.findText('none')
+            index = self.cbDemoJMComPort.findText('None')
             self.cbDemoJMComPort.setCurrentIndex(index)
 
         # setup combobox change signals

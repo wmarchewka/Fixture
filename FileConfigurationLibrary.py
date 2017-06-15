@@ -1,32 +1,27 @@
 import configparser
 
 #******************************************************************************************
-def testlogConfigWrite(section,key,value):
+def logfileWrite(filename, section, key, value):
 
+    old_filename = ''
     config = configparser.RawConfigParser()
-    config.read('configuration.cfg')
+    old_filename = config.read(filename)
+    if old_filename == '':
+        print('Creating new test record...')
+    else:
+        print('Test record exists. Updating existing record.')
 
     try:
+        print('Writing to ' + filename + '->Section:' + section + 'Key:' + key + ' Value: ' + value)
         config.add_section(section)
         config.set(section, key, value)
-        with open('configuration.cfg', 'w') as configfile:
+        with open(filename, 'w') as configfile:
             config.write(configfile)
     except:
+        print('Writing to ' + filename + '->Section:' + section + ' Key:' + key + ' Value: ' + value)
         config.set(section, key, value)
-        with open('configuration.cfg', 'w') as configfile:
+        with open(filename, 'w') as configfile:
             config.write(configfile)
-
-#******************************************************************************************
-def testlogConfigRead(section,key):
-
-    config = configparser.RawConfigParser()
-    config.read('configuration.cfg')
-
-    try:
-        value = config.get(section,key)
-        return value
-    except:
-        return ('ERROR')
 
 #******************************************************************************************
 def logfileWriteDefaults():
@@ -40,12 +35,14 @@ def logfileWriteDefaults():
         config.set('BOARD', 'part_number', '')
         config.set('BOARD', 'p_number', '')
         config.set('BOARD', 'board_type', '')
-        config.set('BOARD', 'config_calibration', '')
+        config.set('BOARD', 'config_cal', '')
         config.set('BOARD', 'unknown', '')
         config.set('BOARD', 'revision', '')
-        config.set('BOARD', 'serial_ number', '')
-        config.set('BOARD', 'board_major_type', '')
+        config.set('BOARD', 'solder_type', '')
         config.set('BOARD', 'build_date', '')
+        config.set('BOARD', 'serial_number', '')
+        config.set('BOARD', 'firmware', '')
+        config.set('BOARD', 'board_major_type', '')
         config.set('BOARD', 'mac_address', '')
         config.set('BOARD', 'k60_firmware_version', '')
         config.set('BOARD', 'web_page_firmware_version', '')
