@@ -372,13 +372,15 @@ class EthComLib(object):
             tn.write(b'$modbd,s,'+ modbus_baudrate.encode('utf-8') + b'\n')
             tn.write(b'$modp,s,' + parity.encode('utf-8') + b'\n')
             tn.write(b'$modst,s,' + modbus_stopbits.encode('utf-8') + b'\n')
-            tn.write(b'$reboot\n')
             tn.write(b'\r')
             tempdata = tn.read_all().decode('ascii')
             print(tempdata)
             tn.close()
+            time.sleep(3)
+            rebootreturn = EthComLib.rebootunit_check(self, ip_address)
+            #TODO this shout be reboot test !
             pingreturn =  EthComLib.pinguut(self, ip_address, 5)
-            if pingreturn:
+            if rebootreturn:
                 return True, 'Modbus successfully initialized...'
             else:
                 return False, 'Unit failed to return from reboot'
