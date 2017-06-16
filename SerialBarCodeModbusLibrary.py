@@ -241,11 +241,12 @@ class SCML(object):
                     fl.configfileWrite('UUT', 'SOLDER_TYPE', solder_type)
                     fl.configfileWrite('UUT', 'BUILD_DATE', build_date)
                     fl.configfileWrite('UUT', 'SERIAL_NUMBER', serial_number)
+                    fl.configfileWrite('UUT', 'FIRMWARE', firmware)
                     fl.configfileWrite('UUT', 'MAJOR_BOARD_TYPE', major_board_type)
                     fl.configfileWrite('UUT', 'BOARD_VOLTAGE', board_voltage)
                     fl.configfileWrite('UUT', 'BOARD_NAME', board_name)
 
-                    fl.logfileWrite(filename, 'BOARD', 'part_number', filename)
+                    fl.logfileWrite(filename, 'BOARD', 'part_number', partnumber)
                     fl.logfileWrite(filename, 'BOARD', 'p_number', p_number)
                     fl.logfileWrite(filename, 'BOARD', 'board_type', board_type)
                     fl.logfileWrite(filename, 'BOARD', 'config_cal', config_cal)
@@ -254,19 +255,20 @@ class SCML(object):
                     fl.logfileWrite(filename, 'BOARD', 'solder_type', solder_type)
                     fl.logfileWrite(filename, 'BOARD', 'build_date', build_date)
                     fl.logfileWrite(filename, 'BOARD', 'serial_number', serial_number)
+                    fl.logfileWrite(filename, 'BOARD', 'firmware', firmware)
                     fl.logfileWrite(filename, 'BOARD', 'board_major_type', major_board_type)
-                    fl.logfileWrite(filename, 'UUT', 'board_voltage', board_voltage)
-                    fl.logfileWrite(filename, 'UUT', 'board_name', board_name)
+                    fl.logfileWrite(filename, 'BOARD', 'board_voltage', board_voltage)
+                    fl.logfileWrite(filename, 'BOARD', 'board_name', board_name)
                     fl.logfileWrite(filename, 'BOARD', 'k60_firmware_version',
                                     fl.configfileRead('M40_FIRMWARE', 'm40_k60_firmware_version'))
                     fl.logfileWrite(filename, 'BOARD', 'web_page_version',
                                     fl.configfileRead('M40_FIRMWARE', 'm40_web_page_firmware_version'))
                     fl.logfileWrite(filename, 'BOARD', 'meter_ic_version',
-                                    fl.configfileRead('M40_FIRMWARE', 'm40_meter_ic_firMware_version'))
-                    fl.logfileWrite(filename, 'BOARD', 'wifi_firmware_version',
                                     fl.configfileRead('M40_FIRMWARE', 'm40_meter_ic_firmware_version'))
+                    fl.logfileWrite(filename, 'BOARD', 'wifi_firmware_version',
+                                    fl.configfileRead('M40_FIRMWARE', 'm40_wifi_firmware_version'))
                     fl.logfileWrite(filename, 'TEST_DATE_TIME', 'test_time', time.strftime('%H:%M:%S'))
-                    fl.logfileWrite(filename, 'TEST_DATE_TIME', 'test_date', time.strftime('%d:%m:%Y'))
+                    fl.logfileWrite(filename, 'TEST_DATE_TIME', 'test_date', time.strftime('%m:%d:%Y'))
 
                     print('UUT', 'PART_NUMBER', partnumber)
                     print('UUT', 'P_NUMBER', p_number)
@@ -277,6 +279,7 @@ class SCML(object):
                     print('UUT', 'SOLDER_TYPE', solder_type)
                     print('UUT', 'BUILD_DATE', build_date)
                     print('UUT', 'SERIAL_NUMBER', serial_number)
+                    print('UUT', 'FIRMWARE', firmware)
                     print('UUT', 'MAJOR_BOARD_TYPE', major_board_type)
                     print('UUT', 'BOARD_VOLTAGE', board_voltage)
                     print('UUT', 'BOARD_NAME', board_name)
@@ -289,6 +292,7 @@ class SCML(object):
                     print('BOARD', 'solder_type', solder_type)
                     print('BOARD', 'build date', build_date)
                     print('BOARD', 'serial_number', serial_number)
+                    print('BOARD', 'firmware', firmware)
                     print('BOARD', 'major_board_type', major_board_type)
                     print('BOARD', 'board_voltage', board_voltage)
                     print('BOARD', 'board_name', board_name)
@@ -297,9 +301,9 @@ class SCML(object):
                     print('BOARD', 'web_page_version',
                           fl.configfileRead('M40_FIRMWARE', 'm40_web_page_firmware_version'))
                     print('BOARD', 'meter_ic_version',
-                          fl.configfileRead('M40_FIRMWARE', 'm40_meter_ic_firMware_version'))
-                    print('BOARD', 'wifi_firmware_version',
                           fl.configfileRead('M40_FIRMWARE', 'm40_meter_ic_firmware_version'))
+                    print('BOARD', 'wifi_firmware_version',
+                          fl.configfileRead('M40_FIRMWARE', 'm40_wifi_firmware_version'))
                     print('TEST_DATE_TIME', 'test_time', time.strftime('%H:%M:%S'))
                     print('TEST_DATE_TIME', 'test_date', time.strftime('%m:%d:%Y'))
                     return True, str(line)

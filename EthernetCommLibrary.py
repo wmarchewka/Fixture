@@ -12,6 +12,9 @@ import SupportLibrary as sl
 #TODO make sure to come up with a way to get ip address from config file
 #TODO make sure all exception hndling is done and the same
 #TODO make sure all testing and data log is the same
+#TODO create the foollowing routines:
+# 1. set UCR ( set to 0)
+# 2.
 
 class EthComLib(object):
 
@@ -30,8 +33,6 @@ class EthComLib(object):
     #******************************************************************************************
     def pinguut(self, ip_address, numpings=1):
         pingcount = 1
-
-        #ip_address = fl.configfileRead('TELNET', "ip_address")
 
         while True:
             print("pinging UUT at ip " + ip_address +' count ' +  str(pingcount))
@@ -376,7 +377,12 @@ class EthComLib(object):
             tempdata = tn.read_all().decode('ascii')
             print(tempdata)
             tn.close()
-            return True, tempdata
+            pingreturn =  EthComLib.pinguut(self, ip_address, 5)
+            if pingreturn:
+                return True, 'Modbus successfully initialized...'
+            else:
+                return False, 'Unit failed to return from reboot'
+
 
         except TimeoutError as err:
             print(err)
@@ -419,7 +425,7 @@ class EthComLib(object):
             sc.close()
             if data > 0:
                 print('PCR not set')
-                self.lblStatus.setText('PCR not set' + host)
+                self.lblStatus.setText('PCR not set' + ip_address)
                 return False, "PCR not set"
 
             else:
@@ -814,7 +820,7 @@ class EthComLib(object):
             print('Checking Webpage version...')
             self.lblStatus.setText('Checking Webpage version...')
 
-            r = requests.get('http://192.168.1.99/devinfo.html')
+            r = requests.get('http://192.168.1.99/devinfo.html', timeout=1.000)
             print(r.text)
             data = r.text
             founddata = data.find('Firmware Version:')
@@ -830,7 +836,17 @@ class EthComLib(object):
                 return True, 'Webpage version is ' + version
 
 
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
         except OSError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except Exception as err:
             print(err)
             print(type(err))
             return False, err
