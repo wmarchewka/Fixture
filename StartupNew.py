@@ -137,31 +137,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.serialtrigger.connect(self.parse_serial_data)
 
         # setup button signals
-        self.pbPowerOn.clicked.connect(self.power_up_relay)
-        self.pbPowerOff.clicked.connect(self.power_down_relay)
-        self.pbButtonTest.clicked.connect(self.button_buttontest)
-        self.pbTelnetGetVoltages.clicked.connect(self.button_voltages)
-        self.pbReadScanner.clicked.connect(self.button_scanner)
-        self.pbDoPing.clicked.connect(self.button_ping)
-        self.pbProgCyclone.clicked.connect(self.button_cyclone)
-        self.pbProgTFP3.clicked.connect(self.button_tfp3)
-        self.pbResetTest.clicked.connect(self.button_reset)
-        self.pbRebootUnit.clicked.connect(self.button_rebootunit)
-        self.pbWriteLanMac.clicked.connect(self.button_lanmac)
-        self.pbWriteWifiMac.clicked.connect(self.button_wifimac)
-        self.pbManualWifiMac.clicked.connect(self.button_wifimanualmac)
-        self.pbModbusInit.clicked.connect(self.button_modbusinit)
-        self.pbModbusRead.clicked.connect(self.button_modbusread)
-        self.pbDefaultsStore.clicked.connect(self.button_defaultsstore)
-        self.pbSetPCR.clicked.connect(self.button_setpcr)
-        self.pbWriteSerialNumber.clicked.connect(self.button_serialnumberwrite)
-        self.pbUploadFile.clicked.connect(self.button_uploadfile)
-        self.pbWriteScript.clicked.connect(self.button_scriptwrite)
-        self.pbWifiVersion.clicked.connect(self.button_wifiversion)
-        self.pbWebpageVersion.clicked.connect(self.button_webpageversion)
-        self.pbSetupWIFI.clicked.connect(self.button_wifisetup)
-        self.pbRescanSerialPorts.clicked.connect(self.button_populatedefaults)
-
+        self.enable_disable_all_buttons('disconnect')
 
         # setup serial test input change signals
         self.lnSerialTest.textChanged.connect(self.SerialTest)
@@ -178,10 +154,60 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         #self.check_serial_event()
 
     # ****************************************************************************************************
-    def disable_all_buttons(self):
-        self.pbPowerOn.setDisabled()
+    def enable_disable_all_buttons(self, state):
 
 
+        if state == 'connect':
+            self.pbPowerOn.clicked.connect(self.power_up_relay)
+            self.pbPowerOff.clicked.connect(self.power_down_relay)
+            self.pbButtonTest.clicked.connect(self.button_buttontest)
+            self.pbTelnetGetVoltages.clicked.connect(self.button_voltages)
+            self.pbReadScanner.clicked.connect(self.button_scanner)
+            self.pbDoPing.clicked.connect(self.button_ping)
+            self.pbProgCyclone.clicked.connect(self.button_cyclone)
+            self.pbProgTFP3.clicked.connect(self.button_tfp3)
+            self.pbResetTest.clicked.connect(self.button_reset)
+            self.pbRebootUnit.clicked.connect(self.button_rebootunit)
+            self.pbWriteLanMac.clicked.connect(self.button_lanmac)
+            self.pbWriteWifiMac.clicked.connect(self.button_wifimac)
+            self.pbManualWifiMac.clicked.connect(self.button_wifimanualmac)
+            self.pbModbusInit.clicked.connect(self.button_modbusinit)
+            self.pbModbusRead.clicked.connect(self.button_modbusread)
+            self.pbDefaultsStore.clicked.connect(self.button_defaultsstore)
+            self.pbSetPCR.clicked.connect(self.button_setpcr)
+            self.pbWriteSerialNumber.clicked.connect(self.button_serialnumberwrite)
+            self.pbUploadFile.clicked.connect(self.button_uploadfile)
+            self.pbWriteScript.clicked.connect(self.button_scriptwrite)
+            self.pbWifiVersion.clicked.connect(self.button_wifiversion)
+            self.pbWebpageVersion.clicked.connect(self.button_webpageversion)
+            self.pbSetupWIFI.clicked.connect(self.button_wifisetup)
+            self.pbRescanSerialPorts.clicked.connect(self.button_populatedefaults)
+
+        if state == 'disconnect':
+            self.pbPowerOn.disconnect()
+            self.pbPowerOff.disconnect()
+            self.pbButtonTest.disconnect()
+            self.pbTelnetGetVoltages.disconnect()
+            self.pbReadScanner.disconnect()
+            self.pbDoPing.disconnect()
+            self.pbProgCyclone.disconnect()
+            self.pbProgTFP3.disconnect()
+            self.pbResetTest.disconnect()
+            self.pbRebootUnit.disconnect()
+            self.pbWriteLanMac.disconnect()
+            self.pbWriteWifiMac.disconnect()
+            self.pbManualWifiMac.disconnect()
+            self.pbModbusInit.disconnect()
+            self.pbModbusRead.disconnect()
+            self.pbDefaultsStore.disconnect()
+            self.pbSetPCR.disconnect()
+            self.pbWriteSerialNumber.disconnect()
+            self.pbUploadFile.disconnect()
+            self.pbWriteScript.disconnect()
+            self.pbWifiVersion.disconnect()
+            self.pbWebpageVersion.disconnect()
+            self.pbSetupWIFI.disconnect()
+            self.pbRescanSerialPorts.disconnect()
     # ****************************************************************************************************
     def check_serial_event(self):
         print('Starting serial receive thread')
@@ -915,6 +941,8 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.cbModbusComPort.currentIndexChanged.connect(self.ModbusSerialPortChanged)
         self.cbDemoJMComPort.currentIndexChanged.connect(self.DemoJMSerialPortChanged)
         self.cbDemoJMComPort.activated[str].connect(self.DemoJMSerialPortChanged)
+
+        self.enable_disable_all_buttons('connect')
 
         self.lblStatus.setText('Ready...')
 

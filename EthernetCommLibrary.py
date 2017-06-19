@@ -837,6 +837,21 @@ class EthComLib(object):
                 self.lblStatus.setText('Webpage version is ' + version)
                 return True, 'Webpage version is ' + version
 
+        except requests.exceptions.ConnectTimeout as err:
+            print(err)
+            print(type(err))
+            return False, 'Timeout connecting to UUT'
+
+
+        except requests.exceptions.HTTPError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except ConnectionError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
         except TimeoutError as err:
             print(err)
