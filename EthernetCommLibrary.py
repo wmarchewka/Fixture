@@ -9,15 +9,14 @@ import FileConfigurationLibrary as fl
 import SupportLibrary as sl
 
 
-#TODO make sure to come up with a way to get ip address from config file
-#TODO make sure all exception hndling is done and the same
-#TODO make sure all testing and data log is the same
-#TODO create the foollowing routines:
+# TODO make sure to come up with a way to get ip address from config file
+# TODO make sure all exception hndling is done and the same
+# TODO make sure all testing and data log is the same
+# TODO create the foollowing routines:
 # 1. set UCR ( set to 0)
 # 2.
 
 class EthComLib(object):
-
     def __init__(self, osname):
         print('EthComLib class is initializing')
         self.osname = sl.supportLibrary.getOsPlatform(self)
@@ -30,21 +29,22 @@ class EthComLib(object):
             timecounter = timecounter + 1
             self.lblStatus.setText('Time counter ' + str(timecounter))
         return True, timecounter
-    #******************************************************************************************
+
+    # ******************************************************************************************
     def pinguut(self, ip_address, numpings=1):
         pingcount = 1
 
         while True:
-            print("pinging UUT at ip " + ip_address +' count ' +  str(pingcount))
-            self.lblStatus.setText("pinging UUT at ip " + ip_address +' count ' +  str(pingcount))
+            print("pinging UUT at ip " + ip_address + ' count ' + str(pingcount))
+            self.lblStatus.setText("pinging UUT at ip " + ip_address + ' count ' + str(pingcount))
             os_platform = sl.supportLibrary.getOsPlatform(self)
-            if os_platform =='Linux':
-                data = ('ping '+ ip_address + ' -w 1000 -c 1')  # set ping timeout to 1000ms
-            elif os_platform =='Windows':
-                data = ('ping '+ ip_address + ' -w 1000 -n 1')
+            if os_platform == 'Linux':
+                data = ('ping ' + ip_address + ' -w 1000 -c 1')  # set ping timeout to 1000ms
+            elif os_platform == 'Windows':
+                data = ('ping ' + ip_address + ' -w 1000 -n 1')
             elif os_platform == 'OSX':
                 data = ('ping ' + ip_address + ' -W 1000 -c 1')
-            response = os.system(data)              #default ping takes 3 secs to respond
+            response = os.system(data)  # default ping takes 3 secs to respond
             print(response)
             if response == 0:
                 print(ip_address + ' is up!')
@@ -57,7 +57,8 @@ class EthComLib(object):
                 if pingcount > numpings:
                     return False, ip_address + ' is down!'
 
-# ******************************************************************************************
+                # ******************************************************************************************
+
     def rebootunit_check(self, ip_address):
 
         timecounter = 0
@@ -102,18 +103,34 @@ class EthComLib(object):
                             self.lblStatus.setText(update)
                             return False, 'Timeout waiting for unit to respond...'
 
+        except ConnectionError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except OSError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+
         except Exception as err:
             print(err)
-            return False, err#'Unit did not respond to reboot command...'
+            return False, err  # 'Unit did not respond to reboot command...'
 
-    #******************************************************************************************
+    # ******************************************************************************************
     def reset_button_check(self, ip_address):
         update = ''
         timecounter = 0
         respond_initial = False
         reset = False
 
-        while  True:
+        while True:
             val = EthComLib.pinguut(self, ip_address, 1)
             print('val->' + str(val))
             if val[0] == True and reset == True:
@@ -136,16 +153,16 @@ class EthComLib(object):
             if not respond_initial:
                 print('Did not respond to initial ping...')
                 update = ('Did not respond to initial ping...')
-                return False,  'Did not respond to initial ping'
+                return False, 'Did not respond to initial ping'
             if respond_initial == True and val[0] == False:
-                print ('Unit resetting...')
+                print('Unit resetting...')
                 update = ('Unit resetting...')
                 reset = True
             print('respond initial->' + str(respond_initial))
             print('')
             self.lblStatus.setText(update)
 
-    #******************************************************************************************
+    # ******************************************************************************************
     def lan_mac_write(self, ip_address):
         try:
             host = ip_address
@@ -183,11 +200,27 @@ class EthComLib(object):
                 return True, 'Lan Mac successfully set'
                 self.lblStatus.setText('Lan MAC successfully set')
 
-        except OSError as err:
+        except ConnectionError as err:
             print(err)
+            print(type(err))
             return False, err
 
-    #******************************************************************************************
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except OSError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except Exception as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+    # ******************************************************************************************
     def voltage_read(self, ip_address):
         try:
             print("Getting Voltages from " + ip_address)
@@ -201,12 +234,12 @@ class EthComLib(object):
             tn.send(b"$login,factory,factory\n")
             tempdata = tn.recv(50)
             print(str(tempdata))
-            tn.send(b"$mdra,0,U0018\n")         # use this to see if a slip error returns
+            tn.send(b"$mdra,0,U0018\n")  # use this to see if a slip error returns
             tempdata = tn.recv(100)
             print(str(tempdata))
             slip_err = tempdata.find(b'SLIP_DRIVER_ERROR_READ_TIMEOUT')
             tempdata = ''
-            if slip_err >=0:
+            if slip_err >= 0:
                 print('SLIP driver error')
                 return False, 'FAIL \n Failed to get voltages. \n  SLIP Driver Error'
             else:
@@ -222,7 +255,7 @@ class EthComLib(object):
                 tn.write(b"$mdra,0,U0007\n")
                 tn.write(b"$mdra,0,U0008\n")
                 tn.write(b"$mdra,0,U0009\n")
-                 # TODO need to scale these values upon return
+                # TODO need to scale these values upon return
                 tn.write(b"$mdra,0,U0518,U5000\n")
                 tn.write(b"$mdra,0,U0519,U5000\n")
                 tn.write(b"$mdra,0,U0520,U5000\n")
@@ -252,39 +285,55 @@ class EthComLib(object):
                 currentBneg = float(tempdata[tempdata.index('U0042') + 1]) / 1000
                 currentC = float(tempdata[tempdata.index('U0050') + 1]) / 1000
                 currentCneg = float(tempdata[tempdata.index('U0058') + 1]) / 1000
-                print(voltageA,voltageB,voltageC)
-                print(currentA,currentAneg,currentB,currentBneg,currentC,currentCneg)
-                data =  ("PASS! \n Voltages acquired from " + ip_address + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(voltageB) + '  L3: ' +str(voltageC))
-                #TODO need to log this data in log
+                print(voltageA, voltageB, voltageC)
+                print(currentA, currentAneg, currentB, currentBneg, currentC, currentCneg)
+                data = (
+                "PASS! \n Voltages acquired from " + ip_address + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(
+                    voltageB) + '  L3: ' + str(voltageC))
+                # TODO need to log this data in log
                 return True, data
 
+        except ConnectionError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
         except OSError as err:
-             tn.close
-             print(err)
-             return False, err
+            print(err)
+            print(type(err))
+            return False, err
+
         except Exception as err:
-             tn.close
-             return False, err
+            print(err)
+            print(type(err))
+            return False, err
 
 
-#******************************************************************************************
-    def m40_buttontest(self,ip_address):
+
+            # ******************************************************************************************
+
+    def m40_buttontest(self, ip_address):
         try:
 
             port = 23
             print('Starting button test on ' + ip_address)
             self.lblStatus.setText('Starting button test on ' + ip_address)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            conn = ip_address,port
+            conn = ip_address, port
             PORT = 23
             TIMEOUT = 5
             sc.connect(conn)
             data = sc.recv(100)
             print(data)
-            #tn = telnetlib.Telnet(host=HOST, port=PORT, timeout=TIMEOUT)
-            #tn.write(b'$login,factory,factory\n')
-            #tn.write(b"$bts,s,0\n")
-            #tn.write(b"$bts,G\n\r")
+            # tn = telnetlib.Telnet(host=HOST, port=PORT, timeout=TIMEOUT)
+            # tn.write(b'$login,factory,factory\n')
+            # tn.write(b"$bts,s,0\n")
+            # tn.write(b"$bts,G\n\r")
             sc.send(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
@@ -302,7 +351,7 @@ class EthComLib(object):
                 print(data)
                 time.sleep(1)
                 t = t + 1
-                print ('t ' + str(t))
+                print('t ' + str(t))
                 if t == 25:
                     print("User failed to start button test")
                     return False, "User failed to start button test"
@@ -311,7 +360,7 @@ class EthComLib(object):
                 if p != d:
                     t = 0
                 p = d
-                print( d.encode('ascii') )
+                print(d.encode('ascii'))
                 if d == '1':
                     print('Press Button 1')
                     self.lblStatus.setText('Press Button 1.  ' + str(24 - t) + ' seconds remain')
@@ -337,27 +386,41 @@ class EthComLib(object):
                     self.lblStatus.setText('Press Button 1.  ' + str(25 - t) + ' seconds remain')
 
                     sc.close
-                    return True,"Unit passed Button Test"
+                    return True, "Unit passed Button Test"
             print("timeout")
             sc.close()
-            False,"Timeout"
+            False, "Timeout"
 
+        except ConnectionError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
         except OSError as err:
             print(err)
+            print(type(err))
             return False, err
 
-    #******************************************************************************************
+        except Exception as err:
+            print(err)
+            print(type(err))
+            return False, err
+    # ******************************************************************************************
     def modbus_init(self, ip_address):
 
         self.lblStatus.setText('Writing Modbus settings')
 
         try:
-            #TODO need to finsih this
+            # TODO need to finsih this
             # print("Setting modbus defaults")
             PORT = 23
             TIMEOUT = 5
-            #self.lblStatus.setText('Writing Modbus settings')
+            # self.lblStatus.setText('Writing Modbus settings')
             tn = telnetlib.Telnet(host=ip_address, port=PORT, timeout=TIMEOUT)
             modbus_baudrate = fl.configfileRead('MODBUS', 'baud_rate')
             modbus_parity = fl.configfileRead('MODBUS', 'parity')
@@ -369,7 +432,7 @@ class EthComLib(object):
             if modbus_parity == 'NONE':
                 parity = '2'
             tn.write(b'$login,factory,factory\n')
-            tn.write(b'$modbd,s,'+ modbus_baudrate.encode('utf-8') + b'\n')
+            tn.write(b'$modbd,s,' + modbus_baudrate.encode('utf-8') + b'\n')
             tn.write(b'$modp,s,' + parity.encode('utf-8') + b'\n')
             tn.write(b'$modst,s,' + modbus_stopbits.encode('utf-8') + b'\n')
             tn.write(b'\r')
@@ -378,8 +441,8 @@ class EthComLib(object):
             tn.close()
             time.sleep(3)
             rebootreturn = EthComLib.rebootunit_check(self, ip_address)
-            #TODO this shout be reboot test !
-            pingreturn =  EthComLib.pinguut(self, ip_address, 5)
+            # TODO this shout be reboot test !
+            pingreturn = EthComLib.pinguut(self, ip_address, 5)
             if rebootreturn:
                 return True, 'Modbus successfully initialized...'
             else:
@@ -404,8 +467,9 @@ class EthComLib(object):
 
         except ValueError as err:
             print(err)
-            return False , err
-    #******************************************************************************************
+            return False, err
+
+    # ******************************************************************************************
     def pcr_write(self, ip_address):
         try:
             print("Setting PCR value on " + ip_address)
@@ -453,7 +517,7 @@ class EthComLib(object):
         try:
             # TODO this needs finished
             port = 23
-            print('Writing serial number '+ str(serialnumber) + ' to ' + ip_address)
+            print('Writing serial number ' + str(serialnumber) + ' to ' + ip_address)
             self.lblStatus.setText('Writing serial number ' + str(serialnumber) + ' to ' + ip_address)
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(2)
@@ -464,8 +528,8 @@ class EthComLib(object):
             sc.send(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            senddata = '$pserial,S,'+ str(serialnumber) + '\r\n'
-            print('senddata-> '+ senddata)
+            senddata = '$pserial,S,' + str(serialnumber) + '\r\n'
+            print('senddata-> ' + senddata)
             sc.send(senddata.encode('utf-8'))
             data = sc.recv(100)
             sc.close()
@@ -491,10 +555,10 @@ class EthComLib(object):
             print(err)
             return False, err
 
-    #******************************************************************************************
+    # ******************************************************************************************
     def serialnumber_read(self, ip_address):
         try:
-            #TODO this needs finished
+            # TODO this needs finished
             port = 23
             print('Reading serial number from ' + ip_address)
             self.lblStatus.setText('Reading serial number from ' + ip_address)
@@ -508,7 +572,7 @@ class EthComLib(object):
             sc.send(b'$login,factory,factory\r\n')
             data = sc.recv(100)
             print(data)
-            data=''
+            data = ''
             sc.send(b'$pserial,G\r\n')
             data = sc.recv(100)
             result = data.decode().split(',')[3].find('OK')
@@ -518,7 +582,7 @@ class EthComLib(object):
                 print('Error retrieving device serial number...')
                 return False, 'Error retrieving device serial number'
             else:
-                print('Device serial ' +  str(serialnumber))
+                print('Device serial ' + str(serialnumber))
                 return True, serialnumber
 
         except TimeoutError as err:
@@ -533,7 +597,7 @@ class EthComLib(object):
             print(err)
             return False, err
 
-    #******************************************************************************************
+    # ******************************************************************************************
     def defaults_store(self, ip_address):
 
         try:
@@ -580,13 +644,22 @@ class EthComLib(object):
             print(err)
             return False, err
 
+        except ConnectionError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
-        #except OSError as err:
-        #    print(err)
-        #    return False, err
+        except OSError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
-    #******************************************************************************************
+    # ******************************************************************************************
     def wifi_mac_write(self, ip_address, auto_inc, manual_mac):
         try:
             port = 23
@@ -630,12 +703,26 @@ class EthComLib(object):
                 self.lblStatus.setText('WIFI mac successfully set')
                 return True, 'WIFI MAC successfully set'
 
+        except ConnectionError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
-
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
         except OSError as err:
             print(err)
+            print(type(err))
             return False, err
+
+        except Exception as err:
+            print(err)
+            print(type(err))
+            return False, err
+
     # ******************************************************************************************
     def get_next_mac(self):
         next_mac = fl.configfileRead('MAC_ADDRESS', 'next_mac')
@@ -646,31 +733,32 @@ class EthComLib(object):
         hex_next_mac = hex_next_mac + next_mac_parts[3] + next_mac_parts[4] + next_mac_parts[5]
         hex_max_mac = max_mac_parts[0] + next_mac_parts[1] + next_mac_parts[2]
         hex_max_mac = hex_max_mac + max_mac_parts[3] + next_mac_parts[4] + next_mac_parts[5]
-        print('hex next mac '+ hex_next_mac)
-        print('hex max mac '+ hex_max_mac)
+        print('hex next mac ' + hex_next_mac)
+        print('hex max mac ' + hex_max_mac)
         hex_next_mac = hex(int(hex_next_mac, 16) + 1)
         hex_max_mac = hex(int(hex_max_mac, 16))
         print('hex next mac ' + hex_next_mac)
         if hex_next_mac >= hex_max_mac:
             return False, "Out of Mac addresses"
         else:
-            #hex_next_mac = hex(hex_next_mac)
+            # hex_next_mac = hex(hex_next_mac)
             t = iter(hex_next_mac)
-            x = ':'.join(a+b for a,b in zip(t,t))
-            x=x[3:]
+            x = ':'.join(a + b for a, b in zip(t, t))
+            x = x[3:]
             print(x)
             fl.configfileWrite('MAC_ADDRESS', 'next_mac', x)
             return True, str(x)
-    #******************************************************************************************
+
+    # ******************************************************************************************
     def file_size(fname):
         import os
         statinfo = os.stat(fname)
         return statinfo.st_size
 
-    #******************************************************************************************
+    # ******************************************************************************************
     def fileupload(self, ip_address, slot):
         try:
-            boardtype = fl.configfileRead('UUT',"major_board_type")
+            boardtype = fl.configfileRead('UUT', "major_board_type")
             if boardtype == "M40":
                 section = 'M40_FOLDERS'
             if boardtype == "M50":
@@ -688,7 +776,7 @@ class EthComLib(object):
                 key = 'm40_firmware'
 
             path = fl.configfileRead(section, key)
-            #host = fl.configfileRead('TELNET',"ip_address")
+            # host = fl.configfileRead('TELNET',"ip_address")
             user = 'factory'
             password = 'factory'
             port = 80
@@ -700,16 +788,17 @@ class EthComLib(object):
             conn = ip_address, port
             sc.connect(conn)
 
-            fsize =  EthComLib.file_size(path)
+            fsize = EthComLib.file_size(path)
             filename = open(path, "br")
             fn = filename.read()
 
             myauthorization = base64.b64encode(user.encode('ascii') + b":" + password.encode('ascii'))
 
             my_req_body = "-----------------------------7dd3201c5104d4\r\n"
-            my_req_body =  my_req_body + 'Content-Disposition: form-data; name="' + str(slot) + '"; filename="' + str(path) + '"\r\n'
-            my_req_body =  my_req_body + 'Content-Type: application/octet-stream'
-            my_req_body =  my_req_body + '\r\n\r\n'
+            my_req_body = my_req_body + 'Content-Disposition: form-data; name="' + str(slot) + '"; filename="' + str(
+                path) + '"\r\n'
+            my_req_body = my_req_body + 'Content-Type: application/octet-stream'
+            my_req_body = my_req_body + '\r\n\r\n'
             my_req_end = "\r\n-----------------------------7dd3201c5104d4\r\n"
 
             print('Length of body->' + str(len(my_req_body)))
@@ -725,14 +814,14 @@ class EthComLib(object):
             my_req_head = my_req_head + "Content-Type: multipart/form-data; boundary=---------------------------7dd3201c5104d4\r\n"
             my_req_head = my_req_head + "Content-Length: " + str(totalsize) + "\r\n"
             my_req_head = my_req_head + "Connection: Keep-Alive\r\n"
-            my_req_head = my_req_head + "Authorization: Basic " + str(myauthorization,'utf-8')      #    ZmFjdG9yeTpmYWN0b3J5"
+            my_req_head = my_req_head + "Authorization: Basic " + str(myauthorization, 'utf-8')  # ZmFjdG9yeTpmYWN0b3J5"
             my_req_head = my_req_head + "\r\n\r\n"
             my_req_head = my_req_head + "\r\n"
 
-            #sys.stdout.write(my_req_head)
-            #sys.stdout.write(my_req_body)
-            #sys.stdout.buffer.write(fn)
-            #sys.stdout.write(str(my_req_end))
+            # sys.stdout.write(my_req_head)
+            # sys.stdout.write(my_req_body)
+            # sys.stdout.buffer.write(fn)
+            # sys.stdout.write(str(my_req_end))
 
             self.lblStatus.setText('Writing header info...')
             buffer = my_req_head.encode('ascii') + my_req_body.encode('ascii')
@@ -759,7 +848,7 @@ class EthComLib(object):
                 buffer = buffer[bytes:]
             data = sc.recv(500)
             print('return data-------------------------')
-            #data = str(data)
+            # data = str(data)
             print(data)
             data = sc.recv(500)
             print('return data-------------------------')
@@ -773,11 +862,27 @@ class EthComLib(object):
                 print('File upload failed')
                 self.lblStatus.setText('File upload failed')
 
-        except OSError as err:
+        except ConnectionError as err:
             print(err)
+            print(type(err))
             return False, err
 
-    #******************************************************************************************
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except OSError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except Exception as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+    # ******************************************************************************************
     def script_write(self, ip_address, path):
         try:
             port = 23
@@ -786,7 +891,7 @@ class EthComLib(object):
             sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sc.settimeout(5)
             conn = ip_address, port
-            script = open(path,'br')
+            script = open(path, 'br')
             fn = script.read()
             print('file-> ' + str(fn))
             sc.connect(conn)
@@ -802,7 +907,23 @@ class EthComLib(object):
                     print('data->' + str(data))
             sc.close()
             self.lblStatus.setText('Uploading script successful')
-            return True,'Uploading script successful'
+            return True, 'Uploading script successful'
+
+
+        except ConnectionError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except Exception as err:
+            print(err)
+            print(type(err))
+            return False, err
 
         except OSError as err:
             print(err)
@@ -814,7 +935,8 @@ class EthComLib(object):
             self.lblStatus.setText('Uploading script failed. ' + str(err))
             return False, err
 
-# ******************************************************************************************
+        # ******************************************************************************************
+
     def webpageversion_read(self, ip_address):
         try:
             # TODO this needs finished
@@ -827,7 +949,7 @@ class EthComLib(object):
             data = r.text
             founddata = data.find('Firmware Version:')
             if founddata != -1:
-                version = data[founddata+18:founddata + 34]
+                version = data[founddata + 18:founddata + 34]
                 print(founddata)
 
             if not data:
@@ -868,10 +990,10 @@ class EthComLib(object):
             print(type(err))
             return False, err
 
-    #******************************************************************************************
+    # ******************************************************************************************
     def wifiversion_read(self, ip_address):
         try:
-            #TODO this needs finished
+            # TODO this needs finished
             port = 23
             print('Checking WIFI version...')
             self.lblStatus.setText('Checking WIFI version...')
@@ -896,22 +1018,37 @@ class EthComLib(object):
                 self.lblStatus.setText('WIFI version is ' + str(data))
                 return True, 'WIFI version is ' + str(data)
 
+        except ConnectionError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
         except OSError as err:
             print(err)
+            print(type(err))
             return False, err
 
-    #******************************************************************************************
+        except Exception as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+    # ******************************************************************************************
     def wifi_setup(self, ip_address):
         try:
-            #TODO enusre this is able to set wifi ssid and other things needed
-            #1. ensure wlan mac address is set
-            #2. check wifi version  $wv
-            #3. set $wlanprg to 1 to accept the new file upload
-            #4. use file upload to upload the new version
-            #5. reboot
-            #6. check version again make sure equal to 0x00000000.
-            #7. reboot.
+            # TODO enusre this is able to set wifi ssid and other things needed
+            # 1. ensure wlan mac address is set
+            # 2. check wifi version  $wv
+            # 3. set $wlanprg to 1 to accept the new file upload
+            # 4. use file upload to upload the new version
+            # 5. reboot
+            # 6. check version again make sure equal to 0x00000000.
+            # 7. reboot.
 
 
             # port = 23
@@ -957,13 +1094,29 @@ class EthComLib(object):
                     ret = EthComLib.fileupload(self, 'wifi')
                     print(ret)
 
-        except OSError as err:
+        except ConnectionError as err:
             print(err)
+            print(type(err))
             return False, err
 
-    #******************************************************************************************
-def main():
+        except TimeoutError as err:
+            print(err)
+            print(type(err))
+            return False, err
 
+        except OSError as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+        except Exception as err:
+            print(err)
+            print(type(err))
+            return False, err
+
+
+# ******************************************************************************************
+def main():
     ip_add = '192.168.1.99'
     mac_add = '58:2f:42:20:00:01'
     path = r'C:\UEC\Functional Test\M50\Wi Fi No MB Default Script 062215.txt'
@@ -976,7 +1129,7 @@ def main():
         ret = EthComLib.wifiversion_read(ip_add)
 
     if module == "C":
-        ret = EthComLib.script_write(ip_add,path)
+        ret = EthComLib.script_write(ip_add, path)
 
     if module == "D":
         global osname
@@ -1001,7 +1154,7 @@ def main():
         ret = EthComLib.modbus_init(ip_add)
 
     if module == "I":
-        ret  = EthComLib.m40_buttontest()
+        ret = EthComLib.m40_buttontest()
 
     if module == "J":
         ret = EthComLib.voltage_read()
@@ -1020,9 +1173,8 @@ def main():
         secs = 3
         ret = EthComLib.pinguut(ip_add, secs)
 
-
-
     print(ret)
+
 
 if __name__ == '__main__':
     main()
