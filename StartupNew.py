@@ -123,6 +123,8 @@ class popupCombo(QMainWindow, pw.Ui_MainWindow):
         self.comboBox.setCurrentIndex(1)
         self.comboBox.setCurrentIndex(0)
 
+    def closeEvent(self, *args, **kwargs):
+        pass
 
     # ****************************************************************************************************
 class MainWindow(QMainWindow, mw.Ui_MainWindow):
@@ -534,6 +536,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def button_uploadfile(self):
         self.popupWindow = popupCombo()
         self.make_connection(self.popupWindow.comboBox)
+        self.lblStatus.setText('Uploading file...')
         self.popupWindow.show()
 
    # ****************************************************************************************************
@@ -544,6 +547,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def make_connection(self, popup_combo_object):
         popup_combo_object.activated[str].connect(self.upload_file_interim)
+        popup_combo_object
 
     # ****************************************************************************************************
     def mbSendButton_Interim(self, button_object):
@@ -561,6 +565,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def upload_file_interim(self, slot):
         self.popupWindow.close()
         print("Uploading to slot " + str(slot))
+        self.lblStatus.setText('Uploading to slot ' + str(slot) )
         gui_thread = threading.Thread(None, self.uploadfile_command, kwargs={'slot':slot})
         gui_thread.start()
 

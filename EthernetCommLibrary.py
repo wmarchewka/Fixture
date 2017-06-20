@@ -45,8 +45,9 @@ class EthComLib(object):
             elif os_platform == 'OSX':
                 data = ('ping ' + ip_address + ' -W 1000 -c 1')
             response = os.system(data)  # default ping takes 3 secs to respond
+            print('Response->' + str(response))
             print(response)
-            if response == 0:
+            if int(response) == 0:
                 print(ip_address + ' is up!')
                 self.lblStatus.setText(ip_address + ' is up!')
                 return True, ip_address + ' is up!'
@@ -56,7 +57,6 @@ class EthComLib(object):
                 pingcount = pingcount + 1
                 if pingcount > numpings:
                     return False, ip_address + ' is down!'
-
                 # ******************************************************************************************
 
     def rebootunit_check(self, ip_address):
