@@ -36,7 +36,7 @@ def upload_file(slot):
         user = 'factory'
         password = 'factory'
         port = 80
-        print('Starting uploading of file ' + path + ' to  ' + host)
+        logger.debug('Starting uploading of file ' + path + ' to  ' + host)
         sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sc.settimeout(5)
         conn = host, port
@@ -54,12 +54,12 @@ def upload_file(slot):
         my_req_body =  my_req_body + '\r\n\r\n'
         my_req_end = "\r\n-----------------------------7dd3201c5104d4\r\n"
 
-        print('Length of body->' + str(len(my_req_body)))
-        print('Length of file->' + str(fsize))
-        print('Length of end->' + str(len(my_req_end)))
+        logger.debug('Length of body->' + str(len(my_req_body)))
+        logger.debug('Length of file->' + str(fsize))
+        logger.debug('Length of end->' + str(len(my_req_end)))
 
         totalsize = len(my_req_body) + fsize + len(my_req_end)
-        print('Total size->' + str(totalsize))
+        logger.debug('Total size->' + str(totalsize))
 
         my_req_head = "POST /upload_file.cgi HTTP/1.1\r\n"
         my_req_head = my_req_head + "Accept-Language: en-us\r\n"
@@ -81,50 +81,50 @@ def upload_file(slot):
             bytes = sc.send(buffer)
             buffer = buffer[bytes:]
         data = sc.recv(250)
-        print('return data-------------------------')
-        print(data)
+        logger.debug('return data-------------------------')
+        logger.debug(data)
 
         buffer = fn
         while buffer:
             bytes = sc.send(buffer)
             buffer = buffer[bytes:]
         data = sc.recv(1000)
-        print('return data-------------------------')
-        print(data)
+        logger.debug('return data-------------------------')
+        logger.debug(data)
 
         buffer = my_req_end.encode('ascii')
         while buffer:
             bytes = sc.send(buffer)
             buffer = buffer[bytes:]
         data = sc.recv(500)
-        print('return data-------------------------')
+        logger.debug('return data-------------------------')
         #data = str(data)
-        print(data)
+        logger.debug(data)
         data = sc.recv(500)
-        print('return data-------------------------')
-        print(data)
+        logger.debug('return data-------------------------')
+        logger.debug(data)
         data = str(data)
         sc.close()
         if data.find('url=upload.html'):
-            print('upload sucessful')
+            logger.debug('upload sucessful')
         else:
-            print('upload failed')
+            logger.debug('upload failed')
 
     except OSError as err:
-        print(err)
+        logger.debug(err)
         return False, err
 
 
 def main():
     global osname
     slot = 'web'
-    print(osname)
+    logger.debug(osname)
     if osname == "Windows":
         path = r"C:\web_pages_UEC_AC_025_ENG.tfs"
     elif osname == "OS X":
         path = os.path.expanduser("~/web_pages_UEC025_ENG.tfs")
     ret = upload_file(slot)
-    print(ret)
+    logger.debug(ret)
 
 if __name__ == '__main__':
     main()

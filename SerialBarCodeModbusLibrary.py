@@ -4,6 +4,9 @@ import minimalmodbus
 import serial
 import serial.tools.list_ports
 import FileConfigurationLibrary as fl
+import logging
+
+logger = logging.getLogger()
 
 # ******************************************************************************************
 class SCML(object):
@@ -25,19 +28,19 @@ class SCML(object):
         devices = []
         device_descriptions = []
         for p in ports:
-            print('-----------------------------------------')
-            print(p)
-            print('description->' + str(p.description))
-            print('devicestr(' + str(p.device))
-            print('hwidstr(' + str(p.hwid))
-            print('interfacestr(' + str(p.interface))
-            print('locationstr(' + str(p.location))
-            print('maufacturerstr(' + str(p.manufacturer))
-            print('namestr(' + str(p.name))
-            print('pidstr(' + str(p.pid))
-            print('product->' + str(p.product))
-            print('serial number->' + str(p.serial_number))
-            print('vid->' + str(p.vid))
+            logger.debug('-----------------------------------------')
+            logger.debug(p)
+            logger.debug('description->' + str(p.description))
+            logger.debug('devicestr(' + str(p.device))
+            logger.debug('hwidstr(' + str(p.hwid))
+            logger.debug('interfacestr(' + str(p.interface))
+            logger.debug('locationstr(' + str(p.location))
+            logger.debug('maufacturerstr(' + str(p.manufacturer))
+            logger.debug('namestr(' + str(p.name))
+            logger.debug('pidstr(' + str(p.pid))
+            logger.debug('product->' + str(p.product))
+            logger.debug('serial number->' + str(p.serial_number))
+            logger.debug('vid->' + str(p.vid))
             self.lblStatus.setText('Found ->' + str(p.device))
             devices.append(p.device)
             device_descriptions.append(p.description)
@@ -101,7 +104,7 @@ class SCML(object):
         devices.append("None")
         device_descriptions.append("None")
         self.lblStatus.setText('Serial scan complete...')
-        print('Serial scan complete...')
+        logger.debug('Serial scan complete...')
         return True, devices, device_descriptions, port_modbus, port_modbus_description, \
                port_tfp3, port_tfp3_description, \
                port_cyclone, port_cyclone_description, \
@@ -112,23 +115,23 @@ class SCML(object):
     def MajorBoardType(self, p_number, board_type, config_cal):
 
         #TODO: need to finish this
-        print('MAJOR BOARD TYPE')
+        logger.debug('MAJOR BOARD TYPE')
         fn = os.path.dirname(__file__)
         fn = str(fn) + str('/SupportFiles/Board_Part_numbers.txt')
-        print(fn)
+        logger.debug(fn)
         searchstring = p_number + '-' + board_type
         searchstring = searchstring[1:10]
-        print('Searching for ' + searchstring)
+        logger.debug('Searching for ' + searchstring)
         with open(fn) as board_name_table:
             for line in board_name_table:
-                print('line read->' + line)
+                logger.debug('line read->' + line)
                 found = line.find(searchstring,1)
                 if found == -1:
-                    print('Not Found')
+                    logger.debug('Not Found')
                 else:
-                    print('Found ->' + str(line))
+                    logger.debug('Found ->' + str(line))
                     line = line.split('\t')
-                    print('line 0->' + line[0], 'line 1->' + line[1])
+                    logger.debug('line 0->' + line[0], 'line 1->' + line[1])
                     board_name = line[1]
         major_board_type = 'unknown'
         board_voltage = 'unknown'
@@ -160,50 +163,50 @@ class SCML(object):
         global partnumber
         count = 0
 
-        print(simulate)
+        logger.debug(simulate)
 
         if port == 'None':
             self.lblStatus.setText('Please select Barcode serial port')
             return False, 'Please select Barcode serial port'
-        print('Looking for barcode scanner...')
+        logger.debug('Looking for barcode scanner...')
         time.sleep(1)
         self.lblStatus.setText('Looking for barcode scanner...')
         ser = serial.Serial(port, 115200, timeout=1)
-        print('Found barcode scanner on port ' + ser.name)
+        logger.debug('Found barcode scanner on port ' + ser.name)
         self.lblStatus.setText('Found barcode scanner on port ' + ser.name)
         while count < max:
             try:
                 ser.write(b'\x16T\r')  # write trigger
-                print('Sending trigger  \x16T\r')
+                logger.debug('Sending trigger  \x16T\r')
                 # TODO: make sure this isnt blocking and contains enough characters read
                 line = ser.read(38)  # check for return data
                 ser.write(b'\x16U\r')  # send off trigger
                 line = line.decode('ascii')
-                print(line)
+                logger.debug(line)
                 self.lblStatus.setText(line)
                 self.lblCurrentSerialNumber.setText(line)
 
             except OSError as err:
-                print('OSError ' + str(err))
+                logger.debug('OSError ' + str(err))
                 self.lblStatus.setText(err)
                 return False, err
 
             except Exception as err:
-                print('Exceptopn ' + str(err))
+                logger.debug('Exceptopn ' + str(err))
                 self.lblStatus.setText(err)
                 return False, err
 
             try:
                 if not line:
-                    print('Failed to scan. Retrying ' + str(count))
+                    logger.debug('Failed to scan. Retrying ' + str(count))
                     self.lblStatus.setText('Failed to scan. Retrying ' + str(count))
                     time.sleep(1.0)
                     count = count + 1
                 else:
                     ser.close()
-                    print('Data returned from scanner')
+                    logger.debug('Data returned from scanner')
                     nodashes = str(line).split('-')
-                    print("No dashes->" + str(nodashes))
+                    logger.debug("No dashes->" + str(nodashes))
                     p_number = nodashes[0]
                     board_type = nodashes[1]
                     config_cal = nodashes[2]
@@ -214,15 +217,15 @@ class SCML(object):
                     serial_number = nodashes[7]
                     firmware = nodashes[8]
 
-                    print('P Number     ->' + str(p_number))
-                    print('Board Type   ->' + str(board_type))
-                    print('Config Cal   ->' + str(config_cal))
-                    print('Unknown      ->' + str(unknown))
-                    print('Revision     ->' + str(revision))
-                    print('Solder Type  ->' + str(solder_type))
-                    print('Build Date   ->' + str(build_date))
-                    print('Serial number->' + str(serial_number))
-                    print('Firmware     ->' + str(firmware))
+                    logger.debug('P Number     ->' + str(p_number))
+                    logger.debug('Board Type   ->' + str(board_type))
+                    logger.debug('Config Cal   ->' + str(config_cal))
+                    logger.debug('Unknown      ->' + str(unknown))
+                    logger.debug('Revision     ->' + str(revision))
+                    logger.debug('Solder Type  ->' + str(solder_type))
+                    logger.debug('Build Date   ->' + str(build_date))
+                    logger.debug('Serial number->' + str(serial_number))
+                    logger.debug('Firmware     ->' + str(firmware))
                     partnumber = p_number + '-' + board_type + '-' + config_cal + '-' + \
                                  unknown + '-' + revision + '-' + solder_type + '-' + build_date + '-' + \
                                  serial_number + '-'  + firmware
@@ -231,7 +234,7 @@ class SCML(object):
                     major_board_type = ret_value[0]
                     board_voltage = ret_value[1]
                     board_name = ret_value[2]
-                    print('Filename ' + filename)
+                    logger.debug('Filename ' + filename)
                     fl.configfileWrite('UUT', 'PART_NUMBER', partnumber)
                     fl.configfileWrite('UUT', 'P_NUMBER', p_number)
                     fl.configfileWrite('UUT', 'BOARD', board_type)
@@ -270,55 +273,55 @@ class SCML(object):
                     fl.logfileWrite(filename, 'TEST_DATE_TIME', 'test_time', time.strftime('%H:%M:%S'))
                     fl.logfileWrite(filename, 'TEST_DATE_TIME', 'test_date', time.strftime('%m:%d:%Y'))
 
-                    print('UUT', 'PART_NUMBER', partnumber)
-                    print('UUT', 'P_NUMBER', p_number)
-                    print('UUT', 'BOARD', board_type)
-                    print('UUT', 'CONFIG_CAL', config_cal)
-                    print('UUT', 'UNKNOWN', unknown)
-                    print('UUT', 'REVISION', revision)
-                    print('UUT', 'SOLDER_TYPE', solder_type)
-                    print('UUT', 'BUILD_DATE', build_date)
-                    print('UUT', 'SERIAL_NUMBER', serial_number)
-                    print('UUT', 'FIRMWARE', firmware)
-                    print('UUT', 'MAJOR_BOARD_TYPE', major_board_type)
-                    print('UUT', 'BOARD_VOLTAGE', board_voltage)
-                    print('UUT', 'BOARD_NAME', board_name)
-                    print('BOARD', 'part_number', filename)
-                    print('BOARD', 'p_number', p_number)
-                    print('BOARD', 'board type', board_type)
-                    print('BOARD', 'config cal', config_cal)
-                    print('BOARD', 'unknown', unknown)
-                    print('BOARD', 'revision', revision)
-                    print('BOARD', 'solder_type', solder_type)
-                    print('BOARD', 'build date', build_date)
-                    print('BOARD', 'serial_number', serial_number)
-                    print('BOARD', 'firmware', firmware)
-                    print('BOARD', 'major_board_type', major_board_type)
-                    print('BOARD', 'board_voltage', board_voltage)
-                    print('BOARD', 'board_name', board_name)
-                    print('BOARD', 'k60_firmware_version',
+                    logger.debug('UUT', 'PART_NUMBER', partnumber)
+                    logger.debug('UUT', 'P_NUMBER', p_number)
+                    logger.debug('UUT', 'BOARD', board_type)
+                    logger.debug('UUT', 'CONFIG_CAL', config_cal)
+                    logger.debug('UUT', 'UNKNOWN', unknown)
+                    logger.debug('UUT', 'REVISION', revision)
+                    logger.debug('UUT', 'SOLDER_TYPE', solder_type)
+                    logger.debug('UUT', 'BUILD_DATE', build_date)
+                    logger.debug('UUT', 'SERIAL_NUMBER', serial_number)
+                    logger.debug('UUT', 'FIRMWARE', firmware)
+                    logger.debug('UUT', 'MAJOR_BOARD_TYPE', major_board_type)
+                    logger.debug('UUT', 'BOARD_VOLTAGE', board_voltage)
+                    logger.debug('UUT', 'BOARD_NAME', board_name)
+                    logger.debug('BOARD', 'part_number', filename)
+                    logger.debug('BOARD', 'p_number', p_number)
+                    logger.debug('BOARD', 'board type', board_type)
+                    logger.debug('BOARD', 'config cal', config_cal)
+                    logger.debug('BOARD', 'unknown', unknown)
+                    logger.debug('BOARD', 'revision', revision)
+                    logger.debug('BOARD', 'solder_type', solder_type)
+                    logger.debug('BOARD', 'build date', build_date)
+                    logger.debug('BOARD', 'serial_number', serial_number)
+                    logger.debug('BOARD', 'firmware', firmware)
+                    logger.debug('BOARD', 'major_board_type', major_board_type)
+                    logger.debug('BOARD', 'board_voltage', board_voltage)
+                    logger.debug('BOARD', 'board_name', board_name)
+                    logger.debug('BOARD', 'k60_firmware_version',
                           fl.configfileRead('M40_FIRMWARE', 'm40_k60_firmware_version'))
-                    print('BOARD', 'web_page_version',
+                    logger.debug('BOARD', 'web_page_version',
                           fl.configfileRead('M40_FIRMWARE', 'm40_web_page_firmware_version'))
-                    print('BOARD', 'meter_ic_version',
+                    logger.debug('BOARD', 'meter_ic_version',
                           fl.configfileRead('M40_FIRMWARE', 'm40_meter_ic_firmware_version'))
-                    print('BOARD', 'wifi_firmware_version',
+                    logger.debug('BOARD', 'wifi_firmware_version',
                           fl.configfileRead('M40_FIRMWARE', 'm40_wifi_firmware_version'))
-                    print('TEST_DATE_TIME', 'test_time', time.strftime('%H:%M:%S'))
-                    print('TEST_DATE_TIME', 'test_date', time.strftime('%m:%d:%Y'))
+                    logger.debug('TEST_DATE_TIME', 'test_time', time.strftime('%H:%M:%S'))
+                    logger.debug('TEST_DATE_TIME', 'test_date', time.strftime('%m:%d:%Y'))
                     return True, str(line)
 
             except IndexError as err:
-                print(err)
+                logger.debug(err)
                 return False, "Barcode improperly formatted"
 
             except OSError as err:
-                print(err)
+                logger.debug(err)
                 self.lblStatus.setText(err)
                 return False, err
 
             except Exception as err:
-                print(err)
+                logger.debug(err)
                 self.lblStatus.setText(err)
                 return False, err
 
@@ -364,7 +367,7 @@ class SCML(object):
                 if type == 2:
                     value = uut.read_string(register, num_of_regs, 4)
                     return_value = value
-                print('Value->' + str(value))
+                logger.debug('Value->' + str(value))
                 uut.serial.close
                 return True, return_value
             elif write:
@@ -384,23 +387,23 @@ class SCML(object):
 
 
         except TimeoutError as err:
-            print(err)
+            logger.debug(err)
             return False, err
 
         except Exception as err:
-            print(err)
+            logger.debug(err)
             return False, err
 
         except OSError as err:
-            print(err)
+            logger.debug(err)
             return False, err
 
         except IOError as err:
-            print(err)
+            logger.debug(err)
             return False, err
 
         except ValueError as err:
-            print(err)
+            logger.debug(err)
             return False, err
 
 
@@ -425,7 +428,7 @@ def main(self):
     if module == "C":
         ret = SCML.collectSerialPorts()
 
-    print(ret)
+    logger.debug(ret)
 
 
 # ******************************************************************************************

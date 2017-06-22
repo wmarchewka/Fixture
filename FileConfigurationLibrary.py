@@ -1,4 +1,7 @@
 import configparser
+import logging
+
+logger = logging.getLogger()
 
 #******************************************************************************************
 def logfileWrite(filename, section, key, value):
@@ -7,18 +10,18 @@ def logfileWrite(filename, section, key, value):
     config = configparser.RawConfigParser()
     old_filename = config.read(filename)
     if old_filename == '':
-        print('Creating new test record...')
+        logger.debug('Creating new test record...')
     else:
-        print('Test record exists. Updating existing record.')
+        logger.debug('Test record exists. Updating existing record.')
 
     try:
-        print('Writing to ' + filename + '->Section:' + section + 'Key:' + key + ' Value: ' + value)
+        logger.debug('Writing to ' + filename + '->Section:' + section + 'Key:' + key + ' Value: ' + value)
         config.add_section(section)
         config.set(section, key, value)
         with open(filename, 'w') as configfile:
             config.write(configfile)
     except:
-        print('Writing to ' + filename + '->Section:' + section + ' Key:' + key + ' Value: ' + value)
+        logger.debug('Writing to ' + filename + '->Section:' + section + ' Key:' + key + ' Value: ' + value)
         config.set(section, key, value)
         with open(filename, 'w') as configfile:
             config.write(configfile)
@@ -29,7 +32,7 @@ def logfileWriteDefaults():
     try:
         config = configparser.RawConfigParser()
         config.read('master_logfile.cfg')
-        print(config)
+        logger.debug(config)
 
         config.add_section('BOARD')
         config.set('BOARD', 'part_number', '')
@@ -83,7 +86,7 @@ def configfileWriteDefaults():
     try:
         config = configparser.RawConfigParser()
         config.read('master_configuration.cfg')
-        print(config)
+        logger.debug(config)
 
         config.add_section('CONFIG')
         config.set('CONFIG', 'FILE_VER', '1')
@@ -162,7 +165,7 @@ def configfileWrite(section,key,value):
     value = str(value)
     config = configparser.RawConfigParser()
     config.read('configuration.cfg')
-    print('Writing to config->Section:' + section + 'Key:' + key + ' Value: ' + value)
+    logger.debug('Writing to config->Section:' + section + 'Key:' + key + ' Value: ' + value)
     try:
         config.add_section(section)
         config.set(section, key, value)
@@ -179,7 +182,7 @@ def configfileRead(section,key):
     config.read('configuration.cfg')
     try:
         value = config.get(section,key)
-        print('Reading from config-> Section:' + section + ' Key:' + key + ' Value: ' + value)
+        logger.debug('Reading from config-> Section:' + section + ' Key:' + key + ' Value: ' + value)
         return value
     except:
         return ('ERROR')

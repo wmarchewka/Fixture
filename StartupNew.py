@@ -16,6 +16,7 @@ import EthernetCommLibrary as el
 import FileConfigurationLibrary as fl
 import SupportLibrary as sl
 import sys
+import logging
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog
 
 global tfp3_serial_port
@@ -28,6 +29,20 @@ global Testing
 global serial_ports_descriptions
 global serial_ports_list
 
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+fh = logging.FileHandler('log_filename.txt')
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 # ****************************************************************************************************
 class FileDialog(QWidget):
     def __init__(self):
@@ -52,7 +67,7 @@ class FileDialog(QWidget):
                                                   "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
             return fileName
-            print(fileName)
+            logger.debug(fileName)
 
     def openFileNamesDialog(self):
         options = QFileDialog.Options()
@@ -60,7 +75,7 @@ class FileDialog(QWidget):
         files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
                                                 "All Files (*);;Python Files (*.py)", options=options)
         if files:
-            print(files)
+            logger.debug(files)
 
     def saveFileDialog(self):
         options = QFileDialog.Options()
@@ -68,9 +83,9 @@ class FileDialog(QWidget):
         fileName, _ = QFileDialog.getSaveFileName(self, "QFileDialog.getSaveFileName()", "",
                                                   "All Files (*);;Text Files (*.txt)", options=options)
         if fileName:
-            print(fileName)
+            logger.debug(fileName)
 
-        # ****************************************************************************************************
+# ****************************************************************************************************
 class popupModbus(QMainWindow, pmb.Ui_MainWindow):
 
     mbSendButton = pyqtSignal('int')
@@ -150,12 +165,31 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         # do all initializtion
         self.lblStatus.setText('')
         #self.populate_defaults()
-        print('TFP3 relay pin ' + str(sl.supportLibrary.gpio_tfp3relay_pin))
+
+        logger.debug('TFP3 relay pin ' + str(sl.supportLibrary.gpio_tfp3relay_pin))
 
         # check serial event thread
         #self.check_serial_event()
 
-    # ****************************************************************************************************
+# ****************************************************************************************************
+    def configure_logging():
+        logger = logging.getLogger()
+        logger.setLevel(logging.DEBUG)
+
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+        fh = logging.FileHandler('log_filename.txt')
+        fh.setLevel(logging.DEBUG)
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
+
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.DEBUG)
+        ch.setFormatter(formatter)
+        logger.addHandler(ch)
+
+
+# ****************************************************************************************************
     def enable_disable_all_buttons(self, state):
 
 
@@ -212,7 +246,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             self.pbRescanSerialPorts.disconnect()
     # ****************************************************************************************************
     def check_serial_event(self):
-        print('Starting serial receive thread')
+        logger.debug('Starting serial receive thread')
         self.lblStatus.setText('Starting serial receive thread')
         global DemoJM_Serialport
         DemoJM_Serialport = fl.configfileRead('DEMOJM','com_port')
@@ -220,46 +254,46 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         try:
             if DemoJM_Serialport.isOpen():
                 serial_thread.start()
-                print('Running serial thread')
+                logger.debug('Running serial thread')
                 assert isinstance(DemoJM_Serialport, serial.Serial)
                 if DemoJM_Serialport.inWaiting():
                     while True:
                         c = DemoJM_Serialport.read(1)
-                        print('received ' + str(c))
+                        logger.debug('received ' + str(c))
                         if c:
                             self.serialtrigger.emit(c)
                             break
                         else:
                             break
         except OSError as err:
-            print('Serial thread not running due to ' + str(err))
+            logger.debug('Serial thread not running due to ' + str(err))
         except ValueError as err:
-            print('Serial thread not running due to ' + str(err))
+            logger.debug('Serial thread not running due to ' + str(err))
         except SystemError as err:
-            print('Serial thread not running due to ' + str(err))
+            logger.debug('Serial thread not running due to ' + str(err))
         except NameError as err:
-            print('Serial thread not running due to ' + str(err))
+            logger.debug('Serial thread not running due to ' + str(err))
 
     # ****************************************************************************************************
     def check_for_config(self):
         ret = fl.configfileRead('CONFIG', 'file_ver')
-        print('Found Configuration file version ' + ret)
+        #logger.debug('Found Configuration file version ' + ret)
         self.lblStatus.setText('Found Configuration file version ' + ret)
 
     # ****************************************************************************************************
     def limitswitch_check(self):
-        print('limitswitch check')
+        logger.debug('limitswitch check')
         self.lblStatus.setText('limitswitch check')
 
     # ****************************************************************************************************
     def power_up_relay(self):
-        print('power up power relay')
+        logger.debug('power up power relay')
         self.lblStatus.setText('power up power relay')
         gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_on)
 
     # ****************************************************************************************************
     def power_cycle_relay(self):
-        print('power cycle relay')
+        logger.debug('power cycle relay')
         self.lblStatus.setText('power cycle relay')
         gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_off)  ## Switch on pin 7
         time.sleep(2)
@@ -267,7 +301,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def power_down_relay(self):
-        print('power down power relay')
+        logger.debug('power down power relay')
         self.lblStatus.setText('power down power relay')
         gp.output(sl.supportLibrary.gpio_powerrelay, sl.supportLibrary.gpio_off)
 
@@ -277,13 +311,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def powerup_tfp3(self):
-        print('power up tfp3 relay')
+        logger.debug('power up tfp3 relay')
         self.lblStatus.setText('power up tfp3 relay')
         gp.output(sl.supportLibrary.gpio_tfp3relay_pin, sl.supportLibrary.gpio_on)
 
     # ****************************************************************************************************
     def powerdown_tfp3(self):
-        print('power down tfp3 relay')
+        logger.debug('power down tfp3 relay')
         self.lblStatus.setText('power down power relay')
         gp.output(sl.supportLibrary.gpio_tfp3relay_pin, sl.supportLibrary.gpio_off)
 
@@ -298,7 +332,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def get_status(self):
-        print('gpio get status off all pins')
+        logger.debug('gpio get status off all pins')
         self.lblStatus.setText('gpio get status off all pins')
 
     # ****************************************************************************************************
@@ -309,19 +343,19 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def SerialTest(self):
         'used to simulate receiving commands from labview'
         data = self.lnSerialTest.text()
-        print('serial test ' + data)
+        logger.debug('serial test ' + data)
         self.lnSerialTest.clear()
         self.parse_serial_data(data.encode('utf-8'))
 
     # ****************************************************************************************************
     def parse_serial_data(self, bData):
-        print(bData)
+        logger.debug(bData)
         strData = bData.decode('utf-8')
         global DemoJM_Serialport
         DemoJM_Serialport = fl.configfileRead('DEMOJM','com_port')
         DemoJM_Serialport.write(bData + b'\r')
         self.txtSerialData.appendPlainText(strData)
-        print('incoming serial data->' + strData)
+        logger.debug('incoming serial data->' + strData)
         self.lblStatus.setText('incoming serial data->' + strData)
         if (strData == 'S') or (strData == 's'):
             MainWindow.send_report(self)
@@ -335,7 +369,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
                 DemoJM_Serialport.write(b'K')
                 DemoJM_Serialport.write(b'\r')
             except:
-                print('no serial port')
+                logger.debug('no serial port')
                 self.lblStatus.setText('no serial port')
 
         if (strData == 'P') or (strData == 'p'):
@@ -360,7 +394,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def button_rebootunit(self):
         self.lblStatus.setText("Rebooting unit...")
-        print("Rebooting unit...")
+        logger.debug("Rebooting unit...")
         gui_thread = threading.Thread(None, self.rebootunit_command)
         gui_thread.start()
 
@@ -369,14 +403,14 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lblStatus.setText("Rebooting Unit...")
         time.sleep(1)
         ret = el.EthComLib.rebootunit_check(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_reset(self):
         self.lblStatus.setText("Reset test...")
-        print("Reset test...")
+        logger.debug("Reset test...")
         gui_thread = threading.Thread(None, self.reset_command)
         gui_thread.start()
 
@@ -385,14 +419,14 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lblStatus.setText("Reset test running... !")
         time.sleep(1)
         ret = el.EthComLib.reset_button_check(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_lanmac(self):
         self.lblStatus.setText("Setting LAN MAC...")
-        print("Setting LAN MAC...")
+        logger.debug("Setting LAN MAC...")
         gui_thread = threading.Thread(None, self.lanmac_command)
         gui_thread.start()
 
@@ -400,14 +434,14 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def lanmac_command(self):
         time.sleep(1)
         ret = el.EthComLib.lan_mac_write(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_wifimanualmac(self):
         self.lblStatus.setText("Setting WIFI MAC...")
-        print("Setting WIFI MAC...")
+        logger.debug("Setting WIFI MAC...")
         gui_thread = threading.Thread(None, self.wifimac_command)
         gui_thread.start()
 
@@ -417,14 +451,14 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         auto_inc = False
         new_mac = '58:2f:42:26:20:98'
         ret = el.EthComLib.wifi_mac_write(self, ip_address, auto_inc, new_mac)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_wifimac(self):
         self.lblStatus.setText("Setting WIFI MAC...")
-        print("Setting WIFI MAC...")
+        logger.debug("Setting WIFI MAC...")
         gui_thread = threading.Thread(None, self.wifimac_command)
         gui_thread.start()
 
@@ -434,13 +468,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         auto_inc = False
         new_mac = '58:2f:42:26:20:98'
         ret = el.EthComLib.wifi_mac_write(self, ip_address, auto_inc, new_mac)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
     # ****************************************************************************************************
     def button_modbusread(self):
         self.lblStatus.setText("Reading Modbus register...")
-        print("Reading Modbus register...")
+        logger.debug("Reading Modbus register...")
         #TODO need to finish popup window for modbus entry
         self.popupModbusWindow = popupModbus()
         self.mbPushButton_connection(self.popupModbusWindow.pbSendButton)
@@ -452,13 +486,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         #type = 3   #0 = int  1 = float 2 = ascii
         modbus_serial_port = fl.configfileRead('MODBUS','com_port')
         ret = ml.SCML.mbComm(self, modbus_serial_port, address, register, type, num_of_regs, write, valuetowrite)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
     # ****************************************************************************************************
     def button_modbusinit(self):
         self.lblStatus.setText("Setting Modbus init...")
-        print("Setting Modbus init...")
+        logger.debug("Setting Modbus init...")
         gui_thread = threading.Thread(None, self.modbusinit_command)
         gui_thread.start()
 
@@ -466,15 +500,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def modbusinit_command(self):
         time.sleep(1)
         ret = el.EthComLib.modbus_init(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_defaultsstore(self):
         self.lblStatus.setText("Storing defaults...")
         time.sleep(1)
-        print('Storing defaults...')
+        logger.debug('Storing defaults...')
         gui_thread = threading.Thread(None, self.defaultsstore_command)
         gui_thread.start()
 
@@ -482,15 +516,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def defaultsstore_command(self):
 
         ret = el.EthComLib.defaults_store(self, ip_address)
-        print(ret)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug(ret)
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_setpcr(self):
         self.lblStatus.setText("Setting PCR...")
-        print("Setting PCR...")
+        logger.debug("Setting PCR...")
         gui_thread = threading.Thread(None, self.setpcr_command)
         gui_thread.start()
 
@@ -498,37 +532,37 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def setpcr_command(self):
         time.sleep(1)
         ret = el.EthComLib.pcr_write(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_serialnumberwrite(self):
         self.lblStatus.setText("Setting device serial number...")
-        print("Setting device serial number...")
+        logger.debug("Setting device serial number...")
         oldserialnumber = self.readserialnumber_command()
         if oldserialnumber[0]:
             serialnumber, okPressed = QInputDialog.getText(self, 'Serial Number Entry', 'Old Serial Number -> ' + str(oldserialnumber[1]),QLineEdit.Normal)
             if okPressed:
-                print(serialnumber)
+                logger.debug(serialnumber)
                 gui_thread = threading.Thread(None, self.writeserialnumber_command(ip_address, serialnumber))
                 gui_thread.start()
             else:
                 self.lblStatus.setText("Setting device serial number canceled. ..")
-                print("Setting device serial number canceled. ..")
+                logger.debug("Setting device serial number canceled. ..")
                 #self.error_display_popup('Error Title','Error Message')
 
     # ****************************************************************************************************
     def writeserialnumber_command(self, ip_address, serialnumber):
         ret = el.EthComLib.serialnumber_write(self, ip_address, serialnumber)
-        print('Returned value ' + str(ret[1]))
-        print('Returned status ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned status ' + str(ret[0]))
 
     # ****************************************************************************************************
     def readserialnumber_command(self):
         ret = el.EthComLib.serialnumber_read(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
         return ret
 
@@ -564,7 +598,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def upload_file_interim(self, slot):
         self.popupWindow.close()
-        print("Uploading to slot " + str(slot))
+        logger.debug("Uploading to slot " + str(slot))
         self.lblStatus.setText('Uploading to slot ' + str(slot) )
         gui_thread = threading.Thread(None, self.uploadfile_command, kwargs={'slot':slot})
         gui_thread.start()
@@ -572,18 +606,18 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def uploadfile_command(self, slot):
         self.lblStatus.setText('Uploading ' + str(slot))
-        print('Upload ' + str(slot))
+        logger.debug('Upload ' + str(slot))
         ret = el.EthComLib.fileupload(self, ip_address, slot)
         #ret = el.EthComLib.waittest(self)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText('Returned Value ' + str(ret[1]))
 
     # ****************************************************************************************************
     def button_scriptwrite(self):
         #TODO: crashehes if file is not selected
         path = FileDialog.openFileNameDialog(self)
-        print('filename ' + str(path))
+        logger.debug('filename ' + str(path))
         if path is not None:
             gui_thread = threading.Thread(None, self.scriptwrite_command(path))
             gui_thread.start()
@@ -595,15 +629,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         ip_address = '192.168.1.99'
         #path = r'C:\UEC\Functional Test\M50\Test_script.txt'
         ret = el.EthComLib.script_write(self, ip_address, path)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
         return
     # ****************************************************************************************************
     def button_webpageversion(self):
         self.lblStatus.setText("Getting Webpage version...")
         time.sleep(1)
-        print("Getting Webpage version...")
+        logger.debug("Getting Webpage version...")
         gui_thread = threading.Thread(None, self.webpageversion_command)
         gui_thread.start()
 
@@ -611,15 +645,15 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def webpageversion_command(self):
         #ret = el.EthComLib.waittest(self)
         ret = el.EthComLib.webpageversion_read(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_wifiversion(self):
         self.lblStatus.setText("Getting WIFI version...")
         time.sleep(1)
-        print("Getting WIFI version...")
+        logger.debug("Getting WIFI version...")
         gui_thread = threading.Thread(None, self.wifiversion_command)
         gui_thread.start()
 
@@ -627,28 +661,28 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def wifiversion_command(self):
         #ret = el.EthComLib.waittest(self)
         ret = el.EthComLib.wifiversion_read(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_wifisetup(self):
         self.lblStatus.setText("Setting up WIFI...")
         time.sleep(1)
-        print("Setting up WIFI...")
+        logger.debug("Setting up WIFI...")
         gui_thread = threading.Thread(None, self.wifisetup_command)
         gui_thread.start()
     # ****************************************************************************************************
     def wifisetup_command(self):
         ret = el.EthComLib.wifi_setup(self, ip_address)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_voltages(self):
         global ip_address
-        print("Pressed voltage...")
+        logger.debug("Pressed voltage...")
         gui_thread = threading.Thread(None, self.voltages_command)
         gui_thread.start()
 
@@ -656,14 +690,14 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def voltages_command(self):
         self.lblStatus.setText("Getting voltages...")
         ret = el.EthComLib.voltage_read(self, ip_address)
-        print(str(ret[1]))
+        logger.debug(str(ret[1]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_tfp3(self):
         global tfp3_serial_port
         self.lblStatus.setText("TFP3 programming...")
-        print('Starting TFP3 programmer on port ' + tfp3_serial_port)
+        logger.debug('Starting TFP3 programmer on port ' + tfp3_serial_port)
         gui_thread = threading.Thread(None, self.tftp3_command)
         gui_thread.start()
 
@@ -673,13 +707,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         self.lblStatus.setText("Programming TFP3 !")
         tfp3_serial_port = fl.configfileRead('TFP3','com_port')
         ret = pl.TFP3Program(self, tfp3_serial_port)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_cyclone(self):
-        print("Programming cyclone !")
+        logger.debug("Programming cyclone !")
         gui_thread = threading.Thread(None, self.cyclone_command)
         gui_thread.start()
 
@@ -689,13 +723,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         cyclone_serial_port = fl.configfileRead('CYCLONE','com_port')
         image = 3
         ret = pl.CycloneProgram(self, cyclone_serial_port, image)
-        print('Returned value ' + str(ret[1]))
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_scanner(self):
-        print("Pressed Scanner button...")
+        logger.debug("Pressed Scanner button...")
         gui_thread = threading.Thread(None, self.scanner_command, None)
         gui_thread.start()
 
@@ -704,13 +738,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         simulate = False
         scanner_serial_port = fl.configfileRead("SCANNER", 'com_port')
         ret = ml.SCML.ScanBarcode(self, simulate, scanner_serial_port, 5)
-        print('Returned value ' + str(ret[0]))
+        logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
 
     # ****************************************************************************************************
     def button_buttontest(self):
-        print("Pressed button test button")
+        logger.debug("Pressed button test button")
         gui_thread = threading.Thread(None, self.buttonttest_command, None)
         gui_thread.start()
 
@@ -718,12 +752,12 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def buttonttest_command(self):
         self.lblStatus.setText("Button test running...")
         ret = el.EthComLib.m40_buttontest(self, ip_address)
-        print('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[1]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_ping(self):
-        print('Pressed ping button')
+        logger.debug('Pressed ping button')
         gui_thread = threading.Thread(None, self.ping_command)
         gui_thread.start()
 
@@ -731,12 +765,12 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     def ping_command(self):
         self.lblStatus.setText("Ping test running...")
         ret = el.EthComLib.pinguut(self, ip_address, 5)
-        print('Returned value ' + str(ret[1]))
+        logger.debug('Returned value ' + str(ret[1]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
     def button_populatedefaults(self):
-        print('Pressed repopulate serial ports')
+        logger.debug('Pressed repopulate serial ports')
 
         self.cbTFP3ComPort.currentIndexChanged.disconnect(self.tfp3SerialPortChanged)
         self.cbScannerComPort.currentIndexChanged.disconnect(self.ScannerSerialPortChanged)
@@ -757,57 +791,57 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def tfp3SerialPortChanged(self):
         global tfp3_serial_port
-        print('TFP3 serial port changed....')
+        logger.debug('TFP3 serial port changed....')
         tfp3_serial_port = self.cbTFP3ComPort.currentText()
         index = self.cbTFP3ComPort.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('TFP3', 'COM_DESCRIPTION', tfp3_serial_port)
         fl.configfileWrite('TFP3', 'COM_PORT', port)
-        print('TFP3 port changed to  ' + tfp3_serial_port)
+        logger.debug('TFP3 port changed to  ' + tfp3_serial_port)
 
     # ****************************************************************************************************
     def ScannerSerialPortChanged(self):
         global scanner_serial_port
-        print('Scanner serial port changed....')
+        logger.debug('Scanner serial port changed....')
         scanner_serial_port = self.cbScannerComPort.currentText()
         index = self.cbScannerComPort.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('SCANNER', 'COM_DESCRIPTION', scanner_serial_port)
         fl.configfileWrite('SCANNER', 'COM_PORT', port)
-        print('Scanner port changed to ' + scanner_serial_port)
+        logger.debug('Scanner port changed to ' + scanner_serial_port)
 
     # ****************************************************************************************************
     def CycloneSerialPortChanged(self):
         global cyclone_serial_port
-        print('Cyclone serial port changed....')
+        logger.debug('Cyclone serial port changed....')
         cyclone_serial_port = self.cbCycloneComPort.currentText()
         index = self.cbCycloneComPort.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('CYCLONE', 'COM_DESCRIPTION', cyclone_serial_port)
         fl.configfileWrite('CYCLONE', 'COM_PORT',  port)
-        print('Cyclone port changed to ' + cyclone_serial_port)
+        logger.debug('Cyclone port changed to ' + cyclone_serial_port)
 
     # ****************************************************************************************************
     def ModbusSerialPortChanged(self):
         global modbus_serial_port
-        print('Modbus serial port changed....')
+        logger.debug('Modbus serial port changed....')
         modbus_serial_port = self.cbModbusComPort.currentText()
         index = self.cbModbusComPort.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('MODBUS', 'COM_DESCRIPTION', modbus_serial_port)
         fl.configfileWrite('MODBUS', 'COM_PORT', port)
-        print('Modbus port changed to ' + modbus_serial_port)
+        logger.debug('Modbus port changed to ' + modbus_serial_port)
 
     # ****************************************************************************************************
     def DemoJMSerialPortChanged(self):
         global demojm_serial_port
-        print('DEMOJM serial port changed....')
+        logger.debug('DEMOJM serial port changed....')
         demojm_serial_port = self.cbDemoJMComPort.currentText()
         index = self.DemoJM_Serialport.currentIndex()
         port = serial_ports_list[index]
         fl.configfileWrite('DEMOJM', 'COM_DESCRIPTION', demojm_serial_port)
         fl.configfileWrite('DEMOJM', 'COM_PORT', port)
-        print('DemoJM port changed to ' + demojm_serial_port)
+        logger.debug('DemoJM port changed to ' + demojm_serial_port)
         global DemoJM_Serialport
         try:
             demojm_serial_port = fl.configfileRead('DEMOJM', 'com_port')
@@ -816,18 +850,18 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
                                               stopbits=serial.STOPBITS_ONE,
                                               bytesize=serial.EIGHTBITS
                                               )
-            print('Opened demojm serial port on port ' + demojm_serial_port)
+            logger.debug('Opened demojm serial port on port ' + demojm_serial_port)
             #TODO reenable this
             #self.check_serial_event()
 
         except OSError as err:
-            print(err)
+            logger.debug(err)
         except ValueError as err:
-            print(err)
+            logger.debug(err)
         except SystemError as err:
-            print(err)
+            logger.debug(err)
         except NameError as err:
-            print(err)
+            logger.debug(err)
 
     # ****************************************************************************************************
     def collectserialports_command(self):
@@ -841,30 +875,30 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global serial_ports_list
 
         self.lblStatus.setText("Searching for serial ports...")
-        print("Searching for serial ports...")
+        logger.debug("Searching for serial ports...")
 
         time.sleep(1)
         # read serial port list OS and populate comboboxes
         ret = ml.SCML.collectSerialPorts(self)  # run serial port routine
 
         if ret[0] is True:
-            print('List->' + str(ret[1]))
-            print('modbus port->' + str(ret[3]))
-            print('modbus port description->' + str(ret[4]))
-            print('tfp3 port->' + str(ret[5]))
-            print('tfp3 port description->' + str(ret[6]))
-            print('scanner port->' + str(ret[7]))
-            print('scanner port description->' + str(ret[8]))
-            print('cyclone port' + str(ret[9]))
-            print('cyclone port description' + str(ret[10]))
-            print('demojm port' + str(ret[11]))
-            print('demojm port description' + str(ret[12]))
+            logger.debug('List->' + str(ret[1]))
+            logger.debug('modbus port->' + str(ret[3]))
+            logger.debug('modbus port description->' + str(ret[4]))
+            logger.debug('tfp3 port->' + str(ret[5]))
+            logger.debug('tfp3 port description->' + str(ret[6]))
+            logger.debug('scanner port->' + str(ret[7]))
+            logger.debug('scanner port description->' + str(ret[8]))
+            logger.debug('cyclone port' + str(ret[9]))
+            logger.debug('cyclone port description' + str(ret[10]))
+            logger.debug('demojm port' + str(ret[11]))
+            logger.debug('demojm port description' + str(ret[12]))
 
             if ret[1]:
                 serial_ports_list = ret[1]
-                print('ports->' + str(serial_ports_list))
+                logger.debug('ports->' + str(serial_ports_list))
                 serial_ports_descriptions = ret[2]
-                print('description->' + str(serial_ports_descriptions))
+                logger.debug('description->' + str(serial_ports_descriptions))
 
             self.cbTFP3ComPort.addItems(serial_ports_descriptions)
             self.cbScannerComPort.addItems(serial_ports_descriptions)
@@ -872,7 +906,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             self.cbModbusComPort.addItems(serial_ports_descriptions)
             self.cbDemoJMComPort.addItems(serial_ports_descriptions)
         else:
-            print('Error getting serial port list')
+            logger.debug('Error getting serial port list')
             self.lblStatus.setText('Error getting serial port list')
             time.sleep(2)
 
@@ -886,7 +920,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global demojm_serial_port
         global DemoJM_Serialport
 
-        print('Populating defaults...')
+        logger.debug('Populating defaults...')
         self.lblStatus.setText("Searching for serial ports...")
         time.sleep(1)
 
@@ -895,7 +929,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         global ip_address
 
         os_name = sl.supportLibrary.getOsPlatform(self)
-        print('os name->' + os_name)
+        logger.debug('os name->' + os_name)
 
         ip_address = fl.configfileRead('TELNET', 'ip_address')
 
@@ -953,12 +987,12 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
     # ****************************************************************************************************
     def error_display_popup(self, title, message):
-        print('error display')
+        logger.debug('error display')
         buttonReply = QMessageBox.question(self, title, message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if buttonReply == QMessageBox.Yes:
-            print('Yes clicked.')
+            logger.debug('Yes clicked.')
         else:
-            print('No clicked.')
+            logger.debug('No clicked.')
 
 # ****************************************************************************************************
 def main():

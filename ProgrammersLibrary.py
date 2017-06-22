@@ -2,6 +2,10 @@
 # via serial.  pass the serial port and action
 import serial
 import time
+import logging
+
+logger = logging.getLogger()
+
 
 cyclone_recv1 = b'jP&E,14,Universal_PEMBC0F62,none,0,0,Dec 12 2016,9.80,Rev. A,00:0d:01:bc:0f:62,0,1,K70FN1M0_EMMC,ArmCortex,'
 cyclone_recv2 = b'hP&E,14,Universal_PEMBC0F62,none,0,0,Dec 12 2016,9.80,Rev. A,00:0d:01:bc:0f:62,0,1,K70FN1M0_EMMC,Generic,'
@@ -17,7 +21,7 @@ def CycloneProgram(self, port, image):
             return False, 'Please select Cyclone serial port'
 
         try:
-            print('Looking for Cyclone programmer...')
+            logger.debug('Looking for Cyclone programmer...')
             self.lblStatus.setText('Looking for Cyclone programmer...')
             time.sleep(1)
             ser = serial.Serial()#(port, 115200, timeout=1)
@@ -28,21 +32,21 @@ def CycloneProgram(self, port, image):
             ser.timeout = 1
             ser.open()
         except:
-            print('Cyclone programmer not found...')
+            logger.debug('Cyclone programmer not found...')
             self.lblStatus.setText('Cyclone programmer not found...')
             return False, 'Cyclone programmer not found...'
         # port found send commands to identify what it is
         self.lblStatus.setText('Programming Cyclone...')
         ser.write(b'\x03\x01\x18\x5d')          # first command
-        print('SEND->\\x03\\x01\\x18\\x5d')     #
+        logger.debug('SEND->\\x03\\x01\\x18\\x5d')     #
         line = ser.read(2)                      # response should be 01 00
-        print('RECV->' + str(line))
+        logger.debug('RECV->' + str(line))
         ser.write(b'\x03\x01\x0B\x24')  # write command
-        print('SEND->\\x03\\x01\\x0B\\x24')
+        logger.debug('SEND->\\x03\\x01\\x0B\\x24')
         line = ser.readline()
-        print('RECV->' + str(line))
+        logger.debug('RECV->' + str(line))
         if line == cyclone_recv1 or cyclone_recv2:
-            print('RECV->' + str(line))
+            logger.debug('RECV->' + str(line))
             if image==1:
                 ser.write(b'\x04\x18\x1c\x01\x5f')  # command to select iamge 1
             if image==2:
@@ -52,39 +56,39 @@ def CycloneProgram(self, port, image):
             if image==4:
                 ser.write(b'\x04\x18\x1c\x04\x44')  # command to select iamge 4
             line = ser.readline()
-            print('RECV->' + str(line))
-            print('Cyclone programming Image ' +  str(image))
+            logger.debug('RECV->' + str(line))
+            logger.debug('Cyclone programming Image ' +  str(image))
             self.lblStatus.setText('Cyclone programming Image ' +  str(image))
             ser.write(b'\x03\x18\x41\x3f')  # command to start programming
-            print('SEND->\\x03\\x18\\x41\\x3f')
+            logger.debug('SEND->\\x03\\x18\\x41\\x3f')
             line = ser.read(2)  # Check for new line and CR     # response should be 01 ee
-            print('RECV->' + str(line))
+            logger.debug('RECV->' + str(line))
             finished = False
             # repeat this asking for status until cyclone responds
             while not finished:
                 ser.write(b'\x03\x18\x5f\x65')          # this is the command to start programming
                 time.sleep(0.5)
-                print('SEND->\\x03\\x18\\x5f\\x65')
+                logger.debug('SEND->\\x03\\x18\\x5f\\x65')
                 line = ser.readline()
-                print('RECV->' + str(line))
+                logger.debug('RECV->' + str(line))
                 if line == b'\x03\x01\x01\xee':          #responce will be 03 00 00 ee until we recv a 03 01 01 ee
                     ser.write(b'\x03\x18\x33\x66')       # send to get status
-                    print('SEND->\\x03\\x18\\x33\\x66')
+                    logger.debug('SEND->\\x03\\x18\\x33\\x66')
                     line = ser.readline()
-                    print('RECV->' + str(line))
+                    logger.debug('RECV->' + str(line))
                     if line == b'\x03\x00\x00\xee':
-                        print('Cyclone Success')
+                        logger.debug('Cyclone Success')
                         ser.close()
                         return True, 'Cyclone Programmer Success'
                         self.lblStatus.setText('Cyclone Programmer Success')
 
                     else:
-                        print("Error " + str(line[2]))
+                        logger.debug("Error " + str(line[2]))
                         ser.close()
                         self.lblStatus.setText('Cyclone programmer failed. Error ' + str(line[2]))
                         return False, 'Cyclone programmer failed. Error ' + str(line[2])
         else:
-            print('Did not find Cyclone programmer')
+            logger.debug('Did not find Cyclone programmer')
             self.lblStatus.setText('Did not find Cyclone programmer')
             return False, 'Did not find Cyclone Programmer'
 
@@ -97,13 +101,13 @@ def TFP3Program(self, port):
 
     try:
 
-        print('Looking for TFP3 programmer on port' + port)
+        logger.debug('Looking for TFP3 programmer on port' + port)
         self.lblStatus.setText('Looking for TFP3 programmer on port' + port)
         se = serial.Serial(port, 115200, timeout=5)
-        print('se->' + str(se))
-        print('Need to reset the programmer')
+        logger.debug('se->' + str(se))
+        logger.debug('Need to reset the programmer')
         se.write(b'z\r\n')
-        print('Resetting programmer')
+        logger.debug('Resetting programmer')
         self.lblStatus.setText('Resetting programmer')
         se.close()
         time.sleep(3)
@@ -111,21 +115,21 @@ def TFP3Program(self, port):
         time.sleep(3)
         y = se.readall()
         z = str(y).find('Silergy flash programmer')
-        print(y)
+        logger.debug(y)
         if (z > -1):
-            print('TFP3 programmer found')
+            logger.debug('TFP3 programmer found')
             time.sleep(2)
             se.write(b'p\r\n')
             x = se.read_all()
-            print("x->" +  str(x))
+            logger.debug("x->" +  str(x))
             se.close()
             # if x == b'Command Timeout\r\n':
             #     se.close()
-            #     print('Command timeout. Did not find UUT')
+            #     logger.debug('Command timeout. Did not find UUT')
             #     self.lblStatus.setText('Command timeout. Did not find UUT')
             #     return False, 'Command timeout. Did not find UUT'
             # else:
-            #     print('TFP3 programmer found')
+            #     logger.debug('TFP3 programmer found')
             #     self.lblStatus.setText('TFP3 programmer found')
             #     time.sleep(1)
             #     while True:
@@ -133,24 +137,24 @@ def TFP3Program(self, port):
             #         n = se.inWaiting()
             #         if n:
             #             data = se.read(n)
-            #             print(data)
+            #             logger.debug(data)
             #             if data.find(b'Command Timeout') > -1:
-            #                 print('UUT not found.  Timed out')
+            #                 logger.debug('UUT not found.  Timed out')
             #                 self.lblStatus.setText('UUT not found. Timed out')
             #                 return False, 'UUT not found.  TFP3 timeout programming'
             #             elif data.find(b'successful') > -1:
-            #                 print('TFP3 program success')
+            #                 logger.debug('TFP3 program success')
             #                 self.lblStatus.setText('TFP3 program success')
             #                 return True, 'TFP3 program success'
 
         else:
             se.close()
-            print("String not found Error")
+            logger.debug("String not found Error")
             return False, 'Error'
     except Exception as err:
         se.close()
         self.lblStatus.setText(err)
-        print(err)
+        logger.debug(err)
         return False, err
 #******************************************************************************************
 def main():
@@ -164,7 +168,7 @@ def main():
     if module == "B":
         ret = TFP3Program(tmpPort)
 
-    print(ret)
+    logger.debug(ret)
 
 
 
