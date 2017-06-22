@@ -2323,3 +2323,529 @@ function alertContents(e){ if ((http_request.readyState == 4) && (http_request.s
 2017-06-22 13:03:37,776 - DEBUG - Found Data->9905
 2017-06-22 13:03:37,776 - DEBUG - Returned value Webpage version is M22276-116 v3.39
 2017-06-22 13:03:37,776 - DEBUG - Returned value True
+2017-06-22 14:25:01,662 - DEBUG - Reading from config-> Section:CONFIG Key:file_ver Value: 1
+2017-06-22 14:25:01,662 - DEBUG - TFP3 relay pin 3
+2017-06-22 14:25:01,671 - DEBUG - Populating defaults...
+2017-06-22 14:25:02,672 - DEBUG - Searching for serial ports...
+2017-06-22 14:25:03,677 - DEBUG - -----------------------------------------
+2017-06-22 14:25:03,677 - DEBUG - COM4 - Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:25:03,678 - DEBUG - description->Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:25:03,678 - DEBUG - devicestr(COM4
+2017-06-22 14:25:03,678 - DEBUG - hwidstr(USB VID:PID=0C2E:096A SER=1
+2017-06-22 14:25:03,678 - DEBUG - interfacestr(None
+2017-06-22 14:25:03,678 - DEBUG - locationstr(None
+2017-06-22 14:25:03,678 - DEBUG - maufacturerstr(Honeywell International Inc.
+2017-06-22 14:25:03,678 - DEBUG - namestr(None
+2017-06-22 14:25:03,678 - DEBUG - pidstr(2410
+2017-06-22 14:25:03,678 - DEBUG - product->None
+2017-06-22 14:25:03,678 - DEBUG - serial number->1
+2017-06-22 14:25:03,678 - DEBUG - vid->3118
+2017-06-22 14:25:03,680 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:25:03,680 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,681 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:25:03,682 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:25:03,684 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,684 - DEBUG - -----------------------------------------
+2017-06-22 14:25:03,684 - DEBUG - COM1 - Communications Port (COM1)
+2017-06-22 14:25:03,684 - DEBUG - description->Communications Port (COM1)
+2017-06-22 14:25:03,684 - DEBUG - devicestr(COM1
+2017-06-22 14:25:03,685 - DEBUG - hwidstr(ACPI\PNP0501\0
+2017-06-22 14:25:03,685 - DEBUG - interfacestr(None
+2017-06-22 14:25:03,685 - DEBUG - locationstr(None
+2017-06-22 14:25:03,685 - DEBUG - maufacturerstr((Standard port types)
+2017-06-22 14:25:03,685 - DEBUG - namestr(None
+2017-06-22 14:25:03,685 - DEBUG - pidstr(None
+2017-06-22 14:25:03,685 - DEBUG - product->None
+2017-06-22 14:25:03,685 - DEBUG - serial number->None
+2017-06-22 14:25:03,685 - DEBUG - vid->None
+2017-06-22 14:25:03,686 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:25:03,687 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,688 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:25:03,689 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:25:03,690 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,690 - DEBUG - -----------------------------------------
+2017-06-22 14:25:03,690 - DEBUG - COM6 - USB Serial Port (COM6)
+2017-06-22 14:25:03,690 - DEBUG - description->USB Serial Port (COM6)
+2017-06-22 14:25:03,690 - DEBUG - devicestr(COM6
+2017-06-22 14:25:03,691 - DEBUG - hwidstr(USB VID:PID=0403:6001 SER=FT084MQXA
+2017-06-22 14:25:03,691 - DEBUG - interfacestr(None
+2017-06-22 14:25:03,691 - DEBUG - locationstr(None
+2017-06-22 14:25:03,691 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:25:03,691 - DEBUG - namestr(None
+2017-06-22 14:25:03,691 - DEBUG - pidstr(24577
+2017-06-22 14:25:03,691 - DEBUG - product->None
+2017-06-22 14:25:03,691 - DEBUG - serial number->FT084MQXA
+2017-06-22 14:25:03,691 - DEBUG - vid->1027
+2017-06-22 14:25:03,692 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:25:03,693 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,694 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:25:03,695 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:25:03,696 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,696 - DEBUG - -----------------------------------------
+2017-06-22 14:25:03,696 - DEBUG - COM45 - USB Serial Port (COM45)
+2017-06-22 14:25:03,696 - DEBUG - description->USB Serial Port (COM45)
+2017-06-22 14:25:03,696 - DEBUG - devicestr(COM45
+2017-06-22 14:25:03,696 - DEBUG - hwidstr(USB VID:PID=0403:6015 SER=FT0DICBKA
+2017-06-22 14:25:03,696 - DEBUG - interfacestr(None
+2017-06-22 14:25:03,697 - DEBUG - locationstr(None
+2017-06-22 14:25:03,697 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:25:03,697 - DEBUG - namestr(None
+2017-06-22 14:25:03,697 - DEBUG - pidstr(24597
+2017-06-22 14:25:03,697 - DEBUG - product->None
+2017-06-22 14:25:03,697 - DEBUG - serial number->FT0DICBKA
+2017-06-22 14:25:03,697 - DEBUG - vid->1027
+2017-06-22 14:25:03,698 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:25:03,699 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,700 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:25:03,701 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:25:03,702 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,702 - DEBUG - Serial scan complete...
+2017-06-22 14:25:03,702 - DEBUG - List->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:25:03,702 - DEBUG - modbus port->
+2017-06-22 14:25:03,702 - DEBUG - modbus port description->
+2017-06-22 14:25:03,702 - DEBUG - tfp3 port->
+2017-06-22 14:25:03,703 - DEBUG - tfp3 port description->
+2017-06-22 14:25:03,703 - DEBUG - scanner port->
+2017-06-22 14:25:03,703 - DEBUG - scanner port description->
+2017-06-22 14:25:03,703 - DEBUG - cyclone port
+2017-06-22 14:25:03,703 - DEBUG - cyclone port description
+2017-06-22 14:25:03,703 - DEBUG - demojm port
+2017-06-22 14:25:03,703 - DEBUG - demojm port description
+2017-06-22 14:25:03,703 - DEBUG - ports->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:25:03,703 - DEBUG - description->['Honeywell N5600 Series Area Image Engine (COM4)', 'Communications Port (COM1)', 'USB Serial Port (COM6)', 'USB Serial Port (COM45)', 'None']
+2017-06-22 14:25:03,703 - DEBUG - os name->Windows
+2017-06-22 14:25:03,704 - DEBUG - Reading from config-> Section:TELNET Key:ip_address Value: 192.168.1.99
+2017-06-22 14:25:03,705 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:03,706 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:25:03,707 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:25:03,708 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:25:03,710 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:25:10,366 - DEBUG - Getting Webpage version...
+2017-06-22 14:25:10,366 - DEBUG - Checking Webpage version...
+2017-06-22 14:25:10,369 - DEBUG - Starting new HTTP connection (1): 192.168.1.99
+2017-06-22 14:25:10,393 - DEBUG - http://192.168.1.99:80 "GET /devinfo.html HTTP/1.1" 200 None
+2017-06-22 14:25:10,915 - INFO - ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html> <head> <title>Information</title><meta name="viewport" content="width=device-width"><meta name="format-detection" content="telephone=no"><style>
+body { padding: 0px; margin: 0px; background-color: #ddd; font-family: Calibri, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: normal; color: #666666; }
+#wrap { width: 90%; max-width: 980px; margin: auto; background-color:#FFFFFF; padding: 0px; }
+#container th {text-align: right; color: #333333; font-weight:normal; }
+#container thead th { text-align: center; color: #666; }
+#container td { color: #000; font-weight: bold; }
+#deviceInfo th { text-align: left; color: #000; }
+#deviceInfo td { color: #fff; }
+h1, h2, h3, h4 { color: #0067a0; margin: 0; padding: 0 0 5px; }
+#header { background-color: #fff; background-image:url(HeaderBackground.png); background-repeat:repeat-x; height:81px; }
+#footer { background-color: #fff; background-image:url(FooterBackground.png); background-repeat:repeat-x; height:34px; color:#FFFFFF; text-align:right; font-size:10pt; vertical-align:middle; }
+.footerContent { padding-top:8px; padding-right:10px; }
+#firmwareVersion  { background-color: #4c4c4c; font-size:10pt; color:#FFFFFF; padding:2px; text-align:center; }
+#logo { height: 100px; width: 450px; }
+#logo-graphic { padding: 20px 20px 0px 20px; height: 41px; width: 450px; }
+#nav { padding: 0px 0px 0px 0px; float: left; width:auto; line-height: 100%; }
+#subNav { float:left; margin-left:40px; min-width:500px; width:auto; padding-top:9px; font-size:11pt; color:#000000; }
+#subNav a, #subNav a:active, #subNav a:visited { color:#000000; }
+#subNav a:hover { color:#FF0000; }
+#nav ul { margin: 0; padding: 0; }
+#shellmenu { line-height: 0; height: 0; }
+#shellmenu li { list-style-type: none; display: inline; }
+#shellmenu-text { display: none; }
+#mainmenu { display: inline; }
+#navContainer { width:auto; height:60px; background-color:#e4e4e4; border:2px solid #FFFFFF; border-bottom:0px; padding-bottom:2px; background-image:url(navBacking.png); background-repeat:repeat-x; }
+#currentLocation { background-color:#005f98; color:#FFFFFF; font-size:18pt; font-weight:bold; width:150px; height:60px; text-align: center; vertical-align: middle; line-height: 55px; float:left; }
+#nav a { color: #FFF; text-decoration: none; font-size: 1em; font-weight: bold; padding: 10px 0px; display: block; position: relative; width:122px; }
+.lastmenuitem a { padding: 0px 40px 22px 10px !important; }
+#nav a:hover { color: #0067A0; background-color: #e4e4e4; }
+#nav .current a { color: #000000; background-color: #e4e4e4; }
+#nav a img { border: 0; }
+.menuicon { width: 30px; }
+#deviceInfo { clear: both; margin: auto; padding: 10px 20px 50px; background-color: #0067a0; }
+.mainmenu-listitem { float: left; list-style-type: none; text-align: center; }
+#container { clear: both; padding: 20px; margin: 10px; background-color: #fff; }
+.error { color: red; }
+.menutext { padding: 0 5px; }
+.outfeedRight th { white-space: nowrap; }
+.outfeedRight td { white-space: nowrap; }
+.button { line-height: 1; }
+
+/* rules for full width devices, like desktops */
+@media only screen and (min-width: 1000px) { }
+
+/* rules for iPads and small devices, held portrait */
+@media only screen and (max-width: 999px) { 
+  .menutext { }
+  .menubreak { display: none; }  
+  #currentLocation { background-color:#005f98; color:#FFFFFF; font-size:18pt; font-weight:bold; width:100px; height:60px; text-align: center; vertical-align: middle; line-height: 55px; }
+  #navContainer { width:auto; height:60px; border:2px solid #FFFFFF; border-bottom:0px; padding-bottom:2px; }
+  #nav a { width:98px; }
+  #subNav { float:left; margin-left:30px; min-width:500px; width:auto; }
+  .lastmenuitem a { padding: 35px 40px 35px 10px !important; }  
+}
+
+/* rules for tablets, held portrait */
+@media only screen and (max-width: 768px) {
+  #logo { height: 80px; }  
+  #logo-graphic { padding: 15px 20px 0; }
+  #currentLocation { background-color:#005f98; color:#FFFFFF; font-size:16pt; font-weight:bold; width:100px; height:50px; text-align: center; vertical-align: middle; line-height: 50px; }
+  #navContainer { height:50px; }
+  #nav { clear: none; float: left; padding: 0; width: auto; }
+  #nav a { font-size:10.5pt; padding: 11px 10px; width:42px; color:#FFFFFF; }
+  #subNav { float:left; margin-left:15px; min-width:350px; width:auto; padding-top:3px; }
+  .lastmenuitem a { padding: 15px 10px !important; }
+  #nav a:hover { color: #0067A0; }
+  #deviceInfo { padding: 10px; }
+  #wrap { width:100%; }
+}
+
+/* rules for smart phones, held portrait */
+@media only screen and (max-width : 480px) {
+  #body { background: none; }
+  #logo { width: 350px; height: 68px; }
+  #logo-graphic { height: 32px; width: 350px; }
+  /* reveal the hidden Menu */
+  #shellmenu { line-height: 1.6px; height: 1.6px; }  
+  #currentLocation { display:none; }  
+  .menuicon { height: 15px; width: 15px; padding: 0 10px 0 0; }  
+  .menutext { display: inline; font-size: 90%; padding: 0; margin: 0; }
+  .mainmenu-listitem { text-align: left; }
+  #nav { width: auto; clear: none; float: left; padding: 0px 0 0 0px; background-color: #fff; font-weight: bold; }  
+  #subNav { font-size:10pt; padding-top:25px; }  
+  #shellmenu-text { display: block; padding: 0px 0px 0px 0px; color: #fff; background-color: #0067a0; }  
+  #header th, #header td { font-size: 80%; }
+  /* these are the new rules for the js powered dropdown menu */
+  #nav { padding: 0; margin: 0; }
+  #shellmenu { padding: 0px; background-color: #333; color: #fff; text-align: center; }
+  #shellmenu-text { padding: 10 0 30px; background: #fff; }
+  #shellmenu ul { display: none; list-style: none; margin-left: 0; padding-left: 0; margin-bottom: 0; }
+  #shellmenu ul.expanded { display: block; }
+  #shellmenu li a { display: block; position: relative; padding: 5px; border-top: 1px solid #ffffff; font-size: 90%; color: #ccc; text-decoration: none; width: 120px; }
+  .lastmenuitem a { padding: 5px !important; }
+  #navContainer { height:22px; }
+  #nav a { font-size:12pt; background: #666; color: #fff; width:110px; }
+  #nav a:hover { background: #0067a0; color: #fff; }
+ .mainmenu-listitem { float: none; }
+ .menu_button { display: block; text-align: left; color: #fff; background-color: #0067a0; text-decoration: none; width: 110px; }
+ .menu_button:hover { color: #fff; background: #0067a0; text-decoration: none; }
+  /* other rules */
+  #container { padding: 5px; margin: 5px; padding-top:50px; }  
+  #container th { font-size: 75%; }
+  #container td { font-size: 75%; }
+  #deviceInfo th, #deviceInfo td { font-size: 90%; }
+}
+
+@media only screen and (max-width : 360px) {
+    #logo { width: 200px; height: 68px; }
+    #logo-graphic { height: 18px; width: 200px; }    
+    #logoRight { display:none; }
+    #logo-graphic-right { display:none; }
+}
+</style>
+ <script type="text/javascript"> 
+var http_request = false;
+function makeRequest(url, fn) { 
+url = window.location.protocol +" //" + document.domain + "/" + url + "?sid=" + Math.random(); 
+data_received = 1; 
+if (window.XMLHttpRequest) { http_request = new XMLHttpRequest(); if (http_request.overrideMimeType) { http_request.overrideMimeType('text/xml'); } } 
+else if (window.ActiveXObject) { try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { } } } 
+if (!http_request) { alert('Giving up :( Cannot create an XMLHTTP instance'); return false; } 
+http_request.onreadystatechange = function() { fn(http_request); }; 
+http_request.open('GET', url, true); http_request.send(null); 
+}
+function alertContents(e){ if ((http_request.readyState == 4) && (http_request.status == 200)) { parse_vars(http_request.responseText); } data_received = 0; }
+</script>
+ <script>
+        var oNavClass;
+        var data_received = 0;
+
+        function toggleNav()
+        {
+            var e = document.getElementById( 'mainmenu' );
+            var c = e.className;
+            if ( oNavClass === undefined )
+            {
+                oNavClass = c;
+            }
+            e.className = /expanded/.test( c ) ? oNavClass : oNavClass + ' expanded';
+        }
+
+        function onWindowLoad()
+        {
+            setCurrentTab( 'home', 'Dev. Info' );
+            var separator = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            var subHtml = "<a href='home.html'>Summary</a>" + separator + "Device Info" + separator + "<a href='devCommInfo.html'>Comm. Info</a>";
+            setSubNav( subHtml );
+            checkAlarms();
+        }
+        window.onload = onWindowLoad;
+    </script> </head> <body> <div id="wrap"> <div id="banner"> ﻿<script language="javascript" type="text/javascript">
+    function setCurrentTab(e,n) {document.getElementById("li"+e).className += " current"; document.getElementById("currentLocation").innerHTML=n; }
+    function setSubNav(e){document.getElementById("subNav").innerHTML=e;}
+    function addCssClass(s){var a;a=document.getElementById(s);a.className=a.className+" "+myClassName;}
+    function removeCssClass(e,s){var a; var c=" "+s;a=document.getElementById(e);a.className=a.className.replace(c,"")}
+    function checkAlarms() { var INFALM = 0; var OUTALM = 0; document.getElementById("alarmNotice").style.display=0!=INFALM||0!=OUTALM?"block":"none"; }
+</script>
+<div id="header"><div id="logo"><img src="StarLineLogo.png" alt="Logo" title="Universal Electric Corp" id="logo-graphic" /></div></div>
+<div id="firmwareVersion"><div id="alarmNotice" style="background-color:#FF0000; border:1px solid #000000; padding:2px; font-size:11.5pt; display:none;">
+<span style="font-weight:bold; color:#FFFFFF;">ALARM</span>: <a href="alarms.html" style="color:#FFFFFF;" title="Click to inspect alarm">Inspect alarm condition</a></div>Firmware Version: M22276-116 v3.39</div>
+<div id="navContainer"><div id="currentLocation"></div><div id="nav"><nav id="shellmenu">
+<span id="shellmenu-text"><a class="menu_button" href="#footer_nav" onclick="toggleNav(); return false;">&#9776; MENU</a></span>
+<ul id="mainmenu">
+<li id="lihome" class="mainmenu-listitem"><a href="home.html"><span class="menubreak"><br></span><span class="menutext">Home</span></a></li>
+<li id="liinfeeds" class="mainmenu-listitem"><a href="infeeds.html"><span class="menubreak"><br></span><span class="menutext">Feed</span></a></li>
+<li id="lioutlets" class="mainmenu-listitem"><a href="outlet.html"><span class="menubreak"><br></span><span class="menutext">Outlet</span></a></li>
+<li id="lialarms" class="mainmenu-listitem"><a href="alarms.html"><span class="menubreak"><br></span><span class="menutext">Alarm</span></a></li>
+<li id="liconfig" class="mainmenu-listitem"><a href="devconfig.html"><span class="menubreak"><br></span><span class="menutext">Config</span></a></li>
+</ul></div><div id="subNav"></div></div>
+ </div> <div id="container"> <table> <tbody> <tr> <th> Device Name: </th> <td> CPM </td> </tr> <tr> <th> Device ID: </th> <td> ID </td> </tr> <tr> <th> Device Location: </th> <td> Location </td> </tr> <tr> <th> Catalog Number: </th> <td> Type </td> </tr> <tr> <th> Product Serial Number: </th> <td>  </td> </tr> <tr> <th> Meter Serial Number: </th> <td> 1002264 </td> </tr> <tr> <th> Ethernet IP Address: </th> <td> 192.168.1.99 </td> </tr> <tr> <th> Wi-Fi IP Address: </th> <td> N/A </td> </tr> <tr> <th> Modbus Address: </th> <td> 1 </td> </tr> <tr> <th> BACnet Device Instance: </th> <td> 99 </td> </tr> <tr> <th> Web Page Version: </th> <td> UEC025_ENG </td> </tr> <tr> <th> Firmware Version: </th> <td> M22276-116 v3.39 </td> </tr> <tr> <th> Meter Version: </th> <td> V1.20 </td> </tr> <tr> <th> WiFi Version: </th> <td>  </td> </tr> <tr> <th> Hardware Version: </th> <td> R22276-197-E-LF-171 </td> </tr> <tr> <th> Calibration Date: </th> <td>  </td> </tr> </tbody> </table> </div> ﻿<div id="footer"><div class="footerContent">&copy; Universal Electric Corp. 2015</div></div>
+ </div> </body> </html>
+2017-06-22 14:25:10,918 - DEBUG - Version->M22276-116 v3.39
+2017-06-22 14:25:10,918 - DEBUG - Found Data->9905
+2017-06-22 14:25:10,918 - DEBUG - Returned value Webpage version is M22276-116 v3.39
+2017-06-22 14:25:10,918 - DEBUG - Returned value True
+2017-06-22 14:25:16,113 - DEBUG - Reading Modbus register...
+2017-06-22 14:25:22,813 - DEBUG - Reading from config-> Section:MODBUS Key:com_port Value: COM6
+2017-06-22 14:25:22,814 - DEBUG - Reading from config-> Section:MODBUS Key:slave_address Value: 1
+2017-06-22 14:25:22,835 - DEBUG - Reading from config-> Section:MODBUS Key:time_out Value: 2000
+2017-06-22 14:25:22,838 - DEBUG - Reading from config-> Section:MODBUS Key:data_bits Value: 8
+2017-06-22 14:25:22,840 - DEBUG - Reading from config-> Section:MODBUS Key:parity Value: ODD
+2017-06-22 14:25:22,842 - DEBUG - Reading from config-> Section:MODBUS Key:baud_rate Value: 19200
+2017-06-22 14:25:22,845 - DEBUG - Reading from config-> Section:MODBUS Key:stop_bits Value: 1
+2017-06-22 14:25:22,863 - DEBUG - Value-> v3.39
+2017-06-22 14:25:22,863 - DEBUG - Returned value  v3.39
+2017-06-22 14:25:22,863 - DEBUG - Returned value True
+2017-06-22 14:38:18,116 - DEBUG - Reading from config-> Section:CONFIG Key:file_ver Value: 1
+2017-06-22 14:38:18,116 - DEBUG - TFP3 relay pin 3
+2017-06-22 14:38:18,125 - DEBUG - Populating defaults...
+2017-06-22 14:38:19,126 - DEBUG - Searching for serial ports...
+2017-06-22 14:38:20,131 - DEBUG - -----------------------------------------
+2017-06-22 14:38:20,131 - DEBUG - COM4 - Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:38:20,131 - DEBUG - description->Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:38:20,131 - DEBUG - devicestr(COM4
+2017-06-22 14:38:20,132 - DEBUG - hwidstr(USB VID:PID=0C2E:096A SER=1
+2017-06-22 14:38:20,132 - DEBUG - interfacestr(None
+2017-06-22 14:38:20,132 - DEBUG - locationstr(None
+2017-06-22 14:38:20,132 - DEBUG - maufacturerstr(Honeywell International Inc.
+2017-06-22 14:38:20,132 - DEBUG - namestr(None
+2017-06-22 14:38:20,132 - DEBUG - pidstr(2410
+2017-06-22 14:38:20,132 - DEBUG - product->None
+2017-06-22 14:38:20,132 - DEBUG - serial number->1
+2017-06-22 14:38:20,132 - DEBUG - vid->3118
+2017-06-22 14:38:20,133 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:38:20,134 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,135 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:38:20,136 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:38:20,137 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,138 - DEBUG - -----------------------------------------
+2017-06-22 14:38:20,138 - DEBUG - COM1 - Communications Port (COM1)
+2017-06-22 14:38:20,138 - DEBUG - description->Communications Port (COM1)
+2017-06-22 14:38:20,138 - DEBUG - devicestr(COM1
+2017-06-22 14:38:20,138 - DEBUG - hwidstr(ACPI\PNP0501\0
+2017-06-22 14:38:20,138 - DEBUG - interfacestr(None
+2017-06-22 14:38:20,138 - DEBUG - locationstr(None
+2017-06-22 14:38:20,138 - DEBUG - maufacturerstr((Standard port types)
+2017-06-22 14:38:20,138 - DEBUG - namestr(None
+2017-06-22 14:38:20,138 - DEBUG - pidstr(None
+2017-06-22 14:38:20,138 - DEBUG - product->None
+2017-06-22 14:38:20,138 - DEBUG - serial number->None
+2017-06-22 14:38:20,139 - DEBUG - vid->None
+2017-06-22 14:38:20,140 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:38:20,140 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,141 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:38:20,142 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:38:20,144 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,144 - DEBUG - -----------------------------------------
+2017-06-22 14:38:20,144 - DEBUG - COM6 - USB Serial Port (COM6)
+2017-06-22 14:38:20,144 - DEBUG - description->USB Serial Port (COM6)
+2017-06-22 14:38:20,144 - DEBUG - devicestr(COM6
+2017-06-22 14:38:20,144 - DEBUG - hwidstr(USB VID:PID=0403:6001 SER=FT084MQXA
+2017-06-22 14:38:20,145 - DEBUG - interfacestr(None
+2017-06-22 14:38:20,145 - DEBUG - locationstr(None
+2017-06-22 14:38:20,145 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:38:20,145 - DEBUG - namestr(None
+2017-06-22 14:38:20,145 - DEBUG - pidstr(24577
+2017-06-22 14:38:20,145 - DEBUG - product->None
+2017-06-22 14:38:20,145 - DEBUG - serial number->FT084MQXA
+2017-06-22 14:38:20,145 - DEBUG - vid->1027
+2017-06-22 14:38:20,146 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:38:20,147 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,148 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:38:20,149 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:38:20,150 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,150 - DEBUG - -----------------------------------------
+2017-06-22 14:38:20,150 - DEBUG - COM45 - USB Serial Port (COM45)
+2017-06-22 14:38:20,150 - DEBUG - description->USB Serial Port (COM45)
+2017-06-22 14:38:20,150 - DEBUG - devicestr(COM45
+2017-06-22 14:38:20,150 - DEBUG - hwidstr(USB VID:PID=0403:6015 SER=FT0DICBKA
+2017-06-22 14:38:20,151 - DEBUG - interfacestr(None
+2017-06-22 14:38:20,151 - DEBUG - locationstr(None
+2017-06-22 14:38:20,151 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:38:20,151 - DEBUG - namestr(None
+2017-06-22 14:38:20,151 - DEBUG - pidstr(24597
+2017-06-22 14:38:20,151 - DEBUG - product->None
+2017-06-22 14:38:20,151 - DEBUG - serial number->FT0DICBKA
+2017-06-22 14:38:20,151 - DEBUG - vid->1027
+2017-06-22 14:38:20,152 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:38:20,153 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,154 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:38:20,155 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:38:20,156 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,156 - DEBUG - Serial scan complete...
+2017-06-22 14:38:20,156 - DEBUG - List->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:38:20,156 - DEBUG - modbus port->
+2017-06-22 14:38:20,156 - DEBUG - modbus port description->
+2017-06-22 14:38:20,157 - DEBUG - tfp3 port->
+2017-06-22 14:38:20,157 - DEBUG - tfp3 port description->
+2017-06-22 14:38:20,157 - DEBUG - scanner port->
+2017-06-22 14:38:20,157 - DEBUG - scanner port description->
+2017-06-22 14:38:20,157 - DEBUG - cyclone port
+2017-06-22 14:38:20,157 - DEBUG - cyclone port description
+2017-06-22 14:38:20,157 - DEBUG - demojm port
+2017-06-22 14:38:20,157 - DEBUG - demojm port description
+2017-06-22 14:38:20,157 - DEBUG - ports->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:38:20,157 - DEBUG - description->['Honeywell N5600 Series Area Image Engine (COM4)', 'Communications Port (COM1)', 'USB Serial Port (COM6)', 'USB Serial Port (COM45)', 'None']
+2017-06-22 14:38:20,157 - DEBUG - os name->Windows
+2017-06-22 14:38:20,158 - DEBUG - Reading from config-> Section:TELNET Key:ip_address Value: 192.168.1.99
+2017-06-22 14:38:20,159 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:20,160 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:38:20,162 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:38:20,162 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:38:20,163 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:38:26,924 - DEBUG - Getting WIFI version...
+2017-06-22 14:38:26,925 - DEBUG - Checking WIFI version...
+2017-06-22 14:38:26,945 - DEBUG - login data-b'$login,factory,OK*13\r\n'
+2017-06-22 14:38:26,947 - DEBUG - recv data-b'$wv,g,,OK*4e\r\n'
+2017-06-22 14:38:26,947 - DEBUG - return data->
+2017-06-22 14:38:26,948 - DEBUG - Returned value WIFI not installed
+2017-06-22 14:38:26,948 - DEBUG - Returned value True
+2017-06-22 14:39:05,042 - DEBUG - Reading from config-> Section:CONFIG Key:file_ver Value: 1
+2017-06-22 14:39:05,042 - DEBUG - TFP3 relay pin 3
+2017-06-22 14:39:05,051 - DEBUG - Populating defaults...
+2017-06-22 14:39:06,053 - DEBUG - Searching for serial ports...
+2017-06-22 14:39:07,058 - DEBUG - -----------------------------------------
+2017-06-22 14:39:07,058 - DEBUG - COM4 - Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:39:07,058 - DEBUG - description->Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:39:07,058 - DEBUG - devicestr(COM4
+2017-06-22 14:39:07,058 - DEBUG - hwidstr(USB VID:PID=0C2E:096A SER=1
+2017-06-22 14:39:07,058 - DEBUG - interfacestr(None
+2017-06-22 14:39:07,058 - DEBUG - locationstr(None
+2017-06-22 14:39:07,058 - DEBUG - maufacturerstr(Honeywell International Inc.
+2017-06-22 14:39:07,058 - DEBUG - namestr(None
+2017-06-22 14:39:07,059 - DEBUG - pidstr(2410
+2017-06-22 14:39:07,059 - DEBUG - product->None
+2017-06-22 14:39:07,059 - DEBUG - serial number->1
+2017-06-22 14:39:07,059 - DEBUG - vid->3118
+2017-06-22 14:39:07,060 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:39:07,061 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,062 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:39:07,063 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:39:07,064 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,064 - DEBUG - -----------------------------------------
+2017-06-22 14:39:07,064 - DEBUG - COM1 - Communications Port (COM1)
+2017-06-22 14:39:07,064 - DEBUG - description->Communications Port (COM1)
+2017-06-22 14:39:07,064 - DEBUG - devicestr(COM1
+2017-06-22 14:39:07,065 - DEBUG - hwidstr(ACPI\PNP0501\0
+2017-06-22 14:39:07,065 - DEBUG - interfacestr(None
+2017-06-22 14:39:07,065 - DEBUG - locationstr(None
+2017-06-22 14:39:07,065 - DEBUG - maufacturerstr((Standard port types)
+2017-06-22 14:39:07,065 - DEBUG - namestr(None
+2017-06-22 14:39:07,065 - DEBUG - pidstr(None
+2017-06-22 14:39:07,065 - DEBUG - product->None
+2017-06-22 14:39:07,065 - DEBUG - serial number->None
+2017-06-22 14:39:07,065 - DEBUG - vid->None
+2017-06-22 14:39:07,066 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:39:07,067 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,068 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:39:07,069 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:39:07,071 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,071 - DEBUG - -----------------------------------------
+2017-06-22 14:39:07,071 - DEBUG - COM6 - USB Serial Port (COM6)
+2017-06-22 14:39:07,071 - DEBUG - description->USB Serial Port (COM6)
+2017-06-22 14:39:07,071 - DEBUG - devicestr(COM6
+2017-06-22 14:39:07,071 - DEBUG - hwidstr(USB VID:PID=0403:6001 SER=FT084MQXA
+2017-06-22 14:39:07,071 - DEBUG - interfacestr(None
+2017-06-22 14:39:07,071 - DEBUG - locationstr(None
+2017-06-22 14:39:07,071 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:39:07,072 - DEBUG - namestr(None
+2017-06-22 14:39:07,072 - DEBUG - pidstr(24577
+2017-06-22 14:39:07,072 - DEBUG - product->None
+2017-06-22 14:39:07,072 - DEBUG - serial number->FT084MQXA
+2017-06-22 14:39:07,072 - DEBUG - vid->1027
+2017-06-22 14:39:07,073 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:39:07,074 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,075 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:39:07,076 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:39:07,077 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,077 - DEBUG - -----------------------------------------
+2017-06-22 14:39:07,077 - DEBUG - COM45 - USB Serial Port (COM45)
+2017-06-22 14:39:07,077 - DEBUG - description->USB Serial Port (COM45)
+2017-06-22 14:39:07,077 - DEBUG - devicestr(COM45
+2017-06-22 14:39:07,077 - DEBUG - hwidstr(USB VID:PID=0403:6015 SER=FT0DICBKA
+2017-06-22 14:39:07,077 - DEBUG - interfacestr(None
+2017-06-22 14:39:07,077 - DEBUG - locationstr(None
+2017-06-22 14:39:07,077 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:39:07,078 - DEBUG - namestr(None
+2017-06-22 14:39:07,078 - DEBUG - pidstr(24597
+2017-06-22 14:39:07,078 - DEBUG - product->None
+2017-06-22 14:39:07,078 - DEBUG - serial number->FT0DICBKA
+2017-06-22 14:39:07,078 - DEBUG - vid->1027
+2017-06-22 14:39:07,079 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:39:07,080 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,081 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:39:07,082 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:39:07,083 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,083 - DEBUG - Serial scan complete...
+2017-06-22 14:39:07,083 - DEBUG - List->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:39:07,083 - DEBUG - modbus port->
+2017-06-22 14:39:07,083 - DEBUG - modbus port description->
+2017-06-22 14:39:07,083 - DEBUG - tfp3 port->
+2017-06-22 14:39:07,083 - DEBUG - tfp3 port description->
+2017-06-22 14:39:07,083 - DEBUG - scanner port->
+2017-06-22 14:39:07,084 - DEBUG - scanner port description->
+2017-06-22 14:39:07,084 - DEBUG - cyclone port
+2017-06-22 14:39:07,084 - DEBUG - cyclone port description
+2017-06-22 14:39:07,084 - DEBUG - demojm port
+2017-06-22 14:39:07,084 - DEBUG - demojm port description
+2017-06-22 14:39:07,084 - DEBUG - ports->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:39:07,084 - DEBUG - description->['Honeywell N5600 Series Area Image Engine (COM4)', 'Communications Port (COM1)', 'USB Serial Port (COM6)', 'USB Serial Port (COM45)', 'None']
+2017-06-22 14:39:07,084 - DEBUG - os name->Windows
+2017-06-22 14:39:07,085 - DEBUG - Reading from config-> Section:TELNET Key:ip_address Value: 192.168.1.99
+2017-06-22 14:39:07,086 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,087 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:39:07,088 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:39:07,089 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:39:07,090 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:39:07,761 - DEBUG - Rebooting unit...
+2017-06-22 14:39:08,762 - DEBUG - Rebooting unit 192.168.1.99
+2017-06-22 14:39:08,766 - DEBUG - b'\xff\xfb\x03\xff\xfd\x03\xff\xfb\x01\xff\xfb\x00\xff\xfd\x00'
+2017-06-22 14:39:08,769 - DEBUG - b'$login,factory,OK*13\r\n'
+2017-06-22 14:39:08,775 - DEBUG - b'$reboot,OK*29\r\n'
+2017-06-22 14:39:08,775 - DEBUG - Reboot command accepted please wait.
+2017-06-22 14:39:13,776 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:39:14,399 - DEBUG - Response->1
+2017-06-22 14:39:14,399 - DEBUG - 1
+2017-06-22 14:39:14,399 - DEBUG - 192.168.1.99 is down!
+2017-06-22 14:39:14,399 - DEBUG - val->(False, '192.168.1.99 is down!')
+2017-06-22 14:39:14,399 - DEBUG - Waiting for unit to respond 1 seconds
+2017-06-22 14:39:15,400 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:39:16,399 - DEBUG - Response->1
+2017-06-22 14:39:16,399 - DEBUG - 1
+2017-06-22 14:39:16,399 - DEBUG - 192.168.1.99 is down!
+2017-06-22 14:39:16,399 - DEBUG - val->(False, '192.168.1.99 is down!')
+2017-06-22 14:39:16,399 - DEBUG - Waiting for unit to respond 2 seconds
+2017-06-22 14:39:17,400 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:39:18,398 - DEBUG - Response->1
+2017-06-22 14:39:18,399 - DEBUG - 1
+2017-06-22 14:39:18,399 - DEBUG - 192.168.1.99 is down!
+2017-06-22 14:39:18,399 - DEBUG - val->(False, '192.168.1.99 is down!')
+2017-06-22 14:39:18,399 - DEBUG - Waiting for unit to respond 3 seconds
+2017-06-22 14:39:19,400 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:39:20,399 - DEBUG - Response->1
+2017-06-22 14:39:20,399 - DEBUG - 1
+2017-06-22 14:39:20,399 - DEBUG - 192.168.1.99 is down!
+2017-06-22 14:39:20,399 - DEBUG - val->(False, '192.168.1.99 is down!')
+2017-06-22 14:39:20,399 - DEBUG - Waiting for unit to respond 4 seconds
+2017-06-22 14:39:21,400 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:39:21,415 - DEBUG - Response->0
+2017-06-22 14:39:21,415 - DEBUG - 0
+2017-06-22 14:39:21,415 - DEBUG - 192.168.1.99 is up!
+2017-06-22 14:39:21,415 - DEBUG - val->(True, '192.168.1.99 is up!')
+2017-06-22 14:39:21,415 - DEBUG - Successfully reset...
+2017-06-22 14:39:21,416 - DEBUG - Returned value Successfully reset...
+2017-06-22 14:39:21,416 - DEBUG - Returned value True

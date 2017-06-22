@@ -957,7 +957,7 @@ class EthComLib(object):
             founddata = data.find('Firmware Version:')
             if founddata != -1:
                 version = data[founddata + 18:founddata + 34]
-                print("Version->" + str(version))
+                logger.debug("Version->" + str(version))
                 logger.debug("Found Data->" + str(founddata))
 
             if not data:

@@ -5,8 +5,9 @@ except ImportError:
 
 import sys
 from PyQt5.QtWidgets import QApplication
+import logging
 
-
+logger = logging.getLogger()
 
 class supportLibrary():
 
