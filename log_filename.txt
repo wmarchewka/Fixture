@@ -2849,3 +2849,547 @@ function alertContents(e){ if ((http_request.readyState == 4) && (http_request.s
 2017-06-22 14:39:21,415 - DEBUG - Successfully reset...
 2017-06-22 14:39:21,416 - DEBUG - Returned value Successfully reset...
 2017-06-22 14:39:21,416 - DEBUG - Returned value True
+2017-06-22 14:47:27,905 - DEBUG - Reading Modbus register...
+2017-06-22 14:47:30,827 - DEBUG - Reading from config-> Section:MODBUS Key:com_port Value: COM6
+2017-06-22 14:47:30,828 - DEBUG - Reading from config-> Section:MODBUS Key:slave_address Value: 1
+2017-06-22 14:47:30,844 - DEBUG - Reading from config-> Section:MODBUS Key:time_out Value: 2000
+2017-06-22 14:47:30,846 - DEBUG - Reading from config-> Section:MODBUS Key:data_bits Value: 8
+2017-06-22 14:47:30,849 - DEBUG - Reading from config-> Section:MODBUS Key:parity Value: ODD
+2017-06-22 14:47:30,851 - DEBUG - Reading from config-> Section:MODBUS Key:baud_rate Value: 19200
+2017-06-22 14:47:30,854 - DEBUG - Reading from config-> Section:MODBUS Key:stop_bits Value: 1
+2017-06-22 14:47:30,888 - DEBUG - Value-> v3.39
+2017-06-22 14:47:30,888 - DEBUG - Returned value  v3.39
+2017-06-22 14:47:30,888 - DEBUG - Returned value True
+2017-06-22 14:47:35,361 - DEBUG - Starting TFP3 programmer on port None
+2017-06-22 14:47:35,363 - DEBUG - Reading from config-> Section:TFP3 Key:com_port Value: None
+2017-06-22 14:47:35,363 - DEBUG - Returned value Please select TFP3 serial port
+2017-06-22 14:47:35,363 - DEBUG - Returned value False
+2017-06-22 14:47:39,053 - DEBUG - Programming cyclone !
+2017-06-22 14:47:39,055 - DEBUG - Reading from config-> Section:CYCLONE Key:com_port Value: COM45
+2017-06-22 14:47:39,055 - DEBUG - Looking for Cyclone programmer...
+2017-06-22 14:47:40,078 - DEBUG - SEND->\x03\x01\x18\x5d
+2017-06-22 14:47:41,079 - DEBUG - RECV->b''
+2017-06-22 14:47:41,079 - DEBUG - SEND->\x03\x01\x0B\x24
+2017-06-22 14:47:42,081 - DEBUG - RECV->b''
+2017-06-22 14:47:42,081 - DEBUG - RECV->b''
+2017-06-22 14:47:43,081 - DEBUG - RECV->b''
+2017-06-22 14:47:43,081 - DEBUG - Cyclone programming Image 3
+2017-06-22 14:47:43,081 - DEBUG - SEND->\x03\x18\x41\x3f
+2017-06-22 14:47:44,082 - DEBUG - RECV->b''
+2017-06-22 14:47:44,584 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:45,585 - DEBUG - RECV->b''
+2017-06-22 14:47:46,086 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:47,087 - DEBUG - RECV->b''
+2017-06-22 14:47:47,588 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:48,588 - DEBUG - RECV->b''
+2017-06-22 14:47:49,089 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:50,090 - DEBUG - RECV->b''
+2017-06-22 14:47:50,591 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:51,592 - DEBUG - RECV->b''
+2017-06-22 14:47:52,093 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:53,093 - DEBUG - RECV->b''
+2017-06-22 14:47:53,594 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:54,594 - DEBUG - RECV->b''
+2017-06-22 14:47:55,095 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:56,095 - DEBUG - RECV->b''
+2017-06-22 14:47:56,597 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:57,598 - DEBUG - RECV->b''
+2017-06-22 14:47:58,099 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:47:59,100 - DEBUG - RECV->b''
+2017-06-22 14:47:59,601 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:00,602 - DEBUG - RECV->b''
+2017-06-22 14:48:01,103 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:02,104 - DEBUG - RECV->b''
+2017-06-22 14:48:02,605 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:03,606 - DEBUG - RECV->b''
+2017-06-22 14:48:04,107 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:05,107 - DEBUG - RECV->b''
+2017-06-22 14:48:05,609 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:06,609 - DEBUG - RECV->b''
+2017-06-22 14:48:07,110 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:08,110 - DEBUG - RECV->b''
+2017-06-22 14:48:08,611 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:09,612 - DEBUG - RECV->b''
+2017-06-22 14:48:10,113 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:11,113 - DEBUG - RECV->b''
+2017-06-22 14:48:11,614 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:12,614 - DEBUG - RECV->b''
+2017-06-22 14:48:13,115 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:14,115 - DEBUG - RECV->b''
+2017-06-22 14:48:14,617 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:15,617 - DEBUG - RECV->b''
+2017-06-22 14:48:16,118 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:17,119 - DEBUG - RECV->b''
+2017-06-22 14:48:17,620 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:18,621 - DEBUG - RECV->b''
+2017-06-22 14:48:19,122 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:20,123 - DEBUG - RECV->b''
+2017-06-22 14:48:20,624 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:21,624 - DEBUG - RECV->b''
+2017-06-22 14:48:22,125 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:23,126 - DEBUG - RECV->b''
+2017-06-22 14:48:23,627 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:24,628 - DEBUG - RECV->b''
+2017-06-22 14:48:25,128 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:26,128 - DEBUG - RECV->b''
+2017-06-22 14:48:26,630 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:27,631 - DEBUG - RECV->b''
+2017-06-22 14:48:28,132 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:29,132 - DEBUG - RECV->b''
+2017-06-22 14:48:29,633 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:30,633 - DEBUG - RECV->b''
+2017-06-22 14:48:31,134 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:32,135 - DEBUG - RECV->b''
+2017-06-22 14:48:32,636 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:33,636 - DEBUG - RECV->b''
+2017-06-22 14:48:34,137 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:35,137 - DEBUG - RECV->b''
+2017-06-22 14:48:35,638 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:36,638 - DEBUG - RECV->b''
+2017-06-22 14:48:37,139 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:48:38,139 - DEBUG - RECV->b''
+2017-06-22 14:48:38,640 - DEBUG - SEND->\x03\x18\x5f\x65
+2017-06-22 14:54:55,553 - DEBUG - Reading from config-> Section:CONFIG Key:file_ver Value: 1
+2017-06-22 14:54:55,553 - DEBUG - TFP3 relay pin 3
+2017-06-22 14:54:55,561 - DEBUG - Populating defaults...
+2017-06-22 14:54:56,563 - DEBUG - Searching for serial ports...
+2017-06-22 14:54:57,568 - DEBUG - -----------------------------------------
+2017-06-22 14:54:57,568 - DEBUG - COM4 - Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:54:57,568 - DEBUG - description->Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:54:57,568 - DEBUG - devicestr(COM4
+2017-06-22 14:54:57,568 - DEBUG - hwidstr(USB VID:PID=0C2E:096A SER=1
+2017-06-22 14:54:57,568 - DEBUG - interfacestr(None
+2017-06-22 14:54:57,569 - DEBUG - locationstr(None
+2017-06-22 14:54:57,569 - DEBUG - maufacturerstr(Honeywell International Inc.
+2017-06-22 14:54:57,569 - DEBUG - namestr(None
+2017-06-22 14:54:57,569 - DEBUG - pidstr(2410
+2017-06-22 14:54:57,569 - DEBUG - product->None
+2017-06-22 14:54:57,569 - DEBUG - serial number->1
+2017-06-22 14:54:57,569 - DEBUG - vid->3118
+2017-06-22 14:54:57,570 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:54:57,571 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,572 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:54:57,573 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:54:57,575 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,575 - DEBUG - -----------------------------------------
+2017-06-22 14:54:57,575 - DEBUG - COM1 - Communications Port (COM1)
+2017-06-22 14:54:57,575 - DEBUG - description->Communications Port (COM1)
+2017-06-22 14:54:57,575 - DEBUG - devicestr(COM1
+2017-06-22 14:54:57,575 - DEBUG - hwidstr(ACPI\PNP0501\0
+2017-06-22 14:54:57,576 - DEBUG - interfacestr(None
+2017-06-22 14:54:57,576 - DEBUG - locationstr(None
+2017-06-22 14:54:57,576 - DEBUG - maufacturerstr((Standard port types)
+2017-06-22 14:54:57,576 - DEBUG - namestr(None
+2017-06-22 14:54:57,576 - DEBUG - pidstr(None
+2017-06-22 14:54:57,576 - DEBUG - product->None
+2017-06-22 14:54:57,576 - DEBUG - serial number->None
+2017-06-22 14:54:57,576 - DEBUG - vid->None
+2017-06-22 14:54:57,577 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:54:57,578 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,579 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:54:57,580 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:54:57,581 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,581 - DEBUG - -----------------------------------------
+2017-06-22 14:54:57,582 - DEBUG - COM6 - USB Serial Port (COM6)
+2017-06-22 14:54:57,582 - DEBUG - description->USB Serial Port (COM6)
+2017-06-22 14:54:57,582 - DEBUG - devicestr(COM6
+2017-06-22 14:54:57,582 - DEBUG - hwidstr(USB VID:PID=0403:6001 SER=FT084MQXA
+2017-06-22 14:54:57,582 - DEBUG - interfacestr(None
+2017-06-22 14:54:57,582 - DEBUG - locationstr(None
+2017-06-22 14:54:57,582 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:54:57,582 - DEBUG - namestr(None
+2017-06-22 14:54:57,582 - DEBUG - pidstr(24577
+2017-06-22 14:54:57,582 - DEBUG - product->None
+2017-06-22 14:54:57,582 - DEBUG - serial number->FT084MQXA
+2017-06-22 14:54:57,582 - DEBUG - vid->1027
+2017-06-22 14:54:57,583 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:54:57,584 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,585 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:54:57,586 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:54:57,587 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,587 - DEBUG - -----------------------------------------
+2017-06-22 14:54:57,587 - DEBUG - COM45 - USB Serial Port (COM45)
+2017-06-22 14:54:57,587 - DEBUG - description->USB Serial Port (COM45)
+2017-06-22 14:54:57,587 - DEBUG - devicestr(COM45
+2017-06-22 14:54:57,588 - DEBUG - hwidstr(USB VID:PID=0403:6015 SER=FT0DICBKA
+2017-06-22 14:54:57,588 - DEBUG - interfacestr(None
+2017-06-22 14:54:57,588 - DEBUG - locationstr(None
+2017-06-22 14:54:57,588 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:54:57,588 - DEBUG - namestr(None
+2017-06-22 14:54:57,588 - DEBUG - pidstr(24597
+2017-06-22 14:54:57,588 - DEBUG - product->None
+2017-06-22 14:54:57,588 - DEBUG - serial number->FT0DICBKA
+2017-06-22 14:54:57,588 - DEBUG - vid->1027
+2017-06-22 14:54:57,589 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:54:57,590 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,591 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:54:57,593 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:54:57,593 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,594 - DEBUG - Serial scan complete...
+2017-06-22 14:54:57,594 - DEBUG - List->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:54:57,594 - DEBUG - modbus port->
+2017-06-22 14:54:57,594 - DEBUG - modbus port description->
+2017-06-22 14:54:57,594 - DEBUG - tfp3 port->
+2017-06-22 14:54:57,594 - DEBUG - tfp3 port description->
+2017-06-22 14:54:57,594 - DEBUG - scanner port->
+2017-06-22 14:54:57,594 - DEBUG - scanner port description->
+2017-06-22 14:54:57,594 - DEBUG - cyclone port
+2017-06-22 14:54:57,594 - DEBUG - cyclone port description
+2017-06-22 14:54:57,594 - DEBUG - demojm port
+2017-06-22 14:54:57,594 - DEBUG - demojm port description
+2017-06-22 14:54:57,595 - DEBUG - ports->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:54:57,595 - DEBUG - description->['Honeywell N5600 Series Area Image Engine (COM4)', 'Communications Port (COM1)', 'USB Serial Port (COM6)', 'USB Serial Port (COM45)', 'None']
+2017-06-22 14:54:57,595 - DEBUG - os name->Windows
+2017-06-22 14:54:57,596 - DEBUG - Reading from config-> Section:TELNET Key:ip_address Value: 192.168.1.99
+2017-06-22 14:54:57,597 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:57,598 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:54:57,599 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:54:57,600 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:54:57,601 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:54:59,384 - DEBUG - Programming cyclone !
+2017-06-22 14:54:59,386 - DEBUG - Reading from config-> Section:CYCLONE Key:com_port Value: COM45
+2017-06-22 14:54:59,386 - DEBUG - Looking for Cyclone programmer...
+2017-06-22 14:55:00,408 - DEBUG - SEND->\x03\x01\x18\x5d
+2017-06-22 14:55:01,514 - DEBUG - Returned value Cyclone programmer not responding
+2017-06-22 14:55:01,514 - DEBUG - Returned value False
+2017-06-22 14:57:18,508 - DEBUG - Reading from config-> Section:CONFIG Key:file_ver Value: 1
+2017-06-22 14:57:18,508 - DEBUG - TFP3 relay pin 3
+2017-06-22 14:57:18,516 - DEBUG - Populating defaults...
+2017-06-22 14:57:19,517 - DEBUG - Searching for serial ports...
+2017-06-22 14:57:20,522 - DEBUG - -----------------------------------------
+2017-06-22 14:57:20,522 - DEBUG - COM4 - Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:57:20,522 - DEBUG - description->Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:57:20,523 - DEBUG - devicestr(COM4
+2017-06-22 14:57:20,523 - DEBUG - hwidstr(USB VID:PID=0C2E:096A SER=1
+2017-06-22 14:57:20,523 - DEBUG - interfacestr(None
+2017-06-22 14:57:20,523 - DEBUG - locationstr(None
+2017-06-22 14:57:20,523 - DEBUG - maufacturerstr(Honeywell International Inc.
+2017-06-22 14:57:20,523 - DEBUG - namestr(None
+2017-06-22 14:57:20,523 - DEBUG - pidstr(2410
+2017-06-22 14:57:20,523 - DEBUG - product->None
+2017-06-22 14:57:20,523 - DEBUG - serial number->1
+2017-06-22 14:57:20,523 - DEBUG - vid->3118
+2017-06-22 14:57:20,524 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:57:20,525 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,526 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:57:20,527 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:57:20,529 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,529 - DEBUG - -----------------------------------------
+2017-06-22 14:57:20,529 - DEBUG - COM1 - Communications Port (COM1)
+2017-06-22 14:57:20,529 - DEBUG - description->Communications Port (COM1)
+2017-06-22 14:57:20,529 - DEBUG - devicestr(COM1
+2017-06-22 14:57:20,529 - DEBUG - hwidstr(ACPI\PNP0501\0
+2017-06-22 14:57:20,530 - DEBUG - interfacestr(None
+2017-06-22 14:57:20,530 - DEBUG - locationstr(None
+2017-06-22 14:57:20,530 - DEBUG - maufacturerstr((Standard port types)
+2017-06-22 14:57:20,530 - DEBUG - namestr(None
+2017-06-22 14:57:20,530 - DEBUG - pidstr(None
+2017-06-22 14:57:20,530 - DEBUG - product->None
+2017-06-22 14:57:20,530 - DEBUG - serial number->None
+2017-06-22 14:57:20,530 - DEBUG - vid->None
+2017-06-22 14:57:20,531 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:57:20,532 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,533 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:57:20,534 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:57:20,535 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,535 - DEBUG - -----------------------------------------
+2017-06-22 14:57:20,535 - DEBUG - COM6 - USB Serial Port (COM6)
+2017-06-22 14:57:20,535 - DEBUG - description->USB Serial Port (COM6)
+2017-06-22 14:57:20,535 - DEBUG - devicestr(COM6
+2017-06-22 14:57:20,535 - DEBUG - hwidstr(USB VID:PID=0403:6001 SER=FT084MQXA
+2017-06-22 14:57:20,536 - DEBUG - interfacestr(None
+2017-06-22 14:57:20,536 - DEBUG - locationstr(None
+2017-06-22 14:57:20,536 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:57:20,536 - DEBUG - namestr(None
+2017-06-22 14:57:20,536 - DEBUG - pidstr(24577
+2017-06-22 14:57:20,536 - DEBUG - product->None
+2017-06-22 14:57:20,536 - DEBUG - serial number->FT084MQXA
+2017-06-22 14:57:20,536 - DEBUG - vid->1027
+2017-06-22 14:57:20,537 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:57:20,538 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,539 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:57:20,540 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:57:20,541 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,541 - DEBUG - -----------------------------------------
+2017-06-22 14:57:20,541 - DEBUG - COM45 - USB Serial Port (COM45)
+2017-06-22 14:57:20,541 - DEBUG - description->USB Serial Port (COM45)
+2017-06-22 14:57:20,541 - DEBUG - devicestr(COM45
+2017-06-22 14:57:20,541 - DEBUG - hwidstr(USB VID:PID=0403:6015 SER=FT0DICBKA
+2017-06-22 14:57:20,541 - DEBUG - interfacestr(None
+2017-06-22 14:57:20,542 - DEBUG - locationstr(None
+2017-06-22 14:57:20,542 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:57:20,542 - DEBUG - namestr(None
+2017-06-22 14:57:20,542 - DEBUG - pidstr(24597
+2017-06-22 14:57:20,542 - DEBUG - product->None
+2017-06-22 14:57:20,542 - DEBUG - serial number->FT0DICBKA
+2017-06-22 14:57:20,542 - DEBUG - vid->1027
+2017-06-22 14:57:20,543 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:57:20,544 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,545 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:57:20,546 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:57:20,547 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,547 - DEBUG - Serial scan complete...
+2017-06-22 14:57:20,547 - DEBUG - List->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:57:20,547 - DEBUG - modbus port->
+2017-06-22 14:57:20,547 - DEBUG - modbus port description->
+2017-06-22 14:57:20,547 - DEBUG - tfp3 port->
+2017-06-22 14:57:20,547 - DEBUG - tfp3 port description->
+2017-06-22 14:57:20,547 - DEBUG - scanner port->
+2017-06-22 14:57:20,548 - DEBUG - scanner port description->
+2017-06-22 14:57:20,548 - DEBUG - cyclone port
+2017-06-22 14:57:20,548 - DEBUG - cyclone port description
+2017-06-22 14:57:20,548 - DEBUG - demojm port
+2017-06-22 14:57:20,548 - DEBUG - demojm port description
+2017-06-22 14:57:20,548 - DEBUG - ports->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:57:20,548 - DEBUG - description->['Honeywell N5600 Series Area Image Engine (COM4)', 'Communications Port (COM1)', 'USB Serial Port (COM6)', 'USB Serial Port (COM45)', 'None']
+2017-06-22 14:57:20,548 - DEBUG - os name->Windows
+2017-06-22 14:57:20,549 - DEBUG - Reading from config-> Section:TELNET Key:ip_address Value: 192.168.1.99
+2017-06-22 14:57:20,550 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:20,551 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:57:20,552 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:57:20,553 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:57:20,554 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:57:24,289 - DEBUG - Programming cyclone !
+2017-06-22 14:57:24,291 - DEBUG - Reading from config-> Section:CYCLONE Key:com_port Value: COM45
+2017-06-22 14:57:24,291 - DEBUG - Looking for Cyclone programmer...
+2017-06-22 14:57:25,314 - DEBUG - SEND->\x03\x01\x18\x5d
+2017-06-22 14:57:26,419 - DEBUG - Returned value Cyclone programmer not responding
+2017-06-22 14:57:26,419 - DEBUG - Returned value False
+2017-06-22 14:58:30,984 - DEBUG - Reading from config-> Section:CONFIG Key:file_ver Value: 1
+2017-06-22 14:58:30,985 - DEBUG - TFP3 relay pin 3
+2017-06-22 14:58:30,994 - DEBUG - Populating defaults...
+2017-06-22 14:58:31,995 - DEBUG - Searching for serial ports...
+2017-06-22 14:58:33,000 - DEBUG - -----------------------------------------
+2017-06-22 14:58:33,000 - DEBUG - COM4 - Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:58:33,000 - DEBUG - description->Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:58:33,000 - DEBUG - devicestr(COM4
+2017-06-22 14:58:33,000 - DEBUG - hwidstr(USB VID:PID=0C2E:096A SER=1
+2017-06-22 14:58:33,001 - DEBUG - interfacestr(None
+2017-06-22 14:58:33,001 - DEBUG - locationstr(None
+2017-06-22 14:58:33,001 - DEBUG - maufacturerstr(Honeywell International Inc.
+2017-06-22 14:58:33,001 - DEBUG - namestr(None
+2017-06-22 14:58:33,001 - DEBUG - pidstr(2410
+2017-06-22 14:58:33,001 - DEBUG - product->None
+2017-06-22 14:58:33,001 - DEBUG - serial number->1
+2017-06-22 14:58:33,001 - DEBUG - vid->3118
+2017-06-22 14:58:33,002 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:58:33,003 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,004 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:58:33,005 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:58:33,007 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,007 - DEBUG - -----------------------------------------
+2017-06-22 14:58:33,007 - DEBUG - COM1 - Communications Port (COM1)
+2017-06-22 14:58:33,007 - DEBUG - description->Communications Port (COM1)
+2017-06-22 14:58:33,007 - DEBUG - devicestr(COM1
+2017-06-22 14:58:33,007 - DEBUG - hwidstr(ACPI\PNP0501\0
+2017-06-22 14:58:33,007 - DEBUG - interfacestr(None
+2017-06-22 14:58:33,008 - DEBUG - locationstr(None
+2017-06-22 14:58:33,008 - DEBUG - maufacturerstr((Standard port types)
+2017-06-22 14:58:33,008 - DEBUG - namestr(None
+2017-06-22 14:58:33,008 - DEBUG - pidstr(None
+2017-06-22 14:58:33,008 - DEBUG - product->None
+2017-06-22 14:58:33,008 - DEBUG - serial number->None
+2017-06-22 14:58:33,008 - DEBUG - vid->None
+2017-06-22 14:58:33,009 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:58:33,010 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,011 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:58:33,012 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:58:33,013 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,013 - DEBUG - -----------------------------------------
+2017-06-22 14:58:33,013 - DEBUG - COM6 - USB Serial Port (COM6)
+2017-06-22 14:58:33,013 - DEBUG - description->USB Serial Port (COM6)
+2017-06-22 14:58:33,013 - DEBUG - devicestr(COM6
+2017-06-22 14:58:33,013 - DEBUG - hwidstr(USB VID:PID=0403:6001 SER=FT084MQXA
+2017-06-22 14:58:33,013 - DEBUG - interfacestr(None
+2017-06-22 14:58:33,013 - DEBUG - locationstr(None
+2017-06-22 14:58:33,014 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:58:33,014 - DEBUG - namestr(None
+2017-06-22 14:58:33,014 - DEBUG - pidstr(24577
+2017-06-22 14:58:33,014 - DEBUG - product->None
+2017-06-22 14:58:33,014 - DEBUG - serial number->FT084MQXA
+2017-06-22 14:58:33,014 - DEBUG - vid->1027
+2017-06-22 14:58:33,015 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:58:33,016 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,017 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:58:33,018 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:58:33,019 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,019 - DEBUG - -----------------------------------------
+2017-06-22 14:58:33,019 - DEBUG - COM45 - USB Serial Port (COM45)
+2017-06-22 14:58:33,019 - DEBUG - description->USB Serial Port (COM45)
+2017-06-22 14:58:33,019 - DEBUG - devicestr(COM45
+2017-06-22 14:58:33,019 - DEBUG - hwidstr(USB VID:PID=0403:6015 SER=FT0DICBKA
+2017-06-22 14:58:33,019 - DEBUG - interfacestr(None
+2017-06-22 14:58:33,019 - DEBUG - locationstr(None
+2017-06-22 14:58:33,019 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:58:33,020 - DEBUG - namestr(None
+2017-06-22 14:58:33,020 - DEBUG - pidstr(24597
+2017-06-22 14:58:33,020 - DEBUG - product->None
+2017-06-22 14:58:33,020 - DEBUG - serial number->FT0DICBKA
+2017-06-22 14:58:33,020 - DEBUG - vid->1027
+2017-06-22 14:58:33,021 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:58:33,022 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,023 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:58:33,024 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:58:33,025 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,025 - DEBUG - Serial scan complete...
+2017-06-22 14:58:33,025 - DEBUG - List->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:58:33,025 - DEBUG - modbus port->
+2017-06-22 14:58:33,025 - DEBUG - modbus port description->
+2017-06-22 14:58:33,025 - DEBUG - tfp3 port->
+2017-06-22 14:58:33,025 - DEBUG - tfp3 port description->
+2017-06-22 14:58:33,025 - DEBUG - scanner port->
+2017-06-22 14:58:33,025 - DEBUG - scanner port description->
+2017-06-22 14:58:33,025 - DEBUG - cyclone port
+2017-06-22 14:58:33,025 - DEBUG - cyclone port description
+2017-06-22 14:58:33,025 - DEBUG - demojm port
+2017-06-22 14:58:33,026 - DEBUG - demojm port description
+2017-06-22 14:58:33,026 - DEBUG - ports->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:58:33,026 - DEBUG - description->['Honeywell N5600 Series Area Image Engine (COM4)', 'Communications Port (COM1)', 'USB Serial Port (COM6)', 'USB Serial Port (COM45)', 'None']
+2017-06-22 14:58:33,026 - DEBUG - os name->Windows
+2017-06-22 14:58:33,027 - DEBUG - Reading from config-> Section:TELNET Key:ip_address Value: 192.168.1.99
+2017-06-22 14:58:33,028 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:33,029 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:58:33,030 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:58:33,031 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:58:33,032 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:58:35,315 - DEBUG - Programming cyclone !
+2017-06-22 14:58:35,316 - DEBUG - Reading from config-> Section:CYCLONE Key:com_port Value: COM45
+2017-06-22 14:58:35,316 - DEBUG - Looking for Cyclone programmer on port COM45
+2017-06-22 14:58:36,340 - DEBUG - SEND->\x03\x01\x18\x5d
+2017-06-22 14:58:37,445 - DEBUG - Returned value Cyclone programmer not responding
+2017-06-22 14:58:37,445 - DEBUG - Returned value False
+2017-06-22 14:59:03,068 - DEBUG - Reading from config-> Section:CONFIG Key:file_ver Value: 1
+2017-06-22 14:59:03,068 - DEBUG - TFP3 relay pin 3
+2017-06-22 14:59:03,077 - DEBUG - Populating defaults...
+2017-06-22 14:59:04,078 - DEBUG - Searching for serial ports...
+2017-06-22 14:59:05,083 - DEBUG - -----------------------------------------
+2017-06-22 14:59:05,083 - DEBUG - COM4 - Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:59:05,083 - DEBUG - description->Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:59:05,083 - DEBUG - devicestr(COM4
+2017-06-22 14:59:05,083 - DEBUG - hwidstr(USB VID:PID=0C2E:096A SER=1
+2017-06-22 14:59:05,083 - DEBUG - interfacestr(None
+2017-06-22 14:59:05,083 - DEBUG - locationstr(None
+2017-06-22 14:59:05,084 - DEBUG - maufacturerstr(Honeywell International Inc.
+2017-06-22 14:59:05,084 - DEBUG - namestr(None
+2017-06-22 14:59:05,084 - DEBUG - pidstr(2410
+2017-06-22 14:59:05,084 - DEBUG - product->None
+2017-06-22 14:59:05,084 - DEBUG - serial number->1
+2017-06-22 14:59:05,084 - DEBUG - vid->3118
+2017-06-22 14:59:05,085 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:59:05,086 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,087 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:59:05,088 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:59:05,089 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,089 - DEBUG - -----------------------------------------
+2017-06-22 14:59:05,089 - DEBUG - COM1 - Communications Port (COM1)
+2017-06-22 14:59:05,089 - DEBUG - description->Communications Port (COM1)
+2017-06-22 14:59:05,089 - DEBUG - devicestr(COM1
+2017-06-22 14:59:05,090 - DEBUG - hwidstr(ACPI\PNP0501\0
+2017-06-22 14:59:05,090 - DEBUG - interfacestr(None
+2017-06-22 14:59:05,090 - DEBUG - locationstr(None
+2017-06-22 14:59:05,090 - DEBUG - maufacturerstr((Standard port types)
+2017-06-22 14:59:05,090 - DEBUG - namestr(None
+2017-06-22 14:59:05,090 - DEBUG - pidstr(None
+2017-06-22 14:59:05,090 - DEBUG - product->None
+2017-06-22 14:59:05,090 - DEBUG - serial number->None
+2017-06-22 14:59:05,090 - DEBUG - vid->None
+2017-06-22 14:59:05,091 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:59:05,092 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,093 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:59:05,094 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:59:05,096 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,096 - DEBUG - -----------------------------------------
+2017-06-22 14:59:05,096 - DEBUG - COM6 - USB Serial Port (COM6)
+2017-06-22 14:59:05,096 - DEBUG - description->USB Serial Port (COM6)
+2017-06-22 14:59:05,096 - DEBUG - devicestr(COM6
+2017-06-22 14:59:05,096 - DEBUG - hwidstr(USB VID:PID=0403:6001 SER=FT084MQXA
+2017-06-22 14:59:05,096 - DEBUG - interfacestr(None
+2017-06-22 14:59:05,096 - DEBUG - locationstr(None
+2017-06-22 14:59:05,096 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:59:05,096 - DEBUG - namestr(None
+2017-06-22 14:59:05,096 - DEBUG - pidstr(24577
+2017-06-22 14:59:05,097 - DEBUG - product->None
+2017-06-22 14:59:05,097 - DEBUG - serial number->FT084MQXA
+2017-06-22 14:59:05,097 - DEBUG - vid->1027
+2017-06-22 14:59:05,098 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:59:05,099 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,100 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:59:05,101 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:59:05,102 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,102 - DEBUG - -----------------------------------------
+2017-06-22 14:59:05,102 - DEBUG - COM45 - USB Serial Port (COM45)
+2017-06-22 14:59:05,102 - DEBUG - description->USB Serial Port (COM45)
+2017-06-22 14:59:05,102 - DEBUG - devicestr(COM45
+2017-06-22 14:59:05,102 - DEBUG - hwidstr(USB VID:PID=0403:6015 SER=FT0DICBKA
+2017-06-22 14:59:05,102 - DEBUG - interfacestr(None
+2017-06-22 14:59:05,102 - DEBUG - locationstr(None
+2017-06-22 14:59:05,102 - DEBUG - maufacturerstr(FTDI
+2017-06-22 14:59:05,102 - DEBUG - namestr(None
+2017-06-22 14:59:05,103 - DEBUG - pidstr(24597
+2017-06-22 14:59:05,103 - DEBUG - product->None
+2017-06-22 14:59:05,103 - DEBUG - serial number->FT0DICBKA
+2017-06-22 14:59:05,103 - DEBUG - vid->1027
+2017-06-22 14:59:05,104 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:59:05,105 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,106 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:59:05,107 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:59:05,108 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,108 - DEBUG - Serial scan complete...
+2017-06-22 14:59:05,108 - DEBUG - List->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:59:05,108 - DEBUG - modbus port->
+2017-06-22 14:59:05,108 - DEBUG - modbus port description->
+2017-06-22 14:59:05,108 - DEBUG - tfp3 port->
+2017-06-22 14:59:05,108 - DEBUG - tfp3 port description->
+2017-06-22 14:59:05,108 - DEBUG - scanner port->
+2017-06-22 14:59:05,108 - DEBUG - scanner port description->
+2017-06-22 14:59:05,108 - DEBUG - cyclone port
+2017-06-22 14:59:05,108 - DEBUG - cyclone port description
+2017-06-22 14:59:05,108 - DEBUG - demojm port
+2017-06-22 14:59:05,108 - DEBUG - demojm port description
+2017-06-22 14:59:05,109 - DEBUG - ports->['COM4', 'COM1', 'COM6', 'COM45', 'None']
+2017-06-22 14:59:05,109 - DEBUG - description->['Honeywell N5600 Series Area Image Engine (COM4)', 'Communications Port (COM1)', 'USB Serial Port (COM6)', 'USB Serial Port (COM45)', 'None']
+2017-06-22 14:59:05,109 - DEBUG - os name->Windows
+2017-06-22 14:59:05,110 - DEBUG - Reading from config-> Section:TELNET Key:ip_address Value: 192.168.1.99
+2017-06-22 14:59:05,111 - DEBUG - Reading from config-> Section:TFP3 Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:05,112 - DEBUG - Reading from config-> Section:SCANNER Key:COM_DESCRIPTION Value: Honeywell N5600 Series Area Image Engine (COM4)
+2017-06-22 14:59:05,113 - DEBUG - Reading from config-> Section:CYCLONE Key:COM_DESCRIPTION Value: USB Serial Port (COM45)
+2017-06-22 14:59:05,114 - DEBUG - Reading from config-> Section:MODBUS Key:COM_DESCRIPTION Value: USB Serial Port (COM6)
+2017-06-22 14:59:05,115 - DEBUG - Reading from config-> Section:DEMOJM Key:COM_DESCRIPTION Value: None
+2017-06-22 14:59:06,299 - DEBUG - Rebooting unit...
+2017-06-22 14:59:07,300 - DEBUG - Rebooting unit 192.168.1.99
+2017-06-22 14:59:07,305 - DEBUG - b'\xff\xfb\x03\xff\xfd\x03\xff\xfb\x01\xff\xfb\x00\xff\xfd\x00'
+2017-06-22 14:59:07,309 - DEBUG - b'$login,factory,OK*13\r\n'
+2017-06-22 14:59:07,316 - DEBUG - b'$reboot,OK*29\r\n'
+2017-06-22 14:59:07,316 - DEBUG - Reboot command accepted please wait.
+2017-06-22 14:59:12,317 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:59:12,915 - DEBUG - Response->1
+2017-06-22 14:59:12,915 - DEBUG - 1
+2017-06-22 14:59:12,915 - DEBUG - 192.168.1.99 is down!
+2017-06-22 14:59:12,915 - DEBUG - val->(False, '192.168.1.99 is down!')
+2017-06-22 14:59:12,915 - DEBUG - Waiting for unit to respond 1 seconds
+2017-06-22 14:59:13,916 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:59:14,914 - DEBUG - Response->1
+2017-06-22 14:59:14,914 - DEBUG - 1
+2017-06-22 14:59:14,914 - DEBUG - 192.168.1.99 is down!
+2017-06-22 14:59:14,915 - DEBUG - val->(False, '192.168.1.99 is down!')
+2017-06-22 14:59:14,915 - DEBUG - Waiting for unit to respond 2 seconds
+2017-06-22 14:59:15,915 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:59:16,914 - DEBUG - Response->1
+2017-06-22 14:59:16,914 - DEBUG - 1
+2017-06-22 14:59:16,915 - DEBUG - 192.168.1.99 is down!
+2017-06-22 14:59:16,915 - DEBUG - val->(False, '192.168.1.99 is down!')
+2017-06-22 14:59:16,915 - DEBUG - Waiting for unit to respond 3 seconds
+2017-06-22 14:59:17,916 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:59:18,914 - DEBUG - Response->1
+2017-06-22 14:59:18,915 - DEBUG - 1
+2017-06-22 14:59:18,915 - DEBUG - 192.168.1.99 is down!
+2017-06-22 14:59:18,915 - DEBUG - val->(False, '192.168.1.99 is down!')
+2017-06-22 14:59:18,915 - DEBUG - Waiting for unit to respond 4 seconds
+2017-06-22 14:59:19,916 - DEBUG - pinging UUT at ip 192.168.1.99 count 1
+2017-06-22 14:59:19,931 - DEBUG - Response->0
+2017-06-22 14:59:19,931 - DEBUG - 0
+2017-06-22 14:59:19,931 - DEBUG - 192.168.1.99 is up!
+2017-06-22 14:59:19,931 - DEBUG - val->(True, '192.168.1.99 is up!')
+2017-06-22 14:59:19,931 - DEBUG - Successfully reset...
+2017-06-22 14:59:19,931 - DEBUG - Returned value Successfully reset...
+2017-06-22 14:59:19,932 - DEBUG - Returned value True
