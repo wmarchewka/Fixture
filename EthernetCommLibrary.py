@@ -39,12 +39,13 @@ class EthComLib(object):
         return True, timecounter
 
     # ******************************************************************************************
-    def pinguut(self, ip_address, numpings=1):
+    def pinguut(self, allow_msg, ip_address, numpings=1):
         pingcount = 1
 
         while True:
             logger.debug("pinging UUT at ip " + ip_address + ' count ' + str(pingcount))
-            self.lblStatus.setText("pinging UUT at ip " + ip_address + ' count ' + str(pingcount))
+            if allow_msg:
+                self.lblStatus.setText("pinging UUT at ip " + ip_address + ' count ' + str(pingcount))
             os_platform = sl.supportLibrary.getOsPlatform(self)
             if os_platform == 'Linux':
                 data = ('ping ' + ip_address + ' -w 1000 -c 1')  # set ping timeout to 1000ms
@@ -57,11 +58,13 @@ class EthComLib(object):
             logger.debug(response)
             if int(response) == 0:
                 logger.debug(ip_address + ' is up!')
-                self.lblStatus.setText(ip_address + ' is up!')
+                if allow_msg:
+                    self.lblStatus.setText(ip_address + ' is up!')
                 return True, ip_address + ' is up!'
             else:
                 logger.debug(ip_address + ' is down!')
-                self.lblStatus.setText(ip_address + ' is down!')
+                if allow_msg:
+                    self.lblStatus.setText(ip_address + ' is down!')
                 pingcount = pingcount + 1
                 if pingcount > numpings:
                     return False, ip_address + ' is down!'
@@ -227,7 +230,66 @@ class EthComLib(object):
             logger.debug(type(err))
             return False, err
 
-    # ******************************************************************************************
+# ******************************************************************************************
+    def frequency_read(self, allow_msg, ip_address):
+        try:
+            logger.debug("Getting Frequency from " + ip_address)
+            if allow_msg:
+                self.lblStatus.setText("Getting Frequency from " + ip_address)
+            tn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            conn = ip_address, 23
+            tn.settimeout(4)
+            tn.connect(conn)
+            tn.send(b"\n")
+            tempdata = tn.recv(100)
+            tn.send(b"$login,factory,factory\n")
+            tempdata = tn.recv(50)
+            logger.debug(str(tempdata))
+            tn.send(b"$mdra,0,U0018\n")  # use this to see if a slip error returns
+            tempdata = tn.recv(100)
+            logger.debug(str(tempdata))
+            slip_err = tempdata.find(b'SLIP_DRIVER_ERROR_READ_TIMEOUT')
+            tempdata = ''
+            if slip_err >= 0:
+                logger.debug('SLIP driver error')
+                return False, 'FAIL \n Failed to get voltages. \n  SLIP Driver Error'
+            else:
+                tn.close()
+                PORT = 23
+                TIMEOUT = 5
+                tn = telnetlib.Telnet(host=ip_address, port=PORT, timeout=TIMEOUT)
+                tn.write(b'$login,factory,factory\n')
+                tn.write(b"$freq\n\r")
+                tempdata = tn.read_all()
+                logger.debug(tempdata)
+                tn.close()
+                tempdata = str(tempdata)
+                tempdata = tempdata.split(',')
+                print(tempdata)
+                Frequency = float(tempdata[3])
+                logger.debug(Frequency)
+                return True, Frequency
+        except ConnectionError as err:
+            logger.debug(err)
+            logger.debug(type(err))
+            return False, err
+
+        except TimeoutError as err:
+            logger.debug(err)
+            logger.debug(type(err))
+            return False, err
+
+        except OSError as err:
+            logger.debug(err)
+            logger.debug(type(err))
+            return False, err
+
+        except Exception as err:
+            logger.debug(err)
+            logger.debug(type(err))
+            return False, err
+
+# ******************************************************************************************
     def voltage_read(self, ip_address):
         try:
             logger.debug("Getting Voltages from " + ip_address)
@@ -292,13 +354,16 @@ class EthComLib(object):
                 currentBneg = float(tempdata[tempdata.index('U0042') + 1]) / 1000
                 currentC = float(tempdata[tempdata.index('U0050') + 1]) / 1000
                 currentCneg = float(tempdata[tempdata.index('U0058') + 1]) / 1000
-                logger.debug(voltageA, voltageB, voltageC)
-                logger.debug(currentA, currentAneg, currentB, currentBneg, currentC, currentCneg)
-                data = (
-                "PASS! \n Voltages acquired from " + ip_address + '\n\r' + 'L1: ' + str(voltageA) + '  L2: ' + str(
-                    voltageB) + '  L3: ' + str(voltageC))
-                # TODO need to log this data in log
-                return True, data
+                #logger.debug(voltageA, voltageB, voltageC)
+                #logger.debug(currentA, currentAneg, currentB, currentBneg, currentC, currentCneg)
+                data1 = ("Voltages acquired from " + ip_address + '\tL1: ' + str(voltageA) + '\tL2: ' + str(
+                    voltageB) + '\tL3: ' + str(voltageC))
+                logger.debug(data1)
+                data2 = ('Currents acquired from ' + ip_address + '\tL1: ' + str(currentA) + '\tL2: ' + str(
+                    currentB) + '\tL3: ' + str(currentC) + '\tL1_Neg:' + str(currentAneg) +    '\tL2_Neg:' + str(currentBneg)
+                        + '\tL3_Neg:' + str(currentCneg) )
+                logger.debug(data2)
+                return True, voltageA, voltageB, voltageC, currentA, currentAneg, currentB, currentBneg, currentC, currentCneg
 
         except ConnectionError as err:
             logger.debug(err)
@@ -322,7 +387,7 @@ class EthComLib(object):
 
 
 
-            # ******************************************************************************************
+# ******************************************************************************************
 
     def m40_buttontest(self, ip_address):
         try:

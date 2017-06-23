@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>692</width>
-    <height>522</height>
+    <width>696</width>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -278,7 +278,7 @@ serial ports</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>350</y>
+      <y>390</y>
       <width>551</width>
       <height>71</height>
      </rect>
@@ -335,7 +335,7 @@ serial ports</string>
       <x>570</x>
       <y>90</y>
       <width>111</width>
-      <height>331</height>
+      <height>371</height>
      </rect>
     </property>
    </widget>
@@ -343,13 +343,13 @@ serial ports</string>
     <property name="geometry">
      <rect>
       <x>570</x>
-      <y>430</y>
+      <y>470</y>
       <width>113</width>
       <height>31</height>
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pbTelnetGetVoltages">
+   <widget class="QPushButton" name="pbGetVoltages">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -569,7 +569,7 @@ serial ports</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>430</y>
+      <y>470</y>
       <width>551</width>
       <height>31</height>
      </rect>
@@ -673,13 +673,71 @@ serial ports</string>
      <string>REBOOT UNIT</string>
     </property>
    </widget>
+   <widget class="QLCDNumber" name="lcdFreq">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>510</y>
+      <width>64</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="smallDecimalPoint">
+     <bool>true</bool>
+    </property>
+    <property name="digitCount">
+     <number>6</number>
+    </property>
+    <property name="segmentStyle">
+     <enum>QLCDNumber::Flat</enum>
+    </property>
+    <property name="value" stdset="0">
+     <double>0.000000000000000</double>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>510</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>VOLT A</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbGetFrequency">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>FREQUENCY</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>692</width>
+     <width>696</width>
      <height>21</height>
     </rect>
    </property>

@@ -171,6 +171,9 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         # check serial event thread
         #self.check_serial_event()
 
+        # run one second timer
+        self.one_second_timer()
+
 # ****************************************************************************************************
     def configure_logging():
         logger = logging.getLogger()
@@ -192,12 +195,13 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 # ****************************************************************************************************
     def enable_disable_all_buttons(self, state):
 
-
         if state == 'connect':
+            logger.debug('Enabling all buttons.....')
             self.pbPowerOn.clicked.connect(self.power_up_relay)
             self.pbPowerOff.clicked.connect(self.power_down_relay)
             self.pbButtonTest.clicked.connect(self.button_buttontest)
-            self.pbTelnetGetVoltages.clicked.connect(self.button_voltages)
+            self.pbGetVoltages.clicked.connect(self.button_voltages)
+            self.pbGetFrequency.clicked.connect(self.button_frequency)
             self.pbReadScanner.clicked.connect(self.button_scanner)
             self.pbDoPing.clicked.connect(self.button_ping)
             self.pbProgCyclone.clicked.connect(self.button_cyclone)
@@ -220,10 +224,12 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             self.pbRescanSerialPorts.clicked.connect(self.button_populatedefaults)
 
         if state == 'disconnect':
+            logger.debug('Disabling all buttons.....')
             self.pbPowerOn.disconnect()
             self.pbPowerOff.disconnect()
             self.pbButtonTest.disconnect()
-            self.pbTelnetGetVoltages.disconnect()
+            self.pbGetVoltages.disconnect()
+            self.pbGetFrequency.disconnect()
             self.pbReadScanner.disconnect()
             self.pbDoPing.disconnect()
             self.pbProgCyclone.disconnect()
@@ -244,6 +250,27 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             self.pbWebpageVersion.disconnect()
             self.pbSetupWIFI.disconnect()
             self.pbRescanSerialPorts.disconnect()
+
+    # ****************************************************************************************************
+    def one_second_timer(self):
+        logger.debug('Running one second timer...')
+        one_second_thread = threading.Timer(1, self.one_second_timer)
+        try:
+            one_second_thread.start()
+            logger.debug('Running one second thread...')
+            ret = el.EthComLib.frequency_read(self, False, ip_address)
+            print('Returned value->' + str(ret[1]))
+            self.lcdFreq.display((ret[1]))
+
+        except OSError as err:
+            logger.debug('One second thread not running due to ' + str(err))
+        except ValueError as err:
+            logger.debug('One second thread not running due to ' + str(err))
+        except SystemError as err:
+            logger.debug('One second thread not running due to ' + str(err))
+        except NameError as err:
+            logger.debug('One second thread not running due to ' + str(err))
+
     # ****************************************************************************************************
     def check_serial_event(self):
         logger.debug('Starting serial receive thread')
@@ -277,7 +304,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def check_for_config(self):
         ret = fl.configfileRead('CONFIG', 'file_ver')
-        #logger.debug('Found Configuration file version ' + ret)
+        logger.debug('Found Configuration file version ' + ret)
         self.lblStatus.setText('Found Configuration file version ' + ret)
 
     # ****************************************************************************************************
@@ -672,25 +699,39 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         logger.debug("Setting up WIFI...")
         gui_thread = threading.Thread(None, self.wifisetup_command)
         gui_thread.start()
-    # ****************************************************************************************************
+# ****************************************************************************************************
     def wifisetup_command(self):
         ret = el.EthComLib.wifi_setup(self, ip_address)
         logger.debug('Returned value ' + str(ret[1]))
         logger.debug('Returned value ' + str(ret[0]))
         self.lblStatus.setText(str(ret[1]))
 
-    # ****************************************************************************************************
+# ****************************************************************************************************
     def button_voltages(self):
         global ip_address
         logger.debug("Pressed voltage...")
         gui_thread = threading.Thread(None, self.voltages_command)
         gui_thread.start()
 
-    # ****************************************************************************************************
+# ****************************************************************************************************
     def voltages_command(self):
         self.lblStatus.setText("Getting voltages...")
         ret = el.EthComLib.voltage_read(self, ip_address)
-        logger.debug(str(ret[1]))
+        logger.debug('Returned data->' + str(ret[1]))
+        self.lblStatus.setText(str(ret[1]))
+
+# ****************************************************************************************************
+    def button_frequency(self):
+        global ip_address
+        logger.debug("Pressed frequency...")
+        gui_thread = threading.Thread(None, self.frequency_command)
+        gui_thread.start()
+
+    # ****************************************************************************************************
+    def frequency_command(self):
+        self.lblStatus.setText("Getting frequency...")
+        ret = el.EthComLib.frequency_read(self, True, ip_address)
+        logger.debug('Returned data->' + str(ret[1]))
         self.lblStatus.setText(str(ret[1]))
 
     # ****************************************************************************************************
@@ -764,7 +805,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
     # ****************************************************************************************************
     def ping_command(self):
         self.lblStatus.setText("Ping test running...")
-        ret = el.EthComLib.pinguut(self, ip_address, 5)
+        ret = el.EthComLib.pinguut(self, True, ip_address, 5)
         logger.debug('Returned value ' + str(ret[1]))
         self.lblStatus.setText(str(ret[1]))
 
