@@ -164,7 +164,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
 
         # do all initializtion
         self.lblStatus.setText('')
-        #self.populate_defaults()
+        self.populate_defaults()
 
         logger.debug('TFP3 relay pin ' + str(sl.supportLibrary.gpio_tfp3relay_pin))
 
@@ -172,7 +172,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         #self.check_serial_event()
 
         # run one second timer
-        self.one_second_timer()
+        self.five_second_timer()
 
 # ****************************************************************************************************
     def configure_logging():
@@ -252,16 +252,23 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
             self.pbRescanSerialPorts.disconnect()
 
     # ****************************************************************************************************
-    def one_second_timer(self):
-        logger.debug('Running one second timer...')
-        one_second_thread = threading.Timer(1, self.one_second_timer)
-        try:
-            one_second_thread.start()
-            logger.debug('Running one second thread...')
-            ret = el.EthComLib.frequency_read(self, False, ip_address)
-            print('Returned value->' + str(ret[1]))
-            self.lcdFreq.display((ret[1]))
+    def five_second_timer(self):
 
+        logger.debug('Running five second timer...')
+        five_second_thread = threading.Timer(5, self.five_second_timer)
+        try:
+            five_second_thread.start()
+            logger.debug('Running five second thread...')
+            ret = el.EthComLib.frequency_read(self, False, ip_address)
+            logger.debug('Returned value->' + str(ret[1]))
+            if ret[0]:
+                self.lcdFreq.display((ret[1]))
+            else:
+                self.lcdFreq.display(999.99)
+
+
+        except TimeoutError as err:
+            logger.debug('One second thread not running due to ' + str(err))
         except OSError as err:
             logger.debug('One second thread not running due to ' + str(err))
         except ValueError as err:
@@ -271,7 +278,7 @@ class MainWindow(QMainWindow, mw.Ui_MainWindow):
         except NameError as err:
             logger.debug('One second thread not running due to ' + str(err))
 
-    # ****************************************************************************************************
+# ****************************************************************************************************
     def check_serial_event(self):
         logger.debug('Starting serial receive thread')
         self.lblStatus.setText('Starting serial receive thread')
@@ -1040,8 +1047,8 @@ def main():
     app = QApplication(sys.argv)
     form = MainWindow()
     form.show()
-    gui_thread = threading.Thread(None,form.populate_defaults)
-    gui_thread.start()
+    #gui_thread = threading.Thread(None,form.populate_defaults)
+    #gui_thread.start()
     form.lblStatus.setText('Ready...')
     sys.exit(app.exec_())
 

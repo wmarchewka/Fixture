@@ -265,7 +265,7 @@ class EthComLib(object):
                 tn.close()
                 tempdata = str(tempdata)
                 tempdata = tempdata.split(',')
-                print(tempdata)
+                logger.debug(tempdata)
                 Frequency = float(tempdata[3])
                 logger.debug(Frequency)
                 return True, Frequency
